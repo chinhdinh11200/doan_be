@@ -3,6 +3,9 @@ import { values } from 'lodash';
 import department from './department';
 import user from './user';
 import token from './token';
+import classes from './class';
+import subject from './subject';
+import time from './time';
 export type DB = ReturnType<typeof initialize>;
 
 export const initialize = (sqlize: Sequelize.Sequelize) => {
@@ -10,6 +13,9 @@ export const initialize = (sqlize: Sequelize.Sequelize) => {
     Department: department(sqlize, Sequelize.DataTypes),
     User: user(sqlize, Sequelize.DataTypes),
     Token: token(sqlize, Sequelize.DataTypes),
+    Classes: classes(sqlize, Sequelize.DataTypes),
+    Subject:  subject(sqlize, Sequelize.DataTypes),
+    Time:  time(sqlize, Sequelize.DataTypes),
   };
 
   for (const model of values(db)) {

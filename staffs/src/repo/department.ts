@@ -19,24 +19,8 @@ export default class DepartmentRepository extends BaseRepository {
     this.modelUser = db.User;
   }
 
-  public makeAmbiguousCondition = <T extends object>(
-    params: T,
-    field: keyof T,
-    searchField?: string
-  ): WhereAttributeHash => {
-    if (searchField === undefined) {
-      return {
-        [field]: { [Op.like]: `%${params[field]}%` },
-      };
-    } else {
-      return {
-        [searchField]: { [Op.like]: `%${params[field]}%` },
-      };
-    }
-  };
-
   public search = async (data: types.department.DepartmentSearchParam) => {
-    this.makeAmbiguousCondition(data, 'name');
+    // this.makeAmbiguousCondition(data, 'name');
     const findOption: FindAndCountOptions = {
       include: [this.modelUser],
     };
@@ -101,7 +85,7 @@ export default class DepartmentRepository extends BaseRepository {
 
       return department.dataValues;
     } catch (error) {
-      await transaction.rollback;
+      await transaction.rollback();
       throw error;
     }
   };

@@ -1,6 +1,8 @@
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { DB } from '../models';
+import { Op, WhereAttributeHash } from 'sequelize';
+import { map } from 'lodash';
 
 export default abstract class BaseRepository {
   public readonly db: DB;
@@ -37,6 +39,30 @@ export default abstract class BaseRepository {
       password: hashPassword,
     };
   };
+
+  public makeAmbiguousCondition = <T extends object>(
+    params: T,
+    field: keyof T,
+    searchField?: string
+  ): WhereAttributeHash => {
+    if (searchField === undefined) {
+      return {
+        [field]: { [Op.like]: `%${params[field]}%` },
+      };
+    } else {
+      return {
+        [searchField]: { [Op.like]: `%${params[field]}%` },
+      };
+    }
+  };
+
+  public makeMultipleAmbiguousCondition = <T extends object>(
+    params: T,
+    field: keyof T,
+    searchFields: string[]
+  ) => ({
+    [Op.or]: map(searchFields, searchField => this.makeAmbiguousCondition(params, field, searchField))
+  });
 
   public getSecret = () => this.secret;
 }

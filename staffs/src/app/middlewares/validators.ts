@@ -7,20 +7,20 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 
   if (!validateResult.isEmpty()) {
     const errors = map(
-      validateResult.array({ onlyFirstError: false }),
+      validateResult.array({ onlyFirstError: true }),
       (messageError) => {
         if (typeof messageError.msg === 'object') {
           let str = messageError.msg.message;
           let statusCode = messageError.msg.statusCode;
           let fieldName = messageError.msg.args;
-          if (typeof fieldName === 'array') {
-
+          if (typeof fieldName === 'string') {
+            str = str.replace(new RegExp(`%1`, 'g'), fieldName);
           } else {
-
+            fieldName.map((item: any, index: any) => {
+              str = str.replace(new RegExp(`%${index + 1}`, 'g'), item);
+            });
           }
-          console.log("fileName type", typeof fieldName);
-          
-          str = str.replace(new RegExp(`%1`, 'g'));
+
           return { str, statusCode, fieldName };
         }
       }

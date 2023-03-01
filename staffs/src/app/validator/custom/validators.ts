@@ -1,5 +1,6 @@
+import { User } from './../../../models/user';
 import { set } from 'lodash';
-import { ValidationChain } from 'express-validator';
+import { ValidationChain, check } from 'express-validator';
 import { messageValidation, statusValidation } from '../../../common';
 
 export const isDigits = (check: ValidationChain, fieldName: string) =>
@@ -10,9 +11,28 @@ export const isDigits = (check: ValidationChain, fieldName: string) =>
 
       return /^\d+$/.test(value);
     })
-    .withMessage('test ccc');
+    .withMessage({ message: messageValidation.number, args: fieldName, statusCode: statusValidation.number });
 
 export const required = (check: ValidationChain, fieldName: string) =>
+  check.exists({ checkFalsy: true }).withMessage({
+    message: messageValidation.required,
+    args: fieldName,
+    statusCode: statusValidation.required,
+  });
+
+export const duplicated = (check: ValidationChain, fieldName: string) =>
   check
-    .exists({checkFalsy: true})
-    .withMessage({ message: messageValidation.required, args: [fieldName], statusCode: statusValidation.required });
+    .custom((value) => {
+      return User.findOne({
+        where: {
+          email: value,
+        },
+      }).then((user) => {
+        if (user) {
+          return Promise.reject('E-mail already in use');
+        } else {
+          return Promise.resolve(true);
+        }
+      });
+    })
+    .withMessage({ message: messageValidation.unique, args: [fieldName], statusCode: statusValidation.unique });

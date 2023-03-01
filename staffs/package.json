@@ -10,7 +10,7 @@
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
     "migrate": "npm run build && sequelize db:migrate",
     "undo": "sequelize db:migrate:undo",
-    "undo-all": "sequelize db:migrate:undo:all"
+    "undo-all": "npm run build && sequelize db:migrate:undo:all"
   },
   "keywords": [],
   "author": "",

@@ -37,7 +37,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('tokens');
      */
-    await queryInterface.removeConstraint('tokens', 'tokens_ibfk_1');
+    // await queryInterface.removeConstraint('tokens', 'tokens_ibfk_1');
     return await queryInterface.dropTable('tokens');
   }
 };

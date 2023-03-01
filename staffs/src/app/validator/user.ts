@@ -4,10 +4,12 @@ import { GenericCheckFn, body, S, V } from './custom';
 
 const b: GenericCheckFn<types.user.Attr> = body;
 
-const upsert = [body('name', [S.emptyStringAsNull])];
+const upsert = [body('*', [S.emptyStringAsNull])];
 
 export const create = [
   ...upsert,
   b('name', 'name', [V.required]),
   b('code', 'code', [V.required]),
+  b('email', 'email', [V.required, V.duplicated]),
+  b('number_salary', 'number_salary', [V.isDigits]),
 ];
