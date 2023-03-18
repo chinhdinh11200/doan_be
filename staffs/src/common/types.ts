@@ -4,6 +4,9 @@ import * as tokenFactory from './factory/token';
 import * as classFactory from './factory/class';
 import * as subjectFactory from './factory/subject';
 import * as timeFactory from './factory/time';
+import * as markFactory from './factory/mark';
+import * as examFactory from './factory/exam';
+import * as roomFactory from './factory/room';
 
 export namespace user {
   export import Attr = userFactory.IUserAttr;
@@ -29,6 +32,7 @@ export namespace classes {
   export import Attr = classFactory.IClassAttr;
   export import ClassCreateParam = classFactory.IClassCreateParam;
   export import ClassUpdateParam = classFactory.IClassUpdateParam;
+  export import ClassSearchParam = classFactory.IClassSearchParam;
 }
 
 export namespace subject {
@@ -42,4 +46,22 @@ export namespace time {
   export import Attr = timeFactory.ITimeAttr;
   export import TimeCreateParam = timeFactory.ITimeCreateParam;
   export import TimeUpdateParam = timeFactory.ITimeUpdateParam;
+}
+
+export namespace exam {
+  export import Attr = examFactory.IExamAttr;
+  export import ExamCreateParam = examFactory.IExamCreateParam;
+  export import ExamUpdateParam = examFactory.IExamUpdateParam;
+}
+
+export namespace mark {
+  export import Attr = markFactory.IMarkAttr;
+  export import MarkCreateParam = markFactory.IMarkCreateParam;
+  export import MarkUpdateParam = markFactory.IMarkUpdateParam;
+}
+
+export namespace room {
+  export import Attr = roomFactory.IRoomAttr;
+  export import RoomCreateParam = roomFactory.IRoomCreateParam;
+  export import RoomUpdateParam = roomFactory.IRoomUpdateParam;
 }

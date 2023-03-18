@@ -11,25 +11,17 @@ import { User } from './user';
 import { commonFields } from './_common';
 import { Subject } from './subject';
 import { Exam } from './exam';
-import { ClassExam } from './classexam';
 
-export class Classes
-  extends Model<InferAttributes<Classes>, InferCreationAttributes<Classes>>
-  implements types.classes.Attr
-{
+export class Room
+  extends Model<InferAttributes<Room>, InferCreationAttributes<Room>>
+  implements types.room.Attr {
   declare readonly id: CreationOptional<number>;
-  declare readonly user_id: number;
-  declare readonly subject_id: number;
-  declare readonly parent_id: CreationOptional<number>;
+  declare readonly exam_id: number;
   declare name: string;
   declare code: string;
-  declare form_teach: string;
   declare num_student: number;
-  declare classroom: string;
   declare startDate: string;
   declare endDate: string;
-  declare level_teach: string;
-  declare time_teach: string;
   declare semester: string;
 
   declare createdAt: CreationOptional<Date>;
@@ -37,14 +29,12 @@ export class Classes
   declare deletedAt: CreationOptional<Date>;
 
   public static ASSOCIATE() {
-    Classes.belongsTo(User, { foreignKey: 'user_id' });
-    Classes.belongsTo(Subject, { foreignKey: 'subject_id' });
-    // Classes.belongsToMany(Exam, {through: ClassExam});
+    // Room.belongsTo(Exam);
   }
 }
 
 export default (sequelize: Sequelize, dt: typeof DataTypes) => {
-  Classes.init(
+  Room.init(
     {
       id: {
         type: dt.BIGINT.UNSIGNED,
@@ -52,15 +42,7 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      subject_id: {
-        type: dt.BIGINT.UNSIGNED,
-        allowNull: true,
-      },
-      user_id: {
-        type: dt.BIGINT.UNSIGNED,
-        allowNull: true,
-      },
-      parent_id: {
+      exam_id: {
         type: dt.BIGINT.UNSIGNED,
         allowNull: true,
       },
@@ -70,29 +52,14 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
       code: {
         type: dt.STRING,
       },
-      form_teach: {
-        type: dt.STRING,
-      },
       num_student: {
         type: dt.INTEGER,
-      },
-      classroom: {
-        type: dt.STRING,
-        allowNull: true,
       },
       startDate: {
         type: dt.STRING,
         allowNull: true,
       },
       endDate: {
-        type: dt.STRING,
-        allowNull: true,
-      },
-      level_teach: {
-        type: dt.STRING,
-        allowNull: true,
-      },
-      time_teach: {
         type: dt.STRING,
         allowNull: true,
       },
@@ -104,12 +71,12 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
     },
     {
       sequelize,
-      name: { singular: 'classes', plural: 'classes' },
-      tableName: 'classes',
+      name: { singular: 'rooms', plural: 'rooms' },
+      tableName: 'rooms',
       underscored: false,
       paranoid: true,
     }
   );
 
-  return Classes;
+  return Room;
 };

@@ -6,6 +6,8 @@ import token from './token';
 import classes from './class';
 import subject from './subject';
 import time from './time';
+import mark from './mark';
+import exam from './exam';
 export type DB = ReturnType<typeof initialize>;
 
 export const initialize = (sqlize: Sequelize.Sequelize) => {
@@ -16,6 +18,8 @@ export const initialize = (sqlize: Sequelize.Sequelize) => {
     Classes: classes(sqlize, Sequelize.DataTypes),
     Subject:  subject(sqlize, Sequelize.DataTypes),
     Time:  time(sqlize, Sequelize.DataTypes),
+    Mark:  mark(sqlize, Sequelize.DataTypes),
+    Exam:  exam(sqlize, Sequelize.DataTypes),
   };
 
   for (const model of values(db)) {

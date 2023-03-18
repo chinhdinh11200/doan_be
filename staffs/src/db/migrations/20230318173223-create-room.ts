@@ -8,32 +8,20 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    return await queryInterface.createTable('classes', {
+    return await queryInterface.createTable('rooms', {
       id: {
         type: dataTypes.BIGINT.UNSIGNED,
         allowNull: true,
         autoIncrement: true,
         primaryKey: true,
       },
-      subject_id: {
+      exam_id: {
         type: dataTypes.BIGINT.UNSIGNED,
         allowNull: true,
         references: {
-          model: 'subjects',
+          model: 'exams',
           key: 'id',
         },
-      },
-      user_id: {
-        type: dataTypes.BIGINT.UNSIGNED,
-        allowNull: true,
-        references: {
-          model: 'users',
-          key: 'id',
-        },
-      },
-      parent_id: {
-        type: dataTypes.BIGINT.UNSIGNED,
-        allowNull: true,
       },
       name: {
         type: dataTypes.STRING,
@@ -43,31 +31,15 @@ module.exports = {
         type: dataTypes.STRING,
         allowNull: false,
       },
-      form_teach: {
-        type: dataTypes.STRING,
-        allowNull: false,
-      },
       num_student: {
         type: dataTypes.INTEGER,
         allowNull: false,
-      },
-      classroom: {
-        type: dataTypes.STRING,
-        allowNull: true,
       },
       startDate: {
         type: dataTypes.STRING,
         allowNull: true,
       },
       endDate: {
-        type: dataTypes.STRING,
-        allowNull: true,
-      },
-      level_teach: {
-        type: dataTypes.STRING,
-        allowNull: true,
-      },
-      time_teach: {
         type: dataTypes.STRING,
         allowNull: true,
       },
@@ -100,8 +72,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    // await queryInterface.removeConstraint('subjects', 'classes_ibfk_1');
-    // await queryInterface.removeConstraint('users', 'classes_ibfk_2');
-    return await queryInterface.dropTable('classes');
+    return await queryInterface.dropTable('rooms');
   },
 };

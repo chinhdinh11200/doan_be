@@ -42,7 +42,7 @@ export default class DepartmentController extends Controller {
       name: req.body?.name,
       code: req.body?.code,
     };
-    const id = req.body.id;
+    const id = req.params.id;
     const department = await this.departmentRepo.update(id, data);
     res.json(department);
   };

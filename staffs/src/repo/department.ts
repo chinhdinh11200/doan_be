@@ -91,7 +91,7 @@ export default class DepartmentRepository extends BaseRepository {
   };
 
   public update = async (
-    id: number,
+    id: string | number,
     data: types.department.DepartmentUpdateParam
   ) => {
     const transaction = await this.db.sequelize.transaction();

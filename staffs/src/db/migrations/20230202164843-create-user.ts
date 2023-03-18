@@ -16,12 +16,11 @@ export default {
         autoIncrement: true,
         primaryKey: true,
         type: dataTypes.BIGINT.UNSIGNED
-      }, 
+      },
       department_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: true,
-        references: {model: 'departments', key: 'id'},
-        
+        references: { model: 'departments', key: 'id' },
       },
       name: {
         allowNull: false,

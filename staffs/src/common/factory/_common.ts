@@ -9,3 +9,8 @@ export interface ICommonSearchOption {
   limit?: number | string;
   offset?: number | string;
 }
+
+export enum TypeExam {
+  middle = 0,
+  end = 1,
+}

@@ -9,13 +9,12 @@ import { Model } from 'sequelize';
 import { types } from '../common';
 import { commonFields } from './_common';
 
-export class ClassTime extends Model<
-  InferAttributes<ClassTime>,
-  InferCreationAttributes<ClassTime>
+export class MarkStaff extends Model<
+  InferAttributes<MarkStaff>,
+  InferCreationAttributes<MarkStaff>
 > {
-  declare readonly id: CreationOptional<number>;
-  declare readonly class_id: number;
-  declare readonly time_id: number;
+  declare readonly mark_id: number;
+  declare readonly user_id: number;
 
   declare createdAt: Date;
   declare deletedAt: Date;
@@ -25,19 +24,13 @@ export class ClassTime extends Model<
 }
 
 export default (sequelize: Sequelize, dt: typeof DataTypes) => {
-  ClassTime.init(
+  MarkStaff.init(
     {
-      id: {
-        type: dt.BIGINT.UNSIGNED,
-        primaryKey: true,
-        allowNull: false,
-        autoIncrement: true,
-      },
-      class_id: {
+      mark_id: {
         type: dt.BIGINT.UNSIGNED,
         allowNull: true,
       },
-      time_id: {
+      user_id: {
         type: dt.BIGINT.UNSIGNED,
         allowNull: true,
       },
@@ -46,12 +39,12 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
     },
     {
       sequelize,
-      tableName: 'class_time',
-      name: { plural: 'class_time', singular: 'class_time' },
+      tableName: 'mark_user',
+      name: { plural: 'mark_user', singular: 'mark_user' },
       underscored: false,
       paranoid: true,
     }
   );
 
-  return ClassTime;
+  return MarkStaff;
 };
