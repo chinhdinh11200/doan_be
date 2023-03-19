@@ -26,7 +26,10 @@ module.exports = {
       number_question: {
         type: dataTypes.INTEGER
       },
-      time_word: {
+      time_work: {
+        type: dataTypes.INTEGER
+      },
+      type: {
         type: dataTypes.INTEGER
       },
       createdAt: {

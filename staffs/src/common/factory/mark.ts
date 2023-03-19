@@ -11,14 +11,18 @@ export interface IMarkAttr extends IMarkMainAttr, ICommonAttr { }
 export interface IMarkCreateParam {
     time_mark: number;
     form_mark: number;
+    exam_id: number;
 }
 
 export interface IMarkUpdateParam {
     time_mark: number;
     form_mark: number;
+    exam_id: number;
 }
 
 export interface IMarkSearchParam {
     time_mark: number;
     form_mark: number;
+    exam_id: number;
+    search: string;
 }

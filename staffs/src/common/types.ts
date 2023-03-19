@@ -52,16 +52,19 @@ export namespace exam {
   export import Attr = examFactory.IExamAttr;
   export import ExamCreateParam = examFactory.IExamCreateParam;
   export import ExamUpdateParam = examFactory.IExamUpdateParam;
+  export import ExamSearchParam = examFactory.IExamSearchParam;
 }
 
 export namespace mark {
   export import Attr = markFactory.IMarkAttr;
   export import MarkCreateParam = markFactory.IMarkCreateParam;
   export import MarkUpdateParam = markFactory.IMarkUpdateParam;
+  export import MarkSearchParam = markFactory.IMarkSearchParam;
 }
 
 export namespace room {
   export import Attr = roomFactory.IRoomAttr;
   export import RoomCreateParam = roomFactory.IRoomCreateParam;
   export import RoomUpdateParam = roomFactory.IRoomUpdateParam;
+  export import RoomSearchParam = roomFactory.IRoomSearchParam;
 }

@@ -40,5 +40,5 @@ export interface IRoomSearchParam {
     startDate: string;
     endDate: string;
     semester: string;
-    searc: string;
+    search: string;
 }

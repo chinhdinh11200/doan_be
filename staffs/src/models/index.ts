@@ -8,6 +8,7 @@ import subject from './subject';
 import time from './time';
 import mark from './mark';
 import exam from './exam';
+import room from './room';
 export type DB = ReturnType<typeof initialize>;
 
 export const initialize = (sqlize: Sequelize.Sequelize) => {
@@ -20,6 +21,7 @@ export const initialize = (sqlize: Sequelize.Sequelize) => {
     Time:  time(sqlize, Sequelize.DataTypes),
     Mark:  mark(sqlize, Sequelize.DataTypes),
     Exam:  exam(sqlize, Sequelize.DataTypes),
+    Room:  room(sqlize, Sequelize.DataTypes),
   };
 
   for (const model of values(db)) {
