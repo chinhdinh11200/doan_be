@@ -18,7 +18,7 @@ export default class UserController extends Controller {
   public search = async (req: Request, res: Response, next: NextFunction) => {
     const users = await this.model.findAll();
 
-    res.send(users);
+    res.send(req.user);
   };
 
   public getUserById = async (

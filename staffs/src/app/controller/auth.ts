@@ -27,7 +27,8 @@ export default class AuthController extends Controller {
     let dataLogin = await this.authRepo.login(data);
     if(dataLogin === false) {
       res.status(401).json({message: "Unauthorized"});
-      throw new Error();
+      // throw new Error();
+      return;
     }
     const { token: accessToken } = await this.userRepo.signToken(
       { id: dataLogin.id.toString(), username: dataLogin.code },

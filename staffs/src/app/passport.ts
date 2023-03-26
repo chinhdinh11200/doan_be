@@ -8,11 +8,10 @@ import {
 
 export const strategy = () => {
   const opts: StrategyOptions = {
-    secretOrKey: process.env.JWT_SECRET || 'staff_service',
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.JWT_SECRET || 'staff_services',
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
   };
-
-  return new JWTStrategy(opts, async (jwtPayload, done) => {
+  return new JWTStrategy(opts, async (jwtPayload, done) => {    
     done(null, jwtPayload);
   });
 };
@@ -23,12 +22,13 @@ export const jwtAuthenticate = (
   next: NextFunction
 ) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {
+    console.log(req.headers);
     if (err) {
       next(err);
     } else if (!user) {
       next();
     } else {
-      // req.user = user;
+      req.user = user;
       next();
     }
   })(req, res, next);

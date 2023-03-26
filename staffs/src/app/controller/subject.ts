@@ -3,7 +3,7 @@ import Controller from './base';
 import * as repository from '../../repo';
 import { NextFunction, Request, Response } from 'express';
 import { types } from '../../common';
-import {OK} from 'http-status';
+import { OK } from 'http-status';
 
 export default class SubjectController extends Controller {
   private readonly subjectRepo: repository.Subject;
@@ -14,7 +14,7 @@ export default class SubjectController extends Controller {
   }
 
   public search = async (req: Request, res: Response, next: NextFunction) => {
-    const params : types.subject.SubjectSearchParam = {
+    const params: types.subject.SubjectSearchParam = {
       name: req.params.name,
       code: req.params.code,
       form_exam: req.params.form_exam,

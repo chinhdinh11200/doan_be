@@ -14,3 +14,9 @@ export enum TypeExam {
   middle = 0,
   end = 1,
 }
+
+export enum TypeScientific {
+  middle = 0,
+  end = 1,
+}
+
