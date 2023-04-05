@@ -1,4 +1,4 @@
-import { ICommonAttr, ICommonSearchOption } from './_common';
+import { ICommonAttr, ICommonSearchOption, ICommonSortOption } from './_common';
 
 export interface ISubjectMainAttr {
   name: string;
@@ -20,9 +20,9 @@ export interface ISubjectUpdateParam {
   form_exam: string;
 }
 
-export interface ISubjectSearchParam {
-  name: string;
-  code: string;
-  form_exam: string;
-  search: string;
+export interface ISubjectSearchParam extends ICommonSearchOption, ICommonSortOption {
+  name?: string;
+  code?: string;
+  form_exam?: string;
+  search?: string;
 }

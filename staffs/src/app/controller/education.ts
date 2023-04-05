@@ -4,6 +4,7 @@ import * as repository from '../../repo';
 import { NextFunction, Request, Response } from 'express';
 import { types } from '../../common';
 import { OK } from 'http-status';
+import { pickForSearch } from '../../utils';
 
 export default class EducationController extends Controller {
     private readonly educationRepo: repository.Education;
@@ -15,9 +16,8 @@ export default class EducationController extends Controller {
 
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.education.EducationSearchParam = {
-            name: req.params.name,
-            code: req.params.code,
-            search: req.params.search,
+            ...pickForSearch(<types.education.EducationSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
+            ...this.getOffsetLimit(req),
         }
         const educations = await this.educationRepo.search(params);
 

@@ -4,6 +4,7 @@ import * as repository from '../../repo';
 import { NextFunction, Request, Response } from 'express';
 import { types } from '../../common';
 import { OK } from 'http-status';
+import { pickForSearch } from '../../utils';
 
 export default class BookController extends Controller {
     private readonly bookRepo: repository.Book;
@@ -15,9 +16,8 @@ export default class BookController extends Controller {
 
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.book.BookSearchParam = {
-            name: req.params.name,
-            code: req.params.code,
-            search: req.params.search,
+            ...pickForSearch(<types.book.BookSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
+            ...this.getOffsetLimit(req),
         }
         const books = await this.bookRepo.search(params);
 

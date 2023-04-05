@@ -4,6 +4,7 @@ import * as repository from '../../repo';
 import { NextFunction, Request, Response } from 'express';
 import { types } from '../../common';
 import { OK } from 'http-status';
+import { pickForSearch } from '../../utils';
 
 export default class RoomController extends Controller {
     private readonly roomRepo: repository.Room;
@@ -15,14 +16,8 @@ export default class RoomController extends Controller {
 
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.room.RoomSearchParam = {
-            exam_id: Number(req.params.exam_id),
-            name: req.params.name,
-            code: req.params.code,
-            num_student: Number(req.params.num_student),
-            startDate: req.params.startDate,
-            endDate: req.params.endDate,
-            semester: req.params.semester,
-            search: req.params.search,
+            ...pickForSearch(<types.room.RoomSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
+            ...this.getOffsetLimit(req),
         }
 
         const rooms = await this.roomRepo.search(params);

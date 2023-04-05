@@ -4,6 +4,7 @@ import * as repository from '../../repo';
 import { NextFunction, Request, Response } from 'express';
 import { types } from '../../common';
 import { OK } from 'http-status';
+import { pickForSearch } from '../../utils';
 
 export default class ArticleController extends Controller {
     private readonly articleRepo: repository.Article;
@@ -15,9 +16,8 @@ export default class ArticleController extends Controller {
 
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.article.ArticleSearchParam = {
-            name: req.params.name,
-            code: req.params.code,
-            search: req.params.search,
+            ...pickForSearch(<types.article.ArticleSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
+            ...this.getOffsetLimit(req),
         }
         const articles = await this.articleRepo.search(params);
 

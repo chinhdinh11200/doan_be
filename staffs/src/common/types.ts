@@ -21,6 +21,7 @@ export namespace user {
   export import UserCreateParam = userFactory.IUserCreateParam;
   export import UserUpdateParam = userFactory.IUserUpdateParam;
   export import UserLoginParam = userFactory.IUserLoginParam;
+  export import UserSearchParam = userFactory.IUserSearchParam;
   export import ChangePasswordParam = userFactory.IChangePasswordParam;
 }
 

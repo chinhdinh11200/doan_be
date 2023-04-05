@@ -4,6 +4,7 @@ import * as repository from '../../repo';
 import { NextFunction, Request, Response } from 'express';
 import { types } from '../../common';
 import { OK } from 'http-status';
+import { pickForSearch } from '../../utils';
 
 export default class InventionController extends Controller {
     private readonly inventionRepo: repository.Invention;
@@ -15,9 +16,8 @@ export default class InventionController extends Controller {
 
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.invention.InventionSearchParam = {
-            name: req.params.name,
-            code: req.params.code,
-            search: req.params.search,
+            ...pickForSearch(<types.invention.InventionSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
+            ...this.getOffsetLimit(req),
         }
         const inventions = await this.inventionRepo.search(params);
 

@@ -1,4 +1,4 @@
-import { ICommonAttr, ICommonSearchOption } from './_common';
+import { ICommonAttr, ICommonSearchOption, ICommonSortOption } from './_common';
 
 export interface IUserMainAttr {
   department_id: number;
@@ -16,7 +16,7 @@ export interface IUserMainAttr {
   time_reserve: number;
 }
 
-export interface IUserAttr extends IUserMainAttr, ICommonAttr {}
+export interface IUserAttr extends IUserMainAttr, ICommonAttr { }
 
 export interface IUserCreateParam {
   department_id: number;
@@ -56,4 +56,10 @@ export interface IChangePasswordParam {
   password: string;
   newPassword: string;
   confirmPassword: string;
+}
+
+export interface IUserSearchParam extends ICommonSearchOption, ICommonSortOption{
+  name?: string;
+  email?: string;
+  search?: string;
 }

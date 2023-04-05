@@ -1,4 +1,4 @@
-import {ICommonAttr, ICommonSearchOption} from './_common';
+import {ICommonAttr, ICommonSearchOption, ICommonSortOption} from './_common';
 
 export interface IDepartmentMainAttr {
   name: string;
@@ -17,9 +17,8 @@ export interface IDepartmentUpdateParam {
   code: string;
 }
 
-export interface IDepartmentSearchParam extends ICommonSearchOption {
+export interface IDepartmentSearchParam extends ICommonSearchOption, ICommonSortOption {
   name?: string;
   code?: string;
-  sort?: string;
-  sortColumn: string;
+  search?: string;
 }

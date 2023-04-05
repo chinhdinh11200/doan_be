@@ -6,6 +6,7 @@ import authRouter from './app/routes/auth';
 import createClient from './app/sequelize';
 import * as http from 'http';
 import passport from 'passport';
+import cors, { CorsOptions } from 'cors';
 import { jwtAuthenticate, strategy } from './app/passport';
 var multer = require('multer');
 var upload = multer();
@@ -53,6 +54,24 @@ export const createApp = async function () {
   const app = express();
   const port = process.env.PORT;
   const sequelize = await createClient();
+
+  // cors
+  const corsOption: CorsOptions = {
+    origin: '*',
+    allowedHeaders: [
+      'Origin',
+      'X-Requested-With',
+      'Content-Type',
+      'Accept',
+      'X-Access-Token',
+      'Authorization'
+    ],
+    credentials: false,
+    methods: ['GET', 'HEAD', 'OPTIONS', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+  };
+  app.use(cors(corsOption));
 
   app.use(passport.initialize());
   app.use(cookieParser());

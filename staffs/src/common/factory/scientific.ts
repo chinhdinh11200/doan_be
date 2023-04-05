@@ -1,4 +1,4 @@
-import { ICommonAttr, TypeScientific } from './_common';
+import { ICommonAttr, ICommonSearchOption, ICommonSortOption, TypeScientific } from './_common';
 
 export interface IScientificMainAttr {
     name: string;
@@ -29,8 +29,8 @@ export interface IScientificUpdateParam {
     date_decision: Date;
 }
 
-export interface IScientificSearchParam {
-    name: string;
-    code: string;
-    search: string;
+export interface IScientificSearchParam extends ICommonSearchOption, ICommonSortOption {
+    name?: string;
+    code?: string;
+    search?: string;
 }

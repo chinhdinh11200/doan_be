@@ -1,4 +1,4 @@
-import { ICommonAttr, TypeScientific } from './_common';
+import { ICommonAttr, ICommonSearchOption, ICommonSortOption, TypeScientific } from './_common';
 
 export interface IBookMainAttr {
     name: string;
@@ -29,8 +29,8 @@ export interface IBookUpdateParam {
     total_time: number;
 }
 
-export interface IBookSearchParam {
-    name: string;
-    code: string;
-    search: string;
+export interface IBookSearchParam extends ICommonSearchOption, ICommonSortOption {
+    name?: string;
+    code?: string;
+    search?: string;
 }

@@ -4,6 +4,7 @@ import * as repository from '../../repo';
 import { NextFunction, Request, Response } from 'express';
 import { types } from '../../common';
 import { OK } from 'http-status';
+import { pickForSearch } from '../../utils';
 
 export default class RoleController extends Controller {
     private readonly roleRepo: repository.Role;
@@ -15,10 +16,8 @@ export default class RoleController extends Controller {
 
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.role.RoleSearchParam = {
-            name: req.params.name,
-            time: req.params.time,
-            type: Number(req.params.type),
-            search: req.params.search,
+            ...pickForSearch(<types.role.RoleSearchParam>req.query, ['name', 'search', 'sort', 'sortColumn']),
+            ...this.getOffsetLimit(req),
         }
         const roles = await this.roleRepo.search(params);
 

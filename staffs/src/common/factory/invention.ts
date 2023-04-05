@@ -1,4 +1,4 @@
-import { ICommonAttr, TypeScientific } from './_common';
+import { ICommonAttr, ICommonSearchOption, ICommonSortOption, TypeScientific } from './_common';
 
 export interface IInventionMainAttr {
     name: string;
@@ -32,8 +32,8 @@ export interface IInventionUpdateParam {
     number_recognition: string;
 }
 
-export interface IInventionSearchParam {
-    name: string;
-    code: string;
-    search: string;
+export interface IInventionSearchParam extends ICommonSearchOption, ICommonSortOption {
+    name?: string;
+    code?: string;
+    search?: string;
 }

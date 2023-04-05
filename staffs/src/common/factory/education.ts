@@ -1,4 +1,4 @@
-import { ICommonAttr } from './_common';
+import { ICommonAttr, ICommonSearchOption, ICommonSortOption } from './_common';
 
 export interface IEducationMainAttr {
     name: string;
@@ -35,8 +35,8 @@ export interface IEducationUpdateParam {
     date_decision: Date;
 }
 
-export interface IEducationSearchParam {
-    name: string;
-    code: string;
-    search: string;
+export interface IEducationSearchParam  extends ICommonSearchOption, ICommonSortOption{
+    name?: string;
+    code?: string;
+    search?: string;
 }

@@ -4,6 +4,7 @@ import * as repository from '../../repo';
 import { NextFunction, Request, Response } from 'express';
 import { types } from '../../common';
 import { OK } from 'http-status';
+import { pickForSearch } from '../../utils';
 
 export default class MarkController extends Controller {
     private readonly markRepo: repository.Mark;
@@ -15,10 +16,8 @@ export default class MarkController extends Controller {
 
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.mark.MarkSearchParam = {
-            form_mark: Number(req.params.form_mark),
-            time_mark: Number(req.params.time_mark),
-            exam_id: Number(req.params.exam_id),
-            search: req.params.search,
+            ...pickForSearch(<types.mark.MarkSearchParam>req.query, ['form_mark', 'search', 'sort', 'sortColumn']),
+            ...this.getOffsetLimit(req),
         }
 
         const marks = await this.markRepo.search(params);

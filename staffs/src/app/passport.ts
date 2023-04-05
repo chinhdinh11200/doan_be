@@ -22,7 +22,6 @@ export const jwtAuthenticate = (
   next: NextFunction
 ) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {
-    console.log(req.headers);
     if (err) {
       next(err);
     } else if (!user) {

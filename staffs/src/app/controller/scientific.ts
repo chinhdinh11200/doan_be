@@ -4,6 +4,7 @@ import * as repository from '../../repo';
 import { NextFunction, Request, Response } from 'express';
 import { types } from '../../common';
 import { OK } from 'http-status';
+import { pickForSearch } from '../../utils';
 
 export default class ScientificController extends Controller {
     private readonly scientificRepo: repository.Scientific;
@@ -15,9 +16,8 @@ export default class ScientificController extends Controller {
 
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.scientific.ScientificSearchParam = {
-            name: req.params.name,
-            code: req.params.code,
-            search: req.params.search,
+            ...pickForSearch(<types.scientific.ScientificSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
+            ...this.getOffsetLimit(req),
         }
         const scientifics = await this.scientificRepo.search(params);
 

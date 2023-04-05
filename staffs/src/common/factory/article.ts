@@ -1,4 +1,4 @@
-import { ICommonAttr, TypeScientific } from './_common';
+import { ICommonAttr, ICommonSearchOption, ICommonSortOption, TypeScientific } from './_common';
 
 export interface IArticleMainAttr {
     name: string;
@@ -29,8 +29,8 @@ export interface IArticleUpdateParam {
     num_person: number;
 }
 
-export interface IArticleSearchParam {
-    name: string;
-    code: string;
-    search: string;
+export interface IArticleSearchParam extends ICommonSearchOption, ICommonSortOption {
+    name?: string;
+    code?: string;
+    search?: string;
 }

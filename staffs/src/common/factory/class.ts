@@ -1,4 +1,4 @@
-import { ICommonAttr, ICommonSearchOption } from './_common';
+import { ICommonAttr, ICommonSearchOption, ICommonSortOption } from './_common';
 
 export interface IClassMainAttr {
   subject_id: number;
@@ -16,7 +16,7 @@ export interface IClassMainAttr {
   semester: string;
 }
 
-export interface IClassAttr extends IClassMainAttr, ICommonAttr {}
+export interface IClassAttr extends IClassMainAttr, ICommonAttr { }
 
 export interface IClassCreateParam {
   subject_id: number;
@@ -50,9 +50,9 @@ export interface IClassUpdateParam {
   semester: string;
 }
 
-export interface IClassSearchParam {
-  name: string;
-  code: string;
-  form_teach: string;
-  search: string;
+export interface IClassSearchParam extends ICommonSearchOption, ICommonSortOption {
+  name?: string;
+  code?: string;
+  form_teach?: string;
+  search?: string;
 }

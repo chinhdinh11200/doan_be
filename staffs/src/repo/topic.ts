@@ -12,7 +12,6 @@ export default class Topic extends BaseRepository {
     }
 
     public search = async (params: types.topic.TopicSearchParam) => {
-        // const a: = this.makeMultipleAmbiguousCondition(params, 'search', ['name', 'code']);
         const findOption: FindAndCountOptions = {
             include: [],
         };
@@ -21,12 +20,26 @@ export default class Topic extends BaseRepository {
             const andArray: WhereOptions[] = [];
             if (params.search !== undefined) {
                 andArray.push(
-                    this.makeMultipleAmbiguousCondition(params, 'name', ['code', 'name'])
+                    this.makeMultipleAmbiguousCondition(params, 'search', ['code', 'name'])
                 );
             }
             findOption.where = {
                 [Op.and]: andArray,
             };
+
+            if (params.sort !== undefined) {
+                if (`${params.sort}`.toLowerCase() === 'desc') {
+                    findOption.order = [
+                        [params.sortColumn ? params.sortColumn : 'createdAt', 'DESC']
+                    ];
+                } else {
+                    findOption.order = [
+                        [params.sortColumn ? params.sortColumn : 'createdAt', 'ASC']
+                    ];
+                }
+            } else {
+                findOption.order = [['createdAt', 'DESC']];
+            }
         }
 
         const topics = this.model.findAndCountAll(findOption);

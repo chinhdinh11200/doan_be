@@ -2,6 +2,8 @@ import * as crypto from 'crypto';
 import { types } from '../common';
 import BaseRepository from './_base';
 import { DB } from '../models';
+import { FindAndCountOptions, Op, WhereOptions } from 'sequelize';
+import { log } from 'console';
 
 export default class UserRepository extends BaseRepository {
   public readonly model: DB['User'];
@@ -91,13 +93,51 @@ export default class UserRepository extends BaseRepository {
     }
   };
 
-  // public hashPassword = (password: string) => {
-  //   const salt = crypto.randomBytes(16).toString('hex');
-  //   const hashPassword = crypto.createHmac("sha256", salt).update(password).digest('hex');
+  public search = async (params?: types.user.UserSearchParam) => {
+    // this.makeAmbiguousCondition(params, 'name');
+    const findOption: FindAndCountOptions = {
+      include: [],
+    };
+    console.log("TESTTTTTTTTTTTT : ", params);
+    
+    this.setOffsetLimit(findOption, params);
+    if (params !== undefined) {
+      const andArray: WhereOptions[] = [];
+      if (params.search !== undefined) {
+        andArray.push(
+          this.makeMultipleAmbiguousCondition(params, 'search', [
+            'code',
+            'name',
+          ])
+        );
+      }
+      if (params.name !== undefined) {
+        andArray.push(this.makeAmbiguousCondition(params, 'name'));
+      }
 
-  //   return {
-  //     salt,
-  //     password: hashPassword,
-  //   }
-  // }
+      if (params.email !== undefined) {
+        andArray.push(this.makeAmbiguousCondition(params, 'email'));
+      }
+
+      findOption.where = {
+        [Op.and]: andArray,
+      };
+
+      if (params.sort !== undefined) {
+        if (`${params.sort}`.toLowerCase() === 'desc') {
+          findOption.order = [
+            [params.sortColumn ? params.sortColumn : 'createdAt', 'DESC']
+          ];
+        } else {
+          findOption.order = [
+            [params.sortColumn ? params.sortColumn : 'createdAt', 'ASC']
+          ];
+        }
+      } else {
+        findOption.order = [['createdAt', 'DESC']];
+      }
+    }
+
+    return this.model.findAndCountAll(findOption);
+  };
 }

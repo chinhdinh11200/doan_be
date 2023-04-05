@@ -4,6 +4,7 @@ import * as repository from '../../repo';
 import { NextFunction, Request, Response } from 'express';
 import { types } from '../../common';
 import { OK } from 'http-status';
+import { pickForSearch } from '../../utils';
 
 export default class SubjectController extends Controller {
   private readonly subjectRepo: repository.Subject;
@@ -15,10 +16,8 @@ export default class SubjectController extends Controller {
 
   public search = async (req: Request, res: Response, next: NextFunction) => {
     const params: types.subject.SubjectSearchParam = {
-      name: req.params.name,
-      code: req.params.code,
-      form_exam: req.params.form_exam,
-      search: req.params.search,
+      ...pickForSearch(<types.subject.SubjectSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
+      ...this.getOffsetLimit(req),
     }
     const subjects = await this.subjectRepo.search(params);
 

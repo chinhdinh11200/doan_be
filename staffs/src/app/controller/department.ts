@@ -3,6 +3,7 @@ import * as repository from '../../repo';
 import Controller from './base';
 import { types } from '../../common';
 import { DB } from '../../models';
+import { pickForSearch } from '../../utils';
 
 export default class DepartmentController extends Controller {
   private departmentRepo: repository.Department;
@@ -14,12 +15,8 @@ export default class DepartmentController extends Controller {
 
   public search = async (req: Request, res: Response) => {
     const data: types.department.DepartmentSearchParam = {
-      name: String(req.query.name),
-      code: String(req.query.code),
-      sort: String(req.query.sort),
-      sortColumn: String(req.query.sortColumn),
-      limit: Number(req.query.limit),
-      offset: Number(req.query.offset),
+      ...pickForSearch(<types.department.DepartmentSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
+      ...this.getOffsetLimit(req),
     };
 
     const departments = await this.departmentRepo.search(

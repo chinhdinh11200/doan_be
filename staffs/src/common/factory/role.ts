@@ -1,4 +1,4 @@
-import { ICommonAttr, TypeScientific } from './_common';
+import { ICommonAttr, ICommonSearchOption, ICommonSortOption, TypeScientific } from './_common';
 
 export interface IRoleMainAttr {
     name: string;
@@ -20,9 +20,9 @@ export interface IRoleUpdateParam {
     type: TypeScientific;
 }
 
-export interface IRoleSearchParam {
-    name: string;
-    time: string;
-    type: TypeScientific;
-    search: string;
+export interface IRoleSearchParam extends ICommonSearchOption, ICommonSortOption {
+    name?: string;
+    time?: string;
+    type?: TypeScientific;
+    search?: string;
 }

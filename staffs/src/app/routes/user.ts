@@ -17,6 +17,7 @@ export default function (sequelize: DB) {
   staffRouter.put('/:id', staffController.update);
   staffRouter.delete('/:id', staffController.delete);
   staffRouter.get('/', staffController.search);
+  staffRouter.get('/:id', staffController.detail);
 
   return staffRouter;
 }

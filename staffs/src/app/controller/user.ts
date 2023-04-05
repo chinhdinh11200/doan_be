@@ -4,6 +4,8 @@ import Controller from './base';
 import User from '../../models/user';
 import * as repository from '../../repo';
 import { types } from '../../common';
+import { CREATED, OK } from 'http-status';
+import * as mapper from '../mapper/user';
 
 export default class UserController extends Controller {
   private userRepo: repository.User;
@@ -15,10 +17,22 @@ export default class UserController extends Controller {
     this.model = db.User;
   }
 
-  public search = async (req: Request, res: Response, next: NextFunction) => {
-    const users = await this.model.findAll();
+  public detail = async (req: Request, res: Response, next: NextFunction) => {
+    const user = await this.userRepo.findOneById(req.params.id);
 
-    res.send(req.user);
+    res.json(user)
+  }
+
+  public search = async (req: Request, res: Response, next: NextFunction) => {
+    const users = await this.userRepo.search({
+      ...mapper.searchData(req),
+      ...this.getOffsetLimit(req)
+    });
+
+    res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
+    res.setHeader('X-Total-Count', users.count);
+
+    res.status(OK).send(users.rows);
   };
 
   public getUserById = async (
@@ -47,7 +61,7 @@ export default class UserController extends Controller {
 
     const user = await this.userRepo.create(data);
 
-    res.json(user);
+    res.status(CREATED).json(user);
   };
 
   public update = async (req: Request, res: Response, next: NextFunction) => {

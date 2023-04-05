@@ -1,4 +1,4 @@
-import { ICommonAttr, TypeScientific } from './_common';
+import { ICommonAttr, ICommonSearchOption, ICommonSortOption, TypeScientific } from './_common';
 
 export interface ICompilationMainAttr {
     name: string;
@@ -29,8 +29,8 @@ export interface ICompilationUpdateParam {
     number_credit: number;
 }
 
-export interface ICompilationSearchParam {
-    name: string;
-    code: string;
-    search: string;
+export interface ICompilationSearchParam extends ICommonSearchOption, ICommonSortOption{
+    name?: string;
+    code?: string;
+    search?: string;
 }

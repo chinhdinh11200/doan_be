@@ -19,50 +19,35 @@ export default class DepartmentRepository extends BaseRepository {
     this.modelUser = db.User;
   }
 
-  public search = async (data: types.department.DepartmentSearchParam) => {
+  public search = async (params: types.department.DepartmentSearchParam) => {
     // this.makeAmbiguousCondition(data, 'name');
     const findOption: FindAndCountOptions = {
       include: [this.modelUser],
     };
 
-    if (data !== undefined) {
+    if (params !== undefined) {
       const andArray: WhereOptions[] = [];
-
-      if (data.name !== 'undefined') {
-        andArray.push(this.makeAmbiguousCondition(data, 'name'));
+      if (params.search !== undefined) {
+        andArray.push(
+          this.makeMultipleAmbiguousCondition(params, 'search', ['code', 'name'])
+        );
       }
-
-      if (data.code != 'undefined') {
-        andArray.push(this.makeAmbiguousCondition(data, 'code'));
-      }
-
       findOption.where = {
         [Op.and]: andArray,
       };
 
-      if (data.sort !== 'undefined') {
-        if (data.sort?.toLowerCase() === 'desc') {
+      if (params.sort !== undefined) {
+        if (`${params.sort}`.toLowerCase() === 'desc') {
           findOption.order = [
-            [
-              data.sortColumn !== 'undefined' ? data.sortColumn : 'createdAt',
-              'DESC',
-            ],
+            [params.sortColumn ? params.sortColumn : 'createdAt', 'DESC']
           ];
         } else {
           findOption.order = [
-            [
-              data.sortColumn !== 'undefined' ? data.sortColumn : 'createdAt',
-              'ASC',
-            ],
+            [params.sortColumn ? params.sortColumn : 'createdAt', 'ASC']
           ];
         }
       } else {
-        findOption.order = [
-          [
-            data.sortColumn !== 'undefined' ? data.sortColumn : 'createdAt',
-            'DESC',
-          ],
-        ];
+        findOption.order = [['createdAt', 'DESC']];
       }
     }
 
@@ -72,8 +57,6 @@ export default class DepartmentRepository extends BaseRepository {
   public create = async (data: types.department.DepartmentCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
     try {
-      console.log(data);
-
       const department = await this.model.create(
         {
           name: data.name,

@@ -1,8 +1,8 @@
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import { DB } from '../models';
-import { Op, WhereAttributeHash } from 'sequelize';
+import { FindOptions, Op, WhereAttributeHash } from 'sequelize';
 import { map } from 'lodash';
+import { DB } from '../models';
 
 export default abstract class BaseRepository {
   public readonly db: DB;
@@ -23,7 +23,7 @@ export default abstract class BaseRepository {
     return { token };
   };
 
-  public verifyToken = async () => {};
+  public verifyToken = async () => { };
 
   public hashPassword = (password: string, salt?: string) => {
     if (salt == null) {
@@ -65,4 +65,19 @@ export default abstract class BaseRepository {
   });
 
   public getSecret = () => this.secret;
+
+  protected setOffsetLimit(
+    findOptions: FindOptions,
+    option?: { offset?: string | number; limit?: string | number }
+  ) {
+    if (option !== undefined) {
+      if (!isNaN(Number(option.offset)) && option.offset !== '') {
+        findOptions.offset = Number(option.offset);
+      }
+
+      if (!isNaN(Number(option.limit)) && option.limit !== '') {
+        findOptions.limit = Number(option.limit);
+      }
+    }
+  }
 }

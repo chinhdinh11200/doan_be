@@ -1,4 +1,4 @@
-import { ICommonAttr, ICommonSearchOption } from './_common';
+import { ICommonAttr, ICommonSearchOption, ICommonSortOption } from './_common';
 
 export interface IMarkMainAttr {
     exam_id: number;
@@ -20,9 +20,9 @@ export interface IMarkUpdateParam {
     exam_id: number;
 }
 
-export interface IMarkSearchParam {
-    time_mark: number;
-    form_mark: number;
-    exam_id: number;
-    search: string;
+export interface IMarkSearchParam extends ICommonSearchOption, ICommonSortOption {
+    time_mark?: number;
+    form_mark?: number;
+    exam_id?: number;
+    search?: string;
 }

@@ -1,4 +1,4 @@
-import { ICommonAttr, ICommonSearchOption } from './_common';
+import { ICommonAttr, ICommonSearchOption, ICommonSortOption } from './_common';
 
 export interface IRoomMainAttr {
     exam_id: number;
@@ -32,13 +32,13 @@ export interface IRoomUpdateParam {
     semester: string;
 }
 
-export interface IRoomSearchParam {
-    exam_id: number;
-    name: string;
-    code: string;
-    num_student: number;
-    startDate: string;
-    endDate: string;
-    semester: string;
-    search: string;
+export interface IRoomSearchParam extends ICommonSearchOption, ICommonSortOption{
+    exam_id?: number;
+    name?: string;
+    code?: string;
+    num_student?: number;
+    startDate?: string;
+    endDate?: string;
+    semester?: string;
+    search?: string;
 }
