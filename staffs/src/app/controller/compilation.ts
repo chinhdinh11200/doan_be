@@ -13,16 +13,21 @@ export default class CompilationController extends Controller {
 
         this.compilationRepo = new repository.Compilation(db);
     }
+    
+    public detail = async (req: Request, res: Response, next: NextFunction) => {
+        const user = await this.compilationRepo.findOneById(req.params.id);
+
+        res.json(user)
+    }
 
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.compilation.CompilationSearchParam = {
             ...pickForSearch(<types.compilation.CompilationSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
             ...this.getOffsetLimit(req),
         }
-        const compilations = await this.compilationRepo.search(params);
+        const data = await this.compilationRepo.search(params);
 
-        res.status(OK).json(compilations);
-
+        this.ok(res, data);
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.compilation.CompilationCreateParam = {

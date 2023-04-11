@@ -11,6 +11,11 @@ export default class MarkRepository extends BaseRepository {
     this.model = db.Mark;
   }
 
+  public findOneById = async (id: string | number) => {
+    const data = await this.model.findByPk(id);
+
+    return data?.dataValues;
+  };
   public search = async (params: types.mark.MarkSearchParam) => {
     const findOption: FindAndCountOptions = {
       include: [],

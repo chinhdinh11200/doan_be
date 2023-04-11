@@ -13,16 +13,22 @@ export default class InventionController extends Controller {
 
         this.inventionRepo = new repository.Invention(db);
     }
+    
+    public detail = async (req: Request, res: Response, next: NextFunction) => {
+        const user = await this.inventionRepo.findOneById(req.params.id);
+
+        res.json(user)
+    }
 
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.invention.InventionSearchParam = {
             ...pickForSearch(<types.invention.InventionSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
             ...this.getOffsetLimit(req),
         }
-        const inventions = await this.inventionRepo.search(params);
+        const data = await this.inventionRepo.search(params);
 
-        res.status(OK).json(inventions);
-
+        
+    this.ok(res, data);
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.invention.InventionCreateParam = {

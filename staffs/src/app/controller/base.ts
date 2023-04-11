@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 import { DB } from '../../models';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 
 export default class Controller {
   protected readonly db: DB;
@@ -27,5 +27,14 @@ export default class Controller {
     } else {
       return { offset: 0, limit: '' };
     }
+  }
+
+  protected ok(res: Response, data: { rows: any; count?: number }) {
+    if (data.count !== undefined) {
+      res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
+      res.setHeader('X-Total-Count', data.count);
+    }
+
+    res.json(data.rows);
   }
 }

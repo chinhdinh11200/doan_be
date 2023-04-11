@@ -8,6 +8,8 @@ export interface IClassMainAttr {
   code: string;
   form_teach: string;
   num_student: number;
+  num_lesson: number;
+  num_credit: number;
   classroom: string;
   startDate: string;
   endDate: string;
@@ -25,7 +27,9 @@ export interface IClassCreateParam {
   name: string;
   code: string;
   form_teach: string;
-  num_student: number;
+  num_student: number; 
+  num_lesson: number;
+  num_credit: number;
   classroom: string;
   startDate: string;
   endDate: string;
@@ -42,6 +46,8 @@ export interface IClassUpdateParam {
   code: string;
   form_teach: string;
   num_student: number;
+  num_lesson: number;
+  num_credit: number;
   classroom: string;
   startDate: string;
   endDate: string;

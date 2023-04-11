@@ -6,6 +6,7 @@ export default function(sequelize: SQLize) {
   const subjectController = new SubjectController(sequelize);
 
   subjectRouter.get('/', subjectController.search);
+  subjectRouter.get('/:id', subjectController.detail);
   subjectRouter.post('/', subjectController.create);
   subjectRouter.put('/:id', subjectController.update);
   subjectRouter.delete('/:id', subjectController.delete);

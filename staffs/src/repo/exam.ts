@@ -5,15 +5,22 @@ import BaseRepository from './_base';
 
 export default class ExamRepository extends BaseRepository {
   private readonly model: DB['Exam'];
+  private readonly modelUser: DB['User'];
   constructor(db: DB) {
     super(db);
 
     this.model = db.Exam;
+    this.modelUser = db.User;
   }
 
+  public findOneById = async (id: string | number) => {
+    const data = await this.model.findByPk(id);
+
+    return data?.dataValues;
+  };
   public search = async (params: types.exam.ExamSearchParam) => {
     const findOption: FindAndCountOptions = {
-      include: [],
+      include: [this.modelUser],
     };
 
     if (params !== undefined) {
@@ -53,12 +60,15 @@ export default class ExamRepository extends BaseRepository {
       const exam = await this.model.create(
         {
           user_id: params.user_id,
+          semester_id: params.semester_id,
+          subject_id: params.subject_id,
           name: params.name,
           code: params.code,
           form_exam: params.form_exam,
           time_work: params.time_work,
           type: params.type,
           number_question: params.number_question,
+          num_code: params.num_code,
         },
         { transaction }
       );
@@ -81,12 +91,15 @@ export default class ExamRepository extends BaseRepository {
         const exam = await examUpdate.update(
           {
             user_id: params.user_id,
+            semester_id: params.semester_id,
+            subject_id: params.subject_id,
             name: params.name,
             code: params.code,
             form_exam: params.form_exam,
             time_work: params.time_work,
-            type: params.type,
+            type: params.type, 
             number_question: params.number_question,
+            num_code: params.num_code,
           },
           { transaction }
         );

@@ -19,10 +19,9 @@ export default class RoleController extends Controller {
             ...pickForSearch(<types.role.RoleSearchParam>req.query, ['name', 'search', 'sort', 'sortColumn']),
             ...this.getOffsetLimit(req),
         }
-        const roles = await this.roleRepo.search(params);
+        const data = await this.roleRepo.search(params);
 
-        res.status(OK).json(roles);
-
+        this.ok(res, data);
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.role.RoleCreateParam = {

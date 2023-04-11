@@ -14,15 +14,20 @@ export default class ScientificController extends Controller {
         this.scientificRepo = new repository.Scientific(db);
     }
 
+    public detail = async (req: Request, res: Response, next: NextFunction) => {
+        const user = await this.scientificRepo.findOneById(req.params.id);
+
+        res.json(user)
+    }
+
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.scientific.ScientificSearchParam = {
             ...pickForSearch(<types.scientific.ScientificSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
             ...this.getOffsetLimit(req),
         }
-        const scientifics = await this.scientificRepo.search(params);
+        const data = await this.scientificRepo.search(params);
 
-        res.status(OK).json(scientifics);
-
+        this.ok(res, data);
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.scientific.ScientificCreateParam = {

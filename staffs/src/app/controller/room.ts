@@ -20,20 +20,26 @@ export default class RoomController extends Controller {
             ...this.getOffsetLimit(req),
         }
 
-        const rooms = await this.roomRepo.search(params);
+        const data = await this.roomRepo.search(params);
 
-        res.status(OK).json(rooms);
-
+        this.ok(res, data);
     }
+    
+    public detail = async (req: Request, res: Response, next: NextFunction) => {
+        const room = await this.roomRepo.findById(req.params.id);
+
+        res.json(room);
+    }
+
     public create = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.room.RoomCreateParam = {
             exam_id: Number(req.body.exam_id),
+            semester_id: Number(req.body.semester_id),
             name: req.body.name,
             code: req.body.code,
             num_student: Number(req.body.num_student),
             startDate: req.body.startDate,
             endDate: req.body.endDate,
-            semester: req.body.semester,
         }
 
         const room = await this.roomRepo.create(params);
@@ -44,12 +50,12 @@ export default class RoomController extends Controller {
 
         const params: types.room.RoomCreateParam = {
             exam_id: req.body.exam_id,
+            semester_id: req.body.semester_id,
             name: req.body.name,
             code: req.body.code,
             num_student: Number(req.body.num_student),
             startDate: req.body.startDate,
             endDate: req.body.endDate,
-            semester: req.body.semester,
         }
 
         const room = await this.roomRepo.update(params, req.params.id);

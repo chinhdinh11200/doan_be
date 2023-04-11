@@ -13,16 +13,21 @@ export default class EducationController extends Controller {
 
         this.educationRepo = new repository.Education(db);
     }
+    
+    public detail = async (req: Request, res: Response, next: NextFunction) => {
+        const user = await this.educationRepo.findOneById(req.params.id);
+
+        res.json(user)
+    }
 
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.education.EducationSearchParam = {
             ...pickForSearch(<types.education.EducationSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
             ...this.getOffsetLimit(req),
         }
-        const educations = await this.educationRepo.search(params);
+        const data = await this.educationRepo.search(params);
 
-        res.status(OK).json(educations);
-
+        this.ok(res, data);
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.education.EducationCreateParam = {

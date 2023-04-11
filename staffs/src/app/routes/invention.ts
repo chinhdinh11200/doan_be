@@ -6,6 +6,7 @@ export default function (sequelize: SQLize) {
     const inventionController = new InventionController(sequelize);
 
     inventionRouter.get('/', inventionController.search);
+    inventionRouter.get('/:id', inventionController.detail);
     inventionRouter.post('/', inventionController.create);
     inventionRouter.put('/:id', inventionController.update);
     inventionRouter.delete('/:id', inventionController.delete);

@@ -19,6 +19,12 @@ export default class DepartmentRepository extends BaseRepository {
     this.modelUser = db.User;
   }
 
+  public findOneById = async (id: string | number) => {
+    const data = await this.model.findByPk(id);
+
+    return data?.dataValues;
+  };
+  
   public search = async (params: types.department.DepartmentSearchParam) => {
     // this.makeAmbiguousCondition(data, 'name');
     const findOption: FindAndCountOptions = {

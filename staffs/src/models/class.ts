@@ -25,6 +25,8 @@ export class Classes
   declare code: string;
   declare form_teach: string;
   declare num_student: number;
+  declare num_lesson: number;
+  declare num_credit: number;
   declare classroom: string;
   declare startDate: string;
   declare endDate: string;
@@ -74,6 +76,12 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.STRING,
       },
       num_student: {
+        type: dt.INTEGER,
+      },
+      num_lesson: {
+        type: dt.INTEGER,
+      },
+      num_credit: {
         type: dt.INTEGER,
       },
       classroom: {

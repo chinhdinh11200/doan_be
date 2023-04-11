@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import * as repository from '../../repo';
 import Controller from './base';
 import { types } from '../../common';
@@ -13,16 +13,21 @@ export default class DepartmentController extends Controller {
     this.departmentRepo = new repository.Department(db);
   }
 
+  public detail = async (req: Request, res: Response, next: NextFunction) => {
+    const user = await this.departmentRepo.findOneById(req.params.id);
+
+    res.json(user)
+  }
+
   public search = async (req: Request, res: Response) => {
-    const data: types.department.DepartmentSearchParam = {
+    const params: types.department.DepartmentSearchParam = {
       ...pickForSearch(<types.department.DepartmentSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
       ...this.getOffsetLimit(req),
     };
 
-    const departments = await this.departmentRepo.search(
-      <types.department.DepartmentSearchParam>data
-    );
-    res.json(departments);
+    const data = await this.departmentRepo.search(params);
+
+    this.ok(res, data);
   };
 
   public create = async (req: Request, res: Response) => {

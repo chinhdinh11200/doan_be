@@ -11,6 +11,11 @@ export default class Education extends BaseRepository {
     this.model = db.Education;
   }
 
+  public findOneById = async (id: string | number) => {
+    const data = await this.model.findByPk(id);
+
+    return data?.dataValues;
+  };
   public search = async (params: types.education.EducationSearchParam) => {
     // const a: = this.makeMultipleAmbiguousCondition(params, 'search', ['name', 'code']);
     const findOption: FindAndCountOptions = {

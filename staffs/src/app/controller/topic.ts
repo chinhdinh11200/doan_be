@@ -14,15 +14,19 @@ export default class TopicController extends Controller {
         this.topicRepo = new repository.Topic(db);
     }
 
+    public detail = async (req: Request, res: Response, next: NextFunction) => {
+        const user = await this.topicRepo.findOneById(req.params.id);
+
+        res.json(user)
+    }
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.topic.TopicSearchParam = {
             ...pickForSearch(<types.topic.TopicSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
             ...this.getOffsetLimit(req),
         }
-        const topics = await this.topicRepo.search(params);
+        const data = await this.topicRepo.search(params);
 
-        res.status(OK).json(topics);
-
+        this.ok(res, data);
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.topic.TopicCreateParam = {

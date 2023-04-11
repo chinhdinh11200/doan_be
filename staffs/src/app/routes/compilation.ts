@@ -6,6 +6,7 @@ export default function (sequelize: SQLize) {
     const compilationController = new CompilationController(sequelize);
 
     compilationRouter.get('/', compilationController.search);
+    compilationRouter.get('/:id', compilationController.detail);
     compilationRouter.post('/', compilationController.create);
     compilationRouter.put('/:id', compilationController.update);
     compilationRouter.delete('/:id', compilationController.delete);

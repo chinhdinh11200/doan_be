@@ -14,16 +14,20 @@ export default class MarkController extends Controller {
         this.markRepo = new repository.Mark(db);
     }
 
+    public detail = async (req: Request, res: Response, next: NextFunction) => {
+        const user = await this.markRepo.findOneById(req.params.id);
+
+        res.json(user)
+    }
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.mark.MarkSearchParam = {
             ...pickForSearch(<types.mark.MarkSearchParam>req.query, ['form_mark', 'search', 'sort', 'sortColumn']),
             ...this.getOffsetLimit(req),
         }
 
-        const marks = await this.markRepo.search(params);
+        const data = await this.markRepo.search(params);
 
-        res.status(OK).json(marks);
-
+        this.ok(res, data);
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.mark.MarkCreateParam = {

@@ -7,6 +7,7 @@ export default function (sequelize: SQLize) {
 
     examRouter.post('/', examController.create);
     examRouter.put('/:id', examController.update);
+    examRouter.get('/:id', examController.detail);
     examRouter.delete('/:id', examController.delete);
     examRouter.get('/', examController.search);
 

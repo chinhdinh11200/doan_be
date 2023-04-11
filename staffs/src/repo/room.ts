@@ -51,12 +51,12 @@ export default class RoomRepository extends BaseRepository {
       const room = await this.model.create(
         {
           exam_id: params.exam_id,
+          semester_id: params.semester_id,
           name: params.name,
           code: params.code,
           num_student: params.num_student,
           startDate: params.startDate,
           endDate: params.endDate,
-          semester: params.semester,
         },
         { transaction }
       );
@@ -67,6 +67,11 @@ export default class RoomRepository extends BaseRepository {
       await transaction.rollback();
       throw error;
     }
+  };
+  public findOneById = async (id: string | number) => {
+    const data = await this.model.findByPk(id);
+
+    return data?.dataValues;
   };
   public update = async (
     params: types.room.RoomUpdateParam,
@@ -79,12 +84,12 @@ export default class RoomRepository extends BaseRepository {
         const room = await roomUpdate.update(
           {
             exam_id: params.exam_id,
+            semester_id: params.semester_id,
             name: params.name,
             code: params.code,
             num_student: params.num_student,
             startDate: params.startDate,
             endDate: params.endDate,
-            semester: params.semester,
           },
           { transaction }
         );

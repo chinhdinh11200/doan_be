@@ -2,10 +2,13 @@ import { ICommonAttr, ICommonSearchOption, ICommonSortOption, TypeExam } from '.
 
 export interface IExamMainAttr {
     user_id: number;
+    semester_id: number;
+    subject_id: number;
     name: string;
     code: string;
     form_exam: string;
     number_question: number;
+    num_code: number;
     time_work: number;
     type: TypeExam
 }
@@ -14,20 +17,26 @@ export interface IExamAttr extends IExamMainAttr, ICommonAttr { }
 
 export interface IExamCreateParam {
     user_id: number;
+    semester_id: number;
+    subject_id: number;
     name: string;
     code: string;
     form_exam: string;
     number_question: number;
+    num_code: number;
     time_work: number;
     type: TypeExam
 }
 
 export interface IExamUpdateParam {
     user_id: number;
+    semester_id: number;
+    subject_id: number;
     name: string;
     code: string;
     form_exam: string;
     number_question: number;
+    num_code: number;
     time_work: number;
     type: TypeExam
 }

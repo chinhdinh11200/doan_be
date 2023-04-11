@@ -98,7 +98,6 @@ export default class UserRepository extends BaseRepository {
     const findOption: FindAndCountOptions = {
       include: [],
     };
-    console.log("TESTTTTTTTTTTTT : ", params);
     
     this.setOffsetLimit(findOption, params);
     if (params !== undefined) {

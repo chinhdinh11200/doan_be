@@ -24,15 +24,12 @@ export default class UserController extends Controller {
   }
 
   public search = async (req: Request, res: Response, next: NextFunction) => {
-    const users = await this.userRepo.search({
+    const data = await this.userRepo.search({
       ...mapper.searchData(req),
       ...this.getOffsetLimit(req)
     });
 
-    res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
-    res.setHeader('X-Total-Count', users.count);
-
-    res.status(OK).send(users.rows);
+    this.ok(res, data);
   };
 
   public getUserById = async (

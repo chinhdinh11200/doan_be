@@ -6,6 +6,7 @@ export default function (sequelize: SQLize) {
     const educationController = new EducationController(sequelize);
 
     educationRouter.get('/', educationController.search);
+    educationRouter.get('/:id', educationController.detail);
     educationRouter.post('/', educationController.create);
     educationRouter.put('/:id', educationController.update);
     educationRouter.delete('/:id', educationController.delete);

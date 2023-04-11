@@ -17,12 +17,12 @@ export class Room
   implements types.room.Attr {
   declare readonly id: CreationOptional<number>;
   declare readonly exam_id: number;
+  declare readonly semester_id: number;
   declare name: string;
   declare code: string;
   declare num_student: number;
   declare startDate: string;
   declare endDate: string;
-  declare semester: string;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -46,6 +46,10 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.BIGINT.UNSIGNED,
         allowNull: true,
       },
+      semester_id: {
+        type: dt.BIGINT.UNSIGNED,
+        allowNull: true,
+      },
       name: {
         type: dt.STRING,
       },
@@ -60,10 +64,6 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         allowNull: true,
       },
       endDate: {
-        type: dt.STRING,
-        allowNull: true,
-      },
-      semester: {
         type: dt.STRING,
         allowNull: true,
       },

@@ -14,24 +14,32 @@ export default class ExamController extends Controller {
         this.examRepo = new repository.Exam(db);
     }
 
+    public detail = async (req: Request, res: Response, next: NextFunction) => {
+        const exam = await this.examRepo.findById(req.params.id);
+
+        res.json(exam);
+    }
+
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.exam.ExamSearchParam = {
             ...pickForSearch(<types.exam.ExamSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
             ...this.getOffsetLimit(req),
         }
 
-        const exams = await this.examRepo.search(params);
+        const data = await this.examRepo.search(params);
 
-        res.status(OK).json(exams);
-
+        this.ok(res, data);
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.exam.ExamCreateParam = {
             user_id: req.body.user_id,
+            semester_id: req.body.semester_id,
+            subject_id: req.body.subject_id,
             name: req.body.name,
             code: req.body.code,
             form_exam: req.body.form_exam,
             number_question: Number(req.body.number_question),
+            num_code: Number(req.body.num_code),
             time_work: Number(req.body.time_work),
             type: Number(req.body.type),
         }
@@ -44,10 +52,13 @@ export default class ExamController extends Controller {
 
         const params: types.exam.ExamCreateParam = {
             user_id: req.body.user_id,
+            semester_id: req.body.semester_id,
+            subject_id: req.body.subject_id,
             name: req.body.name,
             code: req.body.code,
             form_exam: req.body.form_exam,
             number_question: Number(req.body.number_question),
+            num_code: Number(req.body.num_code),
             time_work: Number(req.body.time_work),
             type: Number(req.body.type),
         }

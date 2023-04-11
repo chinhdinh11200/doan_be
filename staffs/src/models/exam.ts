@@ -19,10 +19,13 @@ export class Exam
   implements types.exam.Attr {
   declare readonly id: CreationOptional<number>;
   declare readonly user_id: number;
+  declare readonly semester_id: number;
+  declare readonly subject_id: number;
   declare name: string;
   declare code: string;
   declare form_exam: string;
   declare number_question: number;
+  declare num_code: number;
   declare time_work: number;
   declare type: number;
 
@@ -31,10 +34,10 @@ export class Exam
   declare deletedAt: CreationOptional<Date>;
 
   public static ASSOCIATE() {
-  //   Exam.belongsTo(User, { foreignKey: 'user_id' });
-  //   Exam.hasOne(Mark);
-  //   Exam.hasMany(Room);
-  //   Exam.belongsToMany(Classes, {through: ClassExam});
+    Exam.belongsTo(User, { foreignKey: 'user_id' });
+    //   Exam.hasOne(Mark);
+    //   Exam.hasMany(Room);
+    //   Exam.belongsToMany(Classes, {through: ClassExam});
   }
 }
 
@@ -51,6 +54,14 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.BIGINT.UNSIGNED,
         allowNull: true,
       },
+      semester_id: {
+        type: dt.BIGINT.UNSIGNED,
+        allowNull: true,
+      },
+      subject_id: {
+        type: dt.BIGINT.UNSIGNED,
+        allowNull: true,
+      },
       name: {
         type: dt.STRING,
       },
@@ -58,6 +69,9 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.STRING,
       },
       number_question: {
+        type: dt.INTEGER,
+      },
+      num_code: {
         type: dt.INTEGER,
       },
       form_exam: {

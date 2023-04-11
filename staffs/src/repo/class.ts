@@ -11,6 +11,12 @@ export default class ClassRepository extends BaseRepository {
     this.model = db.Classes;
   }
 
+  public findOneById = async (id: string | number) => {
+    const data = await this.model.findByPk(id);
+
+    return data?.dataValues;
+  };
+  
   public search = async (params: types.classes.ClassSearchParam) => {
     const findOption: FindAndCountOptions = {
       include: [],
@@ -59,6 +65,8 @@ export default class ClassRepository extends BaseRepository {
           code: params.code,
           form_teach: params.form_teach,
           num_student: params.num_student,
+          num_lesson: params.num_lesson,
+          num_credit: params.num_credit,
           classroom: params.classroom,
           startDate: params.startDate,
           endDate: params.endDate,

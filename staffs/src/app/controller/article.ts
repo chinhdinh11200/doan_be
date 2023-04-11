@@ -13,15 +13,21 @@ export default class ArticleController extends Controller {
 
         this.articleRepo = new repository.Article(db);
     }
+    
+    public detail = async (req: Request, res: Response, next: NextFunction) => {
+        const user = await this.articleRepo.findOneById(req.params.id);
+
+        res.json(user)
+    }
 
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.article.ArticleSearchParam = {
             ...pickForSearch(<types.article.ArticleSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
             ...this.getOffsetLimit(req),
         }
-        const articles = await this.articleRepo.search(params);
+        const data = await this.articleRepo.search(params);
 
-        res.status(OK).json(articles);
+        this.ok(res, data);
 
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {

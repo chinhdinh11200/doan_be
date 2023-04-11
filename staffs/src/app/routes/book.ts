@@ -6,6 +6,7 @@ export default function (sequelize: SQLize) {
     const bookController = new BookController(sequelize);
 
     bookRouter.get('/', bookController.search);
+    bookRouter.get('/:id', bookController.detail);
     bookRouter.post('/', bookController.create);
     bookRouter.put('/:id', bookController.update);
     bookRouter.delete('/:id', bookController.delete);

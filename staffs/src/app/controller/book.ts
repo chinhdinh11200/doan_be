@@ -13,15 +13,21 @@ export default class BookController extends Controller {
 
         this.bookRepo = new repository.Book(db);
     }
+    
+    public detail = async (req: Request, res: Response, next: NextFunction) => {
+        const user = await this.bookRepo.findOneById(req.params.id);
+
+        res.json(user)
+    }
 
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.book.BookSearchParam = {
             ...pickForSearch(<types.book.BookSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
             ...this.getOffsetLimit(req),
         }
-        const books = await this.bookRepo.search(params);
+        const data = await this.bookRepo.search(params);
 
-        res.status(OK).json(books);
+        this.ok(res, data);
 
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {

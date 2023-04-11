@@ -1,4 +1,6 @@
 import dotenv from 'dotenv';
+import createDebug from 'debug';
+const debug = createDebug('sequelize');
 
 dotenv.config();
 
@@ -16,7 +18,10 @@ module.exports = {
     "database": database,
     "port": port,
     "host": host,
-    "dialect": dialect
+    "dialect": dialect,
+    "logging": (logStr: string, time: number) => {
+      debug(`${logStr} (took ${time}ms)`);
+    },
   },
   "test": {
     "username": username,

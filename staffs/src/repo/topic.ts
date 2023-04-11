@@ -11,6 +11,12 @@ export default class Topic extends BaseRepository {
         this.model = db.Topic;
     }
 
+    public findOneById = async (id: string | number) => {
+        const data = await this.model.findByPk(id);
+    
+        return data?.dataValues;
+      };
+
     public search = async (params: types.topic.TopicSearchParam) => {
         const findOption: FindAndCountOptions = {
             include: [],

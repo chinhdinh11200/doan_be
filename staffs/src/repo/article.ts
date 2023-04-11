@@ -10,6 +10,12 @@ export default class Article extends BaseRepository {
 
     this.model = db.Article;
   }
+  
+  public findOneById = async (id: string | number) => {
+    const data = await this.model.findByPk(id);
+
+    return data?.dataValues;
+  };
 
   public search = async (params: types.article.ArticleSearchParam) => {
     // const a: = this.makeMultipleAmbiguousCondition(params, 'search', ['name', 'code']);

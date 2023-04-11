@@ -14,16 +14,21 @@ export default class classesController extends Controller {
     this.classRepo = new repository.Classes(db);
   }
 
+  public detail = async (req: Request, res: Response, next: NextFunction) => {
+    const classs = await this.classRepo.findById(req.params.id);
+
+    res.json(classs);
+  }
+
   public search = async (req: Request, res: Response, next: NextFunction) => {
     const params: types.classes.ClassSearchParam = {
       ...pickForSearch(<types.classes.ClassSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
       ...this.getOffsetLimit(req),
     }
 
-    const classes = await this.classRepo.search(params);
+    const data = await this.classRepo.search(params);
 
-    res.status(OK).json(classes);
-
+    this.ok(res, data);
   }
   public create = async (req: Request, res: Response, next: NextFunction) => {
     const params: types.classes.ClassCreateParam = {
@@ -34,6 +39,8 @@ export default class classesController extends Controller {
       code: req.body.code,
       form_teach: req.body.form_teach,
       num_student: req.body.num_student,
+      num_lesson: req.body.num_lesson,
+      num_credit: req.body.num_credit,
       classroom: req.body.classroom,
       startDate: req.body.startDate,
       endDate: req.body.endDate,
@@ -56,9 +63,11 @@ export default class classesController extends Controller {
       code: req.body.code,
       form_teach: req.body.form_teach,
       num_student: req.body.num_student,
+      num_lesson: req.body.num_lesson,
+      num_credit: req.body.num_credit,
       classroom: req.body.classroom,
       startDate: req.body.startDate,
-      endDate: req.body.endDate,
+      endDate: req.body.endDate, 
       level_teach: req.body.level_teach,
       time_teach: req.body.time_teach,
       semester: req.body.semester,

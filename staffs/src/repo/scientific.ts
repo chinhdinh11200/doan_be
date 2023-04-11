@@ -11,6 +11,11 @@ export default class Scientific extends BaseRepository {
     this.model = db.Scientific;
   }
 
+  public findOneById = async (id: string | number) => {
+    const data = await this.model.findByPk(id);
+
+    return data?.dataValues;
+  };
   public search = async (params: types.scientific.ScientificSearchParam) => {
     // const a: = this.makeMultipleAmbiguousCondition(params, 'search', ['name', 'code']);
     const findOption: FindAndCountOptions = {

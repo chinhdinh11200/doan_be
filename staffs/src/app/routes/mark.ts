@@ -6,6 +6,7 @@ export default function (sequelize: SQLize) {
     const markController = new MarkController(sequelize);
 
     markRouter.post('/', markController.create);
+    markRouter.get('/:id', markController.detail);
     markRouter.put('/:id', markController.update);
     markRouter.delete('/:id', markController.delete);
     markRouter.get('/', markController.search);

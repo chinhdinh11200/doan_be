@@ -7,8 +7,9 @@ export default function (sequelize: SQLize) {
 
     roomRouter.post('/', roomController.create);
     roomRouter.put('/:id', roomController.update);
+    roomRouter.get('/:id', roomController.detail);
     roomRouter.delete('/:id', roomController.delete);
     roomRouter.get('/', roomController.search);
-
+    
     return roomRouter;
 }

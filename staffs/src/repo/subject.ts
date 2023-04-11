@@ -11,6 +11,11 @@ export default class Subject extends BaseRepository {
     this.model = db.Subject;
   }
 
+  public findOneById = async (id: string | number) => {
+    const data = await this.model.findByPk(id);
+
+    return data?.dataValues;
+  };
   public search = async (params: types.subject.SubjectSearchParam) => {
     const findOption: FindAndCountOptions = {
       include: [],

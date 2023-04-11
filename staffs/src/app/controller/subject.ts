@@ -19,11 +19,17 @@ export default class SubjectController extends Controller {
       ...pickForSearch(<types.subject.SubjectSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
       ...this.getOffsetLimit(req),
     }
-    const subjects = await this.subjectRepo.search(params);
+    const data = await this.subjectRepo.search(params);
 
-    res.status(OK).json(subjects);
-
+    this.ok(res, data)
   }
+
+  public detail =async (req:Request, res: Response, next: NextFunction) => {
+    const subject = await this.subjectRepo.findById(req.params.id);
+
+    res.json(subject);
+  }
+
   public create = async (req: Request, res: Response, next: NextFunction) => {
     const params: types.subject.SubjectCreateParam = {
       name: req.body.name,

@@ -6,10 +6,13 @@ import authRouter from './app/routes/auth';
 import createClient from './app/sequelize';
 import * as http from 'http';
 import passport from 'passport';
+import helmet from 'helmet';
 import cors, { CorsOptions } from 'cors';
 import { jwtAuthenticate, strategy } from './app/passport';
 var multer = require('multer');
 var upload = multer();
+const morgan = require('morgan');
+const fs = require('fs');
 
 dotenv.config();
 
@@ -72,13 +75,22 @@ export const createApp = async function () {
     optionsSuccessStatus: 204
   };
   app.use(cors(corsOption));
-
+  app.use(helmet({
+    // referrerPolicy: {
+    //   // policy: 'strict-origin-when-cross-origin',
+    // }
+    contentSecurityPolicy: false,
+  }));
   app.use(passport.initialize());
   app.use(cookieParser());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(upload.array());
   app.use(express.static('public'));
+
+  // morgan
+  const accessLogStream = fs.createWriteStream('access.log', { flags: 'a' });
+  app.use(morgan('combined', { stream: accessLogStream }));
 
   // routers
   app.use('/auth', authRouter(sequelize));
