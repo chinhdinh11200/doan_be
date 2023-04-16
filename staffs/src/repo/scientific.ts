@@ -60,6 +60,7 @@ export default class Scientific extends BaseRepository {
           num_decision: params.num_decision,
           total_time: params.total_time,
           result_level: params.result_level,
+          result_academy: params.result_academy,
           date_decision: params.date_decision,
         },
         { transaction }

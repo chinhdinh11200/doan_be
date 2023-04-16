@@ -14,6 +14,9 @@ import compilationRouter from './compilation';
 import scientificRouter from './scientific';
 import educationRouter from './education';
 import inventionRouter from './invention';
+import timeRouter from './time';
+import exportRouter from './export';
+import importRouter from './import';
 import { DB } from '../../models';
 
 export default function (db: DB) {
@@ -33,6 +36,9 @@ export default function (db: DB) {
   router.use('/scientific', scientificRouter(db));
   router.use('/book', bookRouter(db));
   router.use('/education', educationRouter(db));
+  router.use('/time', timeRouter(db));
+  router.use('/export', exportRouter(db));
+  router.use('/import', importRouter(db));
 
   return router;
 }

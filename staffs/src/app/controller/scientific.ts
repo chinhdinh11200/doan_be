@@ -36,6 +36,7 @@ export default class ScientificController extends Controller {
             num_decision: req.body.num_decision,
             total_time: req.body.total_time,
             result_level: req.body.result_level,
+            result_academy: req.body.result_academy,
             date_decision: req.body.date_decision,
         }
 
@@ -51,6 +52,7 @@ export default class ScientificController extends Controller {
             num_decision: req.body.num_decision,
             total_time: req.body.total_time,
             result_level: req.body.result_level,
+            result_academy: req.body.result_academy,
             date_decision: req.body.date_decision,
         }
 

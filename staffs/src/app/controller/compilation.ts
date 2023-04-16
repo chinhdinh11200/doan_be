@@ -37,6 +37,7 @@ export default class CompilationController extends Controller {
             total_time: req.body.total_time,
             number_credit: req.body.number_credit,
             date_decision: req.body.date_decision,
+            num_decision: req.body.num_decision,
         }
 
         const compilation = await this.compilationRepo.create(params);
@@ -52,6 +53,7 @@ export default class CompilationController extends Controller {
             total_time: req.body.total_time,
             number_credit: req.body.number_credit,
             date_decision: req.body.date_decision,
+            num_decision: req.body.num_decision,
         }
 
         const compilation = await this.compilationRepo.update(params, req.params.id);

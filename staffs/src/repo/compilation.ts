@@ -64,6 +64,7 @@ export default class Compilation extends BaseRepository {
           total_time: params.total_time,
           number_credit: params.number_credit,
           date_decision: params.date_decision,
+          num_decision: params.num_decision,
         },
         { transaction }
       );
@@ -91,6 +92,7 @@ export default class Compilation extends BaseRepository {
             total_time: params.total_time,
             number_credit: params.number_credit,
             date_decision: params.date_decision,
+            num_decision: params.num_decision,
           },
           { transaction }
         );

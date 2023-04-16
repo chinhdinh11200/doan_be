@@ -16,6 +16,8 @@ export class Topic
   declare code: string;
   declare level: number;
   declare endDate: Date;
+  declare startDate: Date;
+  declare acceptDate: Date;
   declare result: number;
   declare num_person: number;
   declare total_time: number;
@@ -47,6 +49,14 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         allowNull: true,
       },
       endDate: {
+        type: dt.DATE,
+        allowNull: true,
+      },
+      startDate: {
+        type: dt.DATE,
+        allowNull: true,
+      },
+      acceptDate: {
         type: dt.DATE,
         allowNull: true,
       },

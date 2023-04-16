@@ -5,6 +5,8 @@ export interface ITopicMainAttr {
     code: string;
     level: number;
     endDate: Date;
+    startDate: Date;
+    acceptDate: Date;
     result: number;
     num_person: number;
     total_time: number;
@@ -17,6 +19,8 @@ export interface ITopicCreateParam {
     code: string;
     level: number;
     endDate: Date;
+    startDate: Date;
+    acceptDate: Date;
     result: number;
     num_person: number;
     total_time: number;
@@ -27,6 +31,8 @@ export interface ITopicUpdateParam {
     code: string;
     level: number;
     endDate: Date;
+    startDate: Date;
+    acceptDate: Date;
     result: number;
     num_person: number;
     total_time: number;

@@ -6,6 +6,7 @@ export interface IScientificMainAttr {
     num_decision: string;
     total_time: number;
     result_level: number;
+    result_academy: number;
     date_decision: Date;
 }
 
@@ -16,7 +17,8 @@ export interface IScientificCreateParam {
     code: string;
     num_decision: string;
     total_time: number;
-    result_level: number;
+    result_level?: number;
+    result_academy?: number;
     date_decision: Date;
 }
 
@@ -26,6 +28,7 @@ export interface IScientificUpdateParam {
     num_decision: string;
     total_time: number;
     result_level: number;
+    result_academy: number;
     date_decision: Date;
 }
 

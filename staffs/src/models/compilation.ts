@@ -17,6 +17,7 @@ export class Compilation
   declare num_person: number;
   declare total_time: number;
   declare date_decision: Date;
+  declare num_decision: string;
   declare number_credit: number;
 
   declare createdAt: CreationOptional<Date>;
@@ -40,6 +41,10 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
       },
       code: {
         type: dt.STRING,
+      },
+      num_decision: {
+        type: dt.STRING,
+        allowNull: true
       },
       date_decision: {
         type: dt.DATE,

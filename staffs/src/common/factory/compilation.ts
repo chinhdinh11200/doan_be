@@ -6,6 +6,7 @@ export interface ICompilationMainAttr {
     num_person: number;
     total_time: number;
     date_decision: Date;
+    num_decision: string;
     number_credit: number;
 }
 
@@ -17,6 +18,7 @@ export interface ICompilationCreateParam {
     num_person: number;
     total_time: number;
     date_decision: Date;
+    num_decision: string;
     number_credit: number;
 }
 
@@ -26,6 +28,7 @@ export interface ICompilationUpdateParam {
     num_person: number;
     total_time: number;
     date_decision: Date;
+    num_decision?: string;
     number_credit: number;
 }
 

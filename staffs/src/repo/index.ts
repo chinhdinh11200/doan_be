@@ -14,6 +14,9 @@ import BookRepository from './book';
 import EducationRepository from './education';
 import ScientificRepository from './scientific';
 import CompilationRepository from './compilation';
+import TimeRepository from './time';
+import ExportRepository from './export';
+import ImportRepository from './import';
 
 export class Department extends DepartmentRepository {}
 export class User extends UserRepository {}
@@ -31,3 +34,6 @@ export class Compilation extends CompilationRepository {}
 export class Scientific extends ScientificRepository {}
 export class Education extends EducationRepository {}
 export class Role extends RoleRepository {}
+export class Time extends TimeRepository {}
+export class Export extends ExportRepository {}
+export class Import extends ImportRepository {}
