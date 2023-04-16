@@ -39,10 +39,9 @@ export default class ArticleController extends Controller {
             total_time: req.body.total_time,
             num_person: req.body.num_person,
         }
+        const data = await this.articleRepo.create(params);
 
-        const article = await this.articleRepo.create(params);
-
-        res.status(OK).json(article);
+        this.created(res, data);
     }
     public update = async (req: Request, res: Response, next: NextFunction) => {
 

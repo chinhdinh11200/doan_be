@@ -9,8 +9,6 @@ import passport from 'passport';
 import helmet from 'helmet';
 import cors, { CorsOptions } from 'cors';
 import { jwtAuthenticate, strategy } from './app/passport';
-var multer = require('multer');
-var upload = multer();
 const morgan = require('morgan');
 const fs = require('fs');
 

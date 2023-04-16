@@ -36,10 +36,9 @@ export default class SubjectController extends Controller {
       code: req.body.code,
       form_exam: req.body.form_exam,
     }
+    const data = await this.subjectRepo.create(params);
 
-    const subject = await this.subjectRepo.create(params);
-
-    res.status(OK).json(subject);
+    this.created(res, data);
   }
   public update = async (req: Request, res: Response, next: NextFunction) => {
     

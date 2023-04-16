@@ -31,12 +31,13 @@ export default class DepartmentController extends Controller {
   };
 
   public create = async (req: Request, res: Response) => {
-    const data: types.department.DepartmentCreateParam = {
+    const params: types.department.DepartmentCreateParam = {
       name: req.body?.name,
       code: req.body?.code,
     };
-    const department = await this.departmentRepo.create(data);
-    res.json(department);
+    const data = await this.departmentRepo.create(params);
+
+    this.created(res, data);
   };
 
   public update = async (req: Request, res: Response) => {

@@ -1,21 +1,28 @@
-import { FindAndCountOptions, Op, WhereOptions } from 'sequelize';
+import { FindAndCountOptions, Op, WhereOptions, where } from 'sequelize';
 import { types } from '../common';
 import { DB } from './../models';
 import BaseRepository from './_base';
+import { TotalTime, TypeRoleUser } from '../common/factory/_common';
 
 export default class Topic extends BaseRepository {
     private readonly model: DB['Topic'];
+    private readonly modelRole: DB['Role'];
+    private readonly modelRoleAble: DB['RoleAble'];
+    private readonly modelRoleUser: DB['RoleUser'];
     constructor(db: DB) {
         super(db);
 
         this.model = db.Topic;
+        this.modelRole = db.Role;
+        this.modelRoleAble = db.RoleAble;
+        this.modelRoleUser = db.RoleUser;
     }
 
     public findOneById = async (id: string | number) => {
         const data = await this.model.findByPk(id);
-    
+
         return data?.dataValues;
-      };
+    };
 
     public search = async (params: types.topic.TopicSearchParam) => {
         const findOption: FindAndCountOptions = {
@@ -54,6 +61,8 @@ export default class Topic extends BaseRepository {
     public create = async (params: types.topic.TopicCreateParam) => {
         const transaction = await this.db.sequelize.transaction();
         try {
+            const roleUser = params.role;
+            const roleUserArray: string[] = roleUser.split(',');
             const topic = await this.model.create(
                 {
                     name: params.name,
@@ -63,11 +72,45 @@ export default class Topic extends BaseRepository {
                     startDate: params.startDate,
                     acceptDate: params.acceptDate,
                     result: params.result,
-                    num_person: params.num_person,
-                    total_time: params.total_time,
+                    num_person: roleUserArray.length,
+                    total_time: TotalTime.topic,
                 },
                 { transaction }
             );
+            const role = await this.modelRole.findOne({
+                where: {
+                    type: params.type
+                }
+            });
+
+            if (role) {
+                await this.modelRoleAble.create({
+                    role_id: role.id,
+                    role_able_id: topic.dataValues.id,
+                    type: params.type,
+                    time: String(params.total_time),
+                })
+                roleUserArray.forEach(async (roleUser, index) => {
+                    let type = TypeRoleUser.member;
+                    let time: number = 0;
+                    if (index === 0) {
+                        type = TypeRoleUser.main;
+                        time = 400;
+                    } else if (index === 1) {
+                        type = TypeRoleUser.support
+                        time = 120;
+                    } else {
+                        time = 280 / (roleUserArray.length - 2)
+                    }
+                    console.log("ROLE", time, type, roleUserArray.length);
+                    await this.modelRoleUser.create({
+                        role_able_id: topic.dataValues.id,
+                        user_id: Number(roleUser),
+                        type: type,
+                        time: String(time),
+                    })
+                })
+            }
             await transaction.commit();
 
             return topic.dataValues;

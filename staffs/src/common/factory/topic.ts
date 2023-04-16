@@ -17,6 +17,7 @@ export interface ITopicAttr extends ITopicMainAttr, ICommonAttr { }
 export interface ITopicCreateParam {
     name: string;
     code: string;
+    role: string;
     level: number;
     endDate: Date;
     startDate: Date;
@@ -24,11 +25,13 @@ export interface ITopicCreateParam {
     result: number;
     num_person: number;
     total_time: number;
+    type: number,
 }
 
 export interface ITopicUpdateParam {
     name: string;
     code: string;
+    role: string;
     level: number;
     endDate: Date;
     startDate: Date;

@@ -35,10 +35,9 @@ export default class MarkController extends Controller {
             form_mark: req.body.form_mark,
             time_mark: req.body.time_mark,
         }
+        const data = await this.markRepo.create(params);
 
-        const mark = await this.markRepo.create(params);
-
-        res.status(OK).json(mark);
+        this.created(res, data);
     }
     public update = async (req: Request, res: Response, next: NextFunction) => {
 

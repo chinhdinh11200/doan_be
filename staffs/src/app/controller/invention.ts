@@ -40,10 +40,9 @@ export default class InventionController extends Controller {
             date_recognition: req.body.date_recognition,
             number_recognition: req.body.number_recognition,
         }
+        const data = await this.inventionRepo.create(params);
 
-        const invention = await this.inventionRepo.create(params);
-
-        res.status(OK).json(invention);
+        this.created(res, data);
     }
     public update = async (req: Request, res: Response, next: NextFunction) => {
 

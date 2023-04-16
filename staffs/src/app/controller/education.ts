@@ -40,10 +40,9 @@ export default class EducationController extends Controller {
             num_decision: req.body.num_decision,
             date_decision: req.body.date_decision,
         }
+        const data = await this.educationRepo.create(params);
 
-        const education = await this.educationRepo.create(params);
-
-        res.status(OK).json(education);
+        this.created(res, data);
     }
     public update = async (req: Request, res: Response, next: NextFunction) => {
 

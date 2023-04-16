@@ -10,6 +10,8 @@ import mark from './mark';
 import exam from './exam';
 import room from './room';
 import role from './role';
+import roleAble from './roleable';
+import roleUser from './role_user';
 import topic from './topic';
 import article from './article';
 import book from './book';
@@ -38,6 +40,8 @@ export const initialize = (sqlize: Sequelize.Sequelize) => {
     Invention:  invention(sqlize, Sequelize.DataTypes),
     Education:  education(sqlize, Sequelize.DataTypes),
     Scientific:  scientific(sqlize, Sequelize.DataTypes),
+    RoleAble: roleAble(sqlize, Sequelize.DataTypes),
+    RoleUser:  roleUser(sqlize, Sequelize.DataTypes),
   };
 
   for (const model of values(db)) {

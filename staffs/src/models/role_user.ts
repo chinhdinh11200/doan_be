@@ -1,21 +1,19 @@
 import {
   CreationOptional,
-  DataTypes,
   InferAttributes,
   InferCreationAttributes,
   Model,
   Sequelize,
+  DataTypes,
 } from 'sequelize';
+import { types } from '../common';
 import { commonFields } from './_common';
 
-export class RoleAble
-  extends Model<
-    InferAttributes<RoleAble>,
-    InferCreationAttributes<RoleAble>
-  > {
+export class RoleUser
+  extends Model<InferAttributes<RoleUser>, InferCreationAttributes<RoleUser>> {
   declare readonly id: CreationOptional<number>;
-  declare readonly role_id: number;
   declare readonly role_able_id: number;
+  declare readonly user_id: number;
   declare time: string;
   declare type: number;
 
@@ -23,11 +21,11 @@ export class RoleAble
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date>;
 
-  public static ASSOCIATE() { }
+  public static ASSOCIATE() {}
 }
 
 export default (sequelize: Sequelize, dt: typeof DataTypes) => {
-  RoleAble.init(
+  RoleUser.init(
     {
       id: {
         type: dt.BIGINT.UNSIGNED,
@@ -35,10 +33,10 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      role_id: {
+      role_able_id: {
         type: dt.BIGINT.UNSIGNED,
       },
-      role_able_id: {
+      user_id: {
         type: dt.BIGINT.UNSIGNED,
       },
       time: {
@@ -52,12 +50,12 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
     },
     {
       sequelize,
-      name: { singular: 'role_ables', plural: 'role_ables' },
-      tableName: 'role_ables',
+      name: { singular: 'role_user', plural: 'role_user' },
+      tableName: 'role_user',
       underscored: false,
       paranoid: true,
     }
   );
 
-  return RoleAble;
+  return RoleUser;
 };

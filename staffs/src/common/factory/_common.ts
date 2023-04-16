@@ -25,3 +25,13 @@ export enum TypeScientific {
   end = 1,
 }
 
+export enum TypeRoleUser {
+  main = 0,
+  support = 1,
+  member = 2,
+}
+
+export enum TotalTime {
+  topic = 800,
+}
+

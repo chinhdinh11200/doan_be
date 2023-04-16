@@ -12,5 +12,5 @@ export const create = [
   b('department_id', 'department_id', [V.required]),
   b('code', 'code', [V.required]),
   b('email', 'email', [V.required, V.duplicated]),
-  b('number_salary', 'number_salary', [V.isFloat]),
+  b('number_salary', 'number_salary', [V.isDigits]),
 ];

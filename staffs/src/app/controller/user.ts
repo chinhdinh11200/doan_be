@@ -58,7 +58,7 @@ export default class UserController extends Controller {
 
     const user = await this.userRepo.create(data);
 
-    res.status(CREATED).json(user);
+    this.created(res, data);
   };
 
   public update = async (req: Request, res: Response, next: NextFunction) => {

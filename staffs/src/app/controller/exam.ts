@@ -43,10 +43,9 @@ export default class ExamController extends Controller {
             time_work: Number(req.body.time_work),
             type: Number(req.body.type),
         }
+        const data = await this.examRepo.create(params);
 
-        const exam = await this.examRepo.create(params);
-
-        res.status(OK).json(exam);
+        this.created(res, data);
     }
     public update = async (req: Request, res: Response, next: NextFunction) => {
 

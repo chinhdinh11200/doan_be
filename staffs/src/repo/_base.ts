@@ -40,6 +40,10 @@ export default abstract class BaseRepository {
     };
   };
 
+  public convertStringToArray = (input: string) => {
+    return input.split(',');
+  }
+
   public makeAmbiguousCondition = <T extends object>(
     params: T,
     field: keyof T,

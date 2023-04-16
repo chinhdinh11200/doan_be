@@ -8,6 +8,10 @@ import {
 } from 'sequelize';
 import { types } from '../common';
 import { commonFields } from './_common';
+import { User } from './user';
+import { RoleUser } from './role_user';
+import { Role } from './role';
+import { RoleAble } from './roleable';
 
 export class Topic
   extends Model<InferAttributes<Topic>, InferCreationAttributes<Topic>> implements types.topic.Attr {
@@ -26,7 +30,9 @@ export class Topic
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date>;
 
-  public static ASSOCIATE() {}
+  public static ASSOCIATE() {
+    // Topic.belongsToMany(Role, { through: { model: RoleAble, scope: { type: 1 } }, foreignKey: 'role_able_id', constraints: false })
+  }
 }
 
 export default (sequelize: Sequelize, dt: typeof DataTypes) => {
@@ -66,10 +72,10 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
       },
       num_person: {
         type: dt.INTEGER,
-      }      ,
+      },
       total_time: {
         type: dt.INTEGER,
-      }      ,
+      },
       ...commonFields(),
     },
     {

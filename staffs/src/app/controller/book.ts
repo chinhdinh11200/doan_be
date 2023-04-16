@@ -39,10 +39,9 @@ export default class BookController extends Controller {
                     total_time: req.body.total_time,
                     num_page: req.body.num_page,
         }
+        const data = await this.bookRepo.create(params);
 
-        const book = await this.bookRepo.create(params);
-
-        res.status(OK).json(book);
+        this.created(res, data);
     }
     public update = async (req: Request, res: Response, next: NextFunction) => {
 

@@ -8,7 +8,7 @@ export default class Controller {
     this.db = db;
   }
 
-  
+
   protected getOffsetLimit(req: Request) {
     const page = Number(req.query.offset);
     const limit = Number(req.query.limit);
@@ -36,5 +36,9 @@ export default class Controller {
     }
 
     res.json(data.rows);
+  }
+
+  protected created(res: Response, data: any) {
+    res.json({ ...data, success: true });
   }
 }

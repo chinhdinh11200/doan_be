@@ -39,10 +39,9 @@ export default class ScientificController extends Controller {
             result_academy: req.body.result_academy,
             date_decision: req.body.date_decision,
         }
+        const data = await this.scientificRepo.create(params);
 
-        const scientific = await this.scientificRepo.create(params);
-
-        res.status(OK).json(scientific);
+        this.created(res, data);
     }
     public update = async (req: Request, res: Response, next: NextFunction) => {
 

@@ -39,10 +39,9 @@ export default class CompilationController extends Controller {
             date_decision: req.body.date_decision,
             num_decision: req.body.num_decision,
         }
+        const data = await this.compilationRepo.create(params);
 
-        const compilation = await this.compilationRepo.create(params);
-
-        res.status(OK).json(compilation);
+        this.created(res, data);
     }
     public update = async (req: Request, res: Response, next: NextFunction) => {
 

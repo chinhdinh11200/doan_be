@@ -32,6 +32,7 @@ export default class TopicController extends Controller {
         const params: types.topic.TopicCreateParam = {
             name: req.body.name,
             code: req.body.code,
+            role: req.body.role,
             level: req.body.level,
             endDate: req.body.endDate,
             startDate: req.body.startDate,
@@ -39,17 +40,18 @@ export default class TopicController extends Controller {
             result: req.body.result,
             num_person: req.body.num_person,
             total_time: req.body.total_time,
+            type: req.body.type,
         }
+        const data = await this.topicRepo.create(params);
 
-        const topic = await this.topicRepo.create(params);
-
-        res.status(OK).json(topic);
+        this.created(res, data);
     }
     public update = async (req: Request, res: Response, next: NextFunction) => {
 
         const params: types.topic.TopicUpdateParam = {
             name: req.body.name,
             code: req.body.code,
+            role: req.body.role,
             level: req.body.level,
             endDate: req.body.endDate,
             startDate: req.body.startDate,

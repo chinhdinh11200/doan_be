@@ -41,10 +41,9 @@ export default class RoomController extends Controller {
             startDate: req.body.startDate,
             endDate: req.body.endDate,
         }
+        const data = await this.roomRepo.create(params);
 
-        const room = await this.roomRepo.create(params);
-
-        res.status(OK).json(room);
+        this.created(res, data);
     }
     public update = async (req: Request, res: Response, next: NextFunction) => {
 

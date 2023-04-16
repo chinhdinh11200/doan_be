@@ -72,11 +72,9 @@ export default class classesController extends Controller {
       time_teach: req.body.time_teach,
       semester: req.body.semester,
     }
+    const data = await this.classRepo.update(params, req.params.id);
 
-    const classes = await this.classRepo.update(params, req.params.id);
-
-    res.status(OK).json(classes);
-
+    this.created(res, data);
   }
   public delete = async (req: Request, res: Response, next: NextFunction) => {
     const classes = await this.classRepo.delete(req.params.id);
