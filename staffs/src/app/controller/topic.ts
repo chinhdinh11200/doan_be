@@ -61,10 +61,9 @@ export default class TopicController extends Controller {
             total_time: req.body.total_time,
         }
 
-        const topic = await this.topicRepo.update(params, req.params.id);
+        const data = await this.topicRepo.update(params, req.params.id);
 
-        res.status(OK).json(topic);
-
+        this.created(res, data);
     }
     public delete = async (req: Request, res: Response, next: NextFunction) => {
         const topic = await this.topicRepo.delete(req.params.id);

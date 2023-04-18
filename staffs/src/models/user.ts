@@ -21,7 +21,7 @@ export class User extends Model<
   declare password: string;
   declare salt: string;
   declare code: string;
-  declare birthday: Date;
+  declare birthday: CreationOptional<Date>;
   declare position: string;
   declare degree: string;
   declare number_salary: number;

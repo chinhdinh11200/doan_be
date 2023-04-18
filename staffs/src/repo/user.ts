@@ -42,7 +42,7 @@ export default class UserRepository extends BaseRepository {
       );
       await transaction.commit();
 
-      return user.dataValues;
+      return user;
     } catch (error) {
       await transaction.rollback();
       throw error;
@@ -65,6 +65,7 @@ export default class UserRepository extends BaseRepository {
           department_id: data.department_id,
           name: data.name,
           code: data.code,
+          email: data.email,
           birthday: data.birthday,
           position: data.position,
           degree: data.degree,
@@ -77,7 +78,7 @@ export default class UserRepository extends BaseRepository {
       );
       await transaction.commit();
 
-      return userUpdate.dataValues;
+      return userUpdate;
     } catch (error) {
       await transaction.rollback();
       throw error;
@@ -110,7 +111,7 @@ export default class UserRepository extends BaseRepository {
           ])
         );
       }
-      if (params.name !== undefined) {
+      if (params.name) {
         andArray.push(this.makeAmbiguousCondition(params, 'name'));
       }
 

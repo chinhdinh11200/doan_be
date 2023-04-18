@@ -56,7 +56,7 @@ export default class ClassRepository extends BaseRepository {
   public create = async (params: types.classes.ClassCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
     try {
-      const subject = await this.model.create(
+      const classes = await this.model.create(
         {
           subject_id: params.subject_id,
           user_id: params.user_id,
@@ -78,7 +78,7 @@ export default class ClassRepository extends BaseRepository {
       );
       await transaction.commit();
 
-      return subject.dataValues;
+      return classes;
     } catch (error) {
       await transaction.rollback();
       throw error;

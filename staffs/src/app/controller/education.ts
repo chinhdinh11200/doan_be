@@ -57,9 +57,9 @@ export default class EducationController extends Controller {
             date_decision: req.body.date_decision,
         }
 
-        const education = await this.educationRepo.update(params, req.params.id);
+        const data = await this.educationRepo.update(params, req.params.id);
 
-        res.status(OK).json(education);
+        this.created(res, data);
 
     }
     public delete = async (req: Request, res: Response, next: NextFunction) => {

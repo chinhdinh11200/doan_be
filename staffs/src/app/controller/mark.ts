@@ -47,10 +47,9 @@ export default class MarkController extends Controller {
             time_mark: req.body.time_mark,
         }
 
-        const mark = await this.markRepo.update(params, req.params.id);
+        const data = await this.markRepo.update(params, req.params.id);
 
-        res.status(OK).json(mark);
-
+        this.created(res, data);
     }
     public delete = async (req: Request, res: Response, next: NextFunction) => {
         const mark = await this.markRepo.delete(req.params.id);

@@ -49,9 +49,9 @@ export default class classesController extends Controller {
       semester: req.body.semester,
     }
 
-    const classes = await this.classRepo.create(params);
+    const data = await this.classRepo.create(params);
 
-    res.status(OK).json(classes);
+    this.created(res, data.dataValues);
   }
   public update = async (req: Request, res: Response, next: NextFunction) => {
 

@@ -62,9 +62,9 @@ export default class ExamController extends Controller {
             type: Number(req.body.type),
         }
 
-        const exam = await this.examRepo.update(params, req.params.id);
+        const data = await this.examRepo.update(params, req.params.id);
 
-        res.status(OK).json(exam);
+        this.created(res, data);
 
     }
     public delete = async (req: Request, res: Response, next: NextFunction) => {

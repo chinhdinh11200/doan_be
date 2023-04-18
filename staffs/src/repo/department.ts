@@ -67,6 +67,7 @@ export default class DepartmentRepository extends BaseRepository {
         {
           name: data.name,
           code: data.code,
+          parent_id: data.parent_id,
         },
         { transaction }
       );
@@ -90,6 +91,7 @@ export default class DepartmentRepository extends BaseRepository {
       const departmentUpdate = await department?.update({
         name: data.name,
         code: data.code,
+        parent_id: data.parent_id,
       });
       await transaction.commit();
 

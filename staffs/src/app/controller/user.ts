@@ -43,7 +43,7 @@ export default class UserController extends Controller {
   };
 
   public create = async (req: Request, res: Response, next: NextFunction) => {
-    const data: types.user.UserCreateParam = {
+    const params: types.user.UserCreateParam = {
       department_id: req.body.department_id,
       name: req.body.name,
       email: req.body.email,
@@ -56,13 +56,13 @@ export default class UserController extends Controller {
       number_salary: req.body.number_salary,
     };
 
-    const user = await this.userRepo.create(data);
+    const data = await this.userRepo.create(params);
 
-    this.created(res, data);
+    this.created(res, data.dataValues);
   };
 
   public update = async (req: Request, res: Response, next: NextFunction) => {
-    const data: types.user.UserUpdateParam = {
+    const params: types.user.UserUpdateParam = {
       department_id: req.body.department_id,
       name: req.body.name,
       email: req.body.email,
@@ -76,9 +76,9 @@ export default class UserController extends Controller {
       time_reserve: req.body.time_reserve,
     };
     const userId = req.params.id;
-    const user = await this.userRepo.update(userId, data);
+    const data = await this.userRepo.update(userId, params);
 
-    res.json(user);
+    this.created(res, data.dataValues)
   };
 
   public delete = async (req: Request, res: Response, next: NextFunction) => {

@@ -32,6 +32,10 @@ export default class Subject extends BaseRepository {
         [Op.and]: andArray,
       };
 
+      if (params.name) {
+        andArray.push(this.makeAmbiguousCondition(params, 'name'))
+      }
+
       if (params.sort !== undefined) {
         if (`${params.sort}`.toLowerCase() === 'desc') {
           findOption.order = [
@@ -64,7 +68,7 @@ export default class Subject extends BaseRepository {
       );
       await transaction.commit();
 
-      return subject.dataValues;
+      return subject;
     } catch (error) {
       await transaction.rollback();
       throw error;

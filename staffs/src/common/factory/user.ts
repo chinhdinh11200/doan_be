@@ -24,7 +24,7 @@ export interface IUserCreateParam {
   email: string;
   password: string;
   code: string;
-  birthday: Date;
+  birthday?: Date;
   position: string;
   degree: string;
   number_salary: number;
@@ -37,7 +37,7 @@ export interface IUserUpdateParam {
   name: string;
   email: string;
   code: string;
-  birthday: Date;
+  birthday?: Date;
   position: string;
   degree: string;
   number_salary: number;

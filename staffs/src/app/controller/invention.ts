@@ -56,9 +56,9 @@ export default class InventionController extends Controller {
             number_recognition: req.body.number_recognition,
         }
 
-        const invention = await this.inventionRepo.update(params, req.params.id);
+        const data = await this.inventionRepo.update(params, req.params.id);
 
-        res.status(OK).json(invention);
+        this.created(res, data);
 
     }
     public delete = async (req: Request, res: Response, next: NextFunction) => {

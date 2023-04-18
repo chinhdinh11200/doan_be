@@ -54,10 +54,9 @@ export default class ArticleController extends Controller {
             num_person: req.body.num_person,
         }
 
-        const article = await this.articleRepo.update(params, req.params.id);
+        const data = await this.articleRepo.update(params, req.params.id);
 
-        res.status(OK).json(article);
-
+        this.created(res, data);
     }
     public delete = async (req: Request, res: Response, next: NextFunction) => {
         const article = await this.articleRepo.delete(req.params.id);

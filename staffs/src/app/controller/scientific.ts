@@ -55,10 +55,9 @@ export default class ScientificController extends Controller {
             date_decision: req.body.date_decision,
         }
 
-        const scientific = await this.scientificRepo.update(params, req.params.id);
+        const data = await this.scientificRepo.update(params, req.params.id);
 
-        res.status(OK).json(scientific);
-
+        this.created(res, data);
     }
     public delete = async (req: Request, res: Response, next: NextFunction) => {
         const scientific = await this.scientificRepo.delete(req.params.id);

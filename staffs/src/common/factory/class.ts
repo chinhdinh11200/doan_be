@@ -3,7 +3,7 @@ import { ICommonAttr, ICommonSearchOption, ICommonSortOption } from './_common';
 export interface IClassMainAttr {
   subject_id: number;
   user_id: number;
-  parent_id: number;
+  parent_id?: number;
   name: string;
   code: string;
   form_teach: string;

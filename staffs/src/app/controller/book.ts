@@ -54,9 +54,9 @@ export default class BookController extends Controller {
             num_page: req.body.num_page,
         }
 
-        const book = await this.bookRepo.update(params, req.params.id);
+        const data = await this.bookRepo.update(params, req.params.id);
 
-        res.status(OK).json(book);
+        this.created(res, data);
 
     }
     public delete = async (req: Request, res: Response, next: NextFunction) => {

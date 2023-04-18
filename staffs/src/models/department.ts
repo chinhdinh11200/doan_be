@@ -15,9 +15,9 @@ export class Department
     InferAttributes<Department>,
     InferCreationAttributes<Department>
   >
-  implements types.department.Attr
-{
+  implements types.department.Attr {
   declare readonly id: CreationOptional<number>;
+  declare readonly parent_id: CreationOptional<number>;
   declare name: string;
   declare code: string;
 
@@ -37,6 +37,10 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.BIGINT.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
+      },
+      parent_id: {
+        allowNull: true,
+        type: dt.BIGINT.UNSIGNED
       },
       name: {
         type: dt.STRING,

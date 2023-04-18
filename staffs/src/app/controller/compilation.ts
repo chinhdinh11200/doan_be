@@ -55,9 +55,9 @@ export default class CompilationController extends Controller {
             num_decision: req.body.num_decision,
         }
 
-        const compilation = await this.compilationRepo.update(params, req.params.id);
+        const data = await this.compilationRepo.update(params, req.params.id);
 
-        res.status(OK).json(compilation);
+        this.created(res, data);
 
     }
     public delete = async (req: Request, res: Response, next: NextFunction) => {

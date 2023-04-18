@@ -57,10 +57,9 @@ export default class RoomController extends Controller {
             endDate: req.body.endDate,
         }
 
-        const room = await this.roomRepo.update(params, req.params.id);
+        const data = await this.roomRepo.update(params, req.params.id);
 
-        res.status(OK).json(room);
-
+        this.created(res, data);
     }
     public delete = async (req: Request, res: Response, next: NextFunction) => {
         const room = await this.roomRepo.delete(req.params.id);

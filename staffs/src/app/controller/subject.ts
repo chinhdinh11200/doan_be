@@ -38,7 +38,7 @@ export default class SubjectController extends Controller {
     }
     const data = await this.subjectRepo.create(params);
 
-    this.created(res, data);
+    this.created(res, data.dataValues);
   }
   public update = async (req: Request, res: Response, next: NextFunction) => {
     
@@ -48,10 +48,9 @@ export default class SubjectController extends Controller {
       form_exam: req.body.form_exam,
     }
 
-    const subject = await this.subjectRepo.update(params, req.params.id);
+    const data = await this.subjectRepo.update(params, req.params.id);
 
-    res.status(OK).json(subject);
-
+    this.created(res, data);
   }
   public delete = async (req: Request, res: Response, next: NextFunction) => {
     const subject = await this.subjectRepo.delete(req.params.id);
