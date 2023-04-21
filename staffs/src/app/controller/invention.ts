@@ -15,7 +15,7 @@ export default class InventionController extends Controller {
     }
     
     public detail = async (req: Request, res: Response, next: NextFunction) => {
-        const user = await this.inventionRepo.findOneById(req.params.id);
+        const user = await this.inventionRepo.detail(req.params.id);
 
         res.json(user)
     }
@@ -34,6 +34,8 @@ export default class InventionController extends Controller {
         const params: types.invention.InventionCreateParam = {
             name: req.body.name,
             code: req.body.code,
+            role: req.body.role,
+            type: req.body.type,
             level: req.body.level,
             num_person: req.body.num_person,
             total_time: req.body.total_time,
@@ -49,6 +51,8 @@ export default class InventionController extends Controller {
         const params: types.invention.InventionUpdateParam = {
             name: req.body.name,
             code: req.body.code,
+            role: req.body.role,
+            type: req.body.type,
             level: req.body.level,
             num_person: req.body.num_person,
             total_time: req.body.total_time,

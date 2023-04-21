@@ -15,7 +15,7 @@ export default class ArticleController extends Controller {
     }
     
     public detail = async (req: Request, res: Response, next: NextFunction) => {
-        const user = await this.articleRepo.findOneById(req.params.id);
+        const user = await this.articleRepo.detail(req.params.id);
 
         res.json(user)
     }
@@ -34,7 +34,9 @@ export default class ArticleController extends Controller {
         const params: types.article.ArticleCreateParam = {
             name: req.body.name,
             code: req.body.code,
+            role: req.body.role,
             type: req.body.type,
+            type_article: req.body.type_article,
             index_article: req.body.index_article,
             total_time: req.body.total_time,
             num_person: req.body.num_person,
@@ -48,7 +50,9 @@ export default class ArticleController extends Controller {
         const params: types.article.ArticleUpdateParam = {
             name: req.body.name,
             code: req.body.code,
+            role: req.body.role,
             type: req.body.type,
+            type_article: req.body.type_article,
             index_article: req.body.index_article,
             total_time: req.body.total_time,
             num_person: req.body.num_person,

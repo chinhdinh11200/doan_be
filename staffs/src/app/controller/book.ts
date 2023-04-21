@@ -13,9 +13,9 @@ export default class BookController extends Controller {
 
         this.bookRepo = new repository.Book(db);
     }
-    
+
     public detail = async (req: Request, res: Response, next: NextFunction) => {
-        const user = await this.bookRepo.findOneById(req.params.id);
+        const user = await this.bookRepo.detail(req.params.id);
 
         res.json(user)
     }
@@ -33,11 +33,13 @@ export default class BookController extends Controller {
     public create = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.book.BookCreateParam = {
             name: req.body.name,
-                    code: req.body.code,
-                    num_publish: req.body.num_publish,
-                    num_person: req.body.num_person,
-                    total_time: req.body.total_time,
-                    num_page: req.body.num_page,
+            code: req.body.code,
+            role: req.body.role,
+            type: req.body.type,
+            num_publish: req.body.num_publish,
+            num_person: req.body.num_person,
+            total_time: req.body.total_time,
+            num_page: req.body.num_page,
         }
         const data = await this.bookRepo.create(params);
 
@@ -48,6 +50,8 @@ export default class BookController extends Controller {
         const params: types.book.BookUpdateParam = {
             name: req.body.name,
             code: req.body.code,
+            role: req.body.role,
+            type: req.body.type,
             num_publish: req.body.num_publish,
             num_person: req.body.num_person,
             total_time: req.body.total_time,

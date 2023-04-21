@@ -39,6 +39,7 @@ export interface ITopicUpdateParam {
     result: number;
     num_person: number;
     total_time: number;
+    type: number;
 }
 
 export interface ITopicSearchParam extends ICommonSearchOption, ICommonSortOption {

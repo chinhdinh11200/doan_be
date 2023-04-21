@@ -16,10 +16,12 @@ export interface IEducationAttr extends IEducationMainAttr, ICommonAttr { }
 export interface IEducationCreateParam {
     name: string;
     code: string;
+    role: string;
     num_credit: number;
     total_time: number;
     num_person: number;
     form_construction: number;
+    type: number;
     num_decision: string;
     date_decision: Date;
 }
@@ -27,10 +29,12 @@ export interface IEducationCreateParam {
 export interface IEducationUpdateParam {
     name: string;
     code: string;
+    role: string;
     num_credit: number;
     total_time: number;
     num_person: number;
     form_construction: number;
+    type: number;
     num_decision: string;
     date_decision: Date;
 }

@@ -15,6 +15,8 @@ export interface IScientificAttr extends IScientificMainAttr, ICommonAttr { }
 export interface IScientificCreateParam {
     name: string;
     code: string;
+    role: string;
+    type: number;
     num_decision: string;
     total_time: number;
     result_level?: number;
@@ -25,6 +27,8 @@ export interface IScientificCreateParam {
 export interface IScientificUpdateParam {
     name: string;
     code: string;
+    role: string;
+    type: number;
     num_decision: string;
     total_time: number;
     result_level: number;

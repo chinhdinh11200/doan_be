@@ -15,7 +15,7 @@ export default class EducationController extends Controller {
     }
     
     public detail = async (req: Request, res: Response, next: NextFunction) => {
-        const user = await this.educationRepo.findOneById(req.params.id);
+        const user = await this.educationRepo.detail(req.params.id);
 
         res.json(user)
     }
@@ -33,6 +33,8 @@ export default class EducationController extends Controller {
         const params: types.education.EducationCreateParam = {
             name: req.body.name,
             code: req.body.code,
+            role: req.body.role,
+            type: req.body.type,
             num_credit: req.body.num_credit,
             num_person: req.body.num_person,
             total_time: req.body.total_time,
@@ -49,6 +51,8 @@ export default class EducationController extends Controller {
         const params: types.education.EducationUpdateParam = {
             name: req.body.name,
             code: req.body.code,
+            role: req.body.role,
+            type: req.body.type,
             num_credit: req.body.num_credit,
             num_person: req.body.num_person,
             total_time: req.body.total_time,

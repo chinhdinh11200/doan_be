@@ -13,9 +13,9 @@ export default class CompilationController extends Controller {
 
         this.compilationRepo = new repository.Compilation(db);
     }
-    
+
     public detail = async (req: Request, res: Response, next: NextFunction) => {
-        const user = await this.compilationRepo.findOneById(req.params.id);
+        const user = await this.compilationRepo.detail(req.params.id);
 
         res.json(user)
     }
@@ -33,6 +33,8 @@ export default class CompilationController extends Controller {
         const params: types.compilation.CompilationCreateParam = {
             name: req.body.name,
             code: req.body.code,
+            role: req.body.role,
+            type: req.body.type,
             num_person: req.body.num_person,
             total_time: req.body.total_time,
             number_credit: req.body.number_credit,
@@ -48,6 +50,8 @@ export default class CompilationController extends Controller {
         const params: types.compilation.CompilationUpdateParam = {
             name: req.body.name,
             code: req.body.code,
+            role: req.body.role,
+            type: req.body.type,
             num_person: req.body.num_person,
             total_time: req.body.total_time,
             number_credit: req.body.number_credit,

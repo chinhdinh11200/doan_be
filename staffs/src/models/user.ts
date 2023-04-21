@@ -9,6 +9,14 @@ import {
 import { types } from '../common';
 import { commonFields } from './_common';
 import { Department } from './department';
+import { Topic } from './topic';
+import { RoleUser } from './role_user';
+import { Article } from './article';
+import { Book } from './book';
+import { Compilation } from './compilation';
+import { Scientific } from './scientific';
+import { Education } from './education';
+import { Invention } from './invention';
 
 export class User extends Model<
   InferAttributes<User>,
@@ -35,6 +43,13 @@ export class User extends Model<
 
   public static ASSOCIATE() {
     User.belongsTo(Department, { foreignKey: 'department_id' });
+    User.belongsToMany(Topic, {through: RoleUser,  foreignKey: 'user_id'});
+    User.belongsToMany(Article, {through: RoleUser,  foreignKey: 'user_id'});
+    User.belongsToMany(Book, {through: RoleUser,  foreignKey: 'user_id'});
+    User.belongsToMany(Compilation, {through: RoleUser,  foreignKey: 'user_id'});
+    User.belongsToMany(Scientific, {through: RoleUser,  foreignKey: 'user_id'});
+    User.belongsToMany(Education, {through: RoleUser,  foreignKey: 'user_id'});
+    User.belongsToMany(Invention, {through: RoleUser,  foreignKey: 'user_id'});
   }
 
 }

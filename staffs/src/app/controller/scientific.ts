@@ -15,7 +15,7 @@ export default class ScientificController extends Controller {
     }
 
     public detail = async (req: Request, res: Response, next: NextFunction) => {
-        const user = await this.scientificRepo.findOneById(req.params.id);
+        const user = await this.scientificRepo.detail(req.params.id);
 
         res.json(user)
     }
@@ -33,6 +33,8 @@ export default class ScientificController extends Controller {
         const params: types.scientific.ScientificCreateParam = {
             name: req.body.name,
             code: req.body.code,
+            role: req.body.role,
+            type: req.body.type,
             num_decision: req.body.num_decision,
             total_time: req.body.total_time,
             result_level: req.body.result_level,
@@ -48,6 +50,8 @@ export default class ScientificController extends Controller {
         const params: types.scientific.ScientificUpdateParam = {
             name: req.body.name,
             code: req.body.code,
+            role: req.body.role,
+            type: req.body.type,
             num_decision: req.body.num_decision,
             total_time: req.body.total_time,
             result_level: req.body.result_level,

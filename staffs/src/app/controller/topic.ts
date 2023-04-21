@@ -15,7 +15,7 @@ export default class TopicController extends Controller {
     }
 
     public detail = async (req: Request, res: Response, next: NextFunction) => {
-        const user = await this.topicRepo.findOneById(req.params.id);
+        const user = await this.topicRepo.detail(req.params.id);
 
         res.json(user)
     }
@@ -59,6 +59,7 @@ export default class TopicController extends Controller {
             result: req.body.result,
             num_person: req.body.num_person,
             total_time: req.body.total_time,
+            type: req.body.type,
         }
 
         const data = await this.topicRepo.update(params, req.params.id);

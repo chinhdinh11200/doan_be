@@ -15,6 +15,8 @@ export interface IInventionAttr extends IInventionMainAttr, ICommonAttr { }
 export interface IInventionCreateParam {
     name: string;
     code: string;
+    role: string;
+    type: number;
     level: number;
     num_person: number;
     total_time: number;
@@ -26,6 +28,8 @@ export interface IInventionUpdateParam {
     name: string;
     code: string;
     level: number;
+    role: string;
+    type: number;
     num_person: number;
     total_time: number;
     date_recognition: Date;

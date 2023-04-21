@@ -14,7 +14,9 @@ export interface IArticleAttr extends IArticleMainAttr, ICommonAttr { }
 export interface IArticleCreateParam {
     name: string;
     code: string;
+    role: string;
     type: number;
+    type_article: number;
     index_article: number;
     total_time: number;
     num_person: number;
@@ -23,7 +25,9 @@ export interface IArticleCreateParam {
 export interface IArticleUpdateParam {
     name: string;
     code: string;
+    role: string;
     type: number;
+    type_article: number;
     index_article: number;
     total_time: number;
     num_person: number;

@@ -8,6 +8,8 @@ import {
 } from 'sequelize';
 import { types } from '../common';
 import { commonFields } from './_common';
+import { User } from './user';
+import { RoleUser } from './role_user';
 
 export class Article
   extends Model<InferAttributes<Article>, InferCreationAttributes<Article>> implements types.article.Attr {
@@ -23,7 +25,9 @@ export class Article
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date>;
 
-  public static ASSOCIATE() { }
+  public static ASSOCIATE() {
+    Article.belongsToMany(User, {through: RoleUser, foreignKey: 'role_able_id'})
+  }
 }
 
 export default (sequelize: Sequelize, dt: typeof DataTypes) => {
