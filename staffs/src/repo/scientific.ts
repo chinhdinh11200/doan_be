@@ -34,7 +34,10 @@ export default class Scientific extends BaseRepository {
       include: [
         {
           model: this.modelUser,
-          through: { attributes: ['time', 'type'], as: 'role_user', },
+          through: { attributes: ['time', 'type'], as: 'role_user',
+          where: {
+            type_role: 5
+          } },
           attributes: ['id', 'name'],
         }
       ],
@@ -85,6 +88,8 @@ export default class Scientific extends BaseRepository {
   public create = async (params: types.scientific.ScientificCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      // const roleUser = params.role;
+      // const roleUserArray: string[] = roleUser.split(',');
       const scientific = await this.model.create(
         {
           name: params.name,
@@ -102,37 +107,35 @@ export default class Scientific extends BaseRepository {
           type: params.type
         }
       });
-      const roleUser = params.role;
-      const roleUserArray: string[] = roleUser.split(',');
-      if (role) {
-        await this.modelRoleAble.create({
-          role_id: role.id,
-          role_able_id: scientific.dataValues.id,
-          type: params.type,
-          time: String(params.total_time),
-        })
-        roleUserArray.forEach(async (roleUser, index) => {
-          let type = TypeRoleUser.member;
-          let time: number = TypeRoleUser.member;
-          if (index === 0) {
-            type = TypeRoleUser.main;
-            time = 400;
-          } else if (index === 1) {
-            type = TypeRoleUser.support
-            time = 120;
-          } else {
+      // if (role) {
+      //   await this.modelRoleAble.create({
+      //     role_id: role.id,
+      //     role_able_id: scientific.dataValues.id,
+      //     type: params.type,
+      //     time: String(params.total_time),
+      //   })
+      //   roleUserArray.forEach(async (roleUser, index) => {
+      //     let type = TypeRoleUser.member;
+      //     let time: number = TypeRoleUser.member;
+      //     if (index === 0) {
+      //       type = TypeRoleUser.main;
+      //       time = 400;
+      //     } else if (index === 1) {
+      //       type = TypeRoleUser.support
+      //       time = 120;
+      //     } else {
 
-            time = 280 / (roleUserArray.length - 2)
-          }
-          // console.log("ROLE", time, type, roleUserArray.length);
-          await this.modelRoleUser.create({
-            role_able_id: scientific.dataValues.id,
-            user_id: Number(roleUser),
-            type: type,
-            time: String(time),
-          })
-        })
-      }
+      //       time = 280 / (roleUserArray.length - 2)
+      //     }
+      //     // console.log("ROLE", time, type, roleUserArray.length);
+      //     await this.modelRoleUser.create({
+      //       role_able_id: scientific.dataValues.id,
+      //       user_id: Number(roleUser),
+      //       type: type,
+      //       time: String(time),
+      //     })
+      //   })
+      // }
       await transaction.commit();
 
       return scientific.dataValues;
@@ -147,6 +150,8 @@ export default class Scientific extends BaseRepository {
   ) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      const roleUser = params.role;
+      const roleUserArray: string[] = roleUser.split(',');
       const scientificUpdate = await this.findById(scientificId);
       if (scientificUpdate) {
         const scientific = await scientificUpdate.update(
@@ -160,9 +165,7 @@ export default class Scientific extends BaseRepository {
           },
           { transaction }
         );
-        const roleUser = params.role;
         if (roleUser !== '') {
-          const roleUserArray: string[] = roleUser.split(',');
 
           const role = await this.modelRole.findOne({
             where: {
@@ -219,7 +222,7 @@ export default class Scientific extends BaseRepository {
                   role_able_id: scientific.dataValues.id,
                   user_id: Number(roleUser),
                   type: type,
-                  time: String(time),
+                  time: time,
                 })
               }
             }

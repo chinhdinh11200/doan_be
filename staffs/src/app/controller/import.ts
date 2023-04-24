@@ -115,6 +115,7 @@ export default class ImportController extends Controller {
                 semester: "1",
                 level_teach: "1",
                 time_teach: "120",
+                
               })
               classParentId = dataValuesClass.id;
               indexParent = index;

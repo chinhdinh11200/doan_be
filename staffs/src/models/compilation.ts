@@ -21,6 +21,7 @@ export class Compilation
   declare date_decision: Date;
   declare num_decision: string;
   declare number_credit: number;
+  declare form_construction: number;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -60,6 +61,9 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.INTEGER,
       },
       total_time: {
+        type: dt.INTEGER,
+      },
+      form_construction: {
         type: dt.INTEGER,
       },
       ...commonFields(),

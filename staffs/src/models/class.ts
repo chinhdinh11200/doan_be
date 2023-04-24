@@ -15,8 +15,7 @@ import { ClassExam } from './classexam';
 
 export class Classes
   extends Model<InferAttributes<Classes>, InferCreationAttributes<Classes>>
-  implements types.classes.Attr
-{
+  implements types.classes.Attr {
   declare readonly id: CreationOptional<number>;
   declare readonly user_id: number;
   declare readonly subject_id: number;
@@ -27,6 +26,9 @@ export class Classes
   declare num_student: number;
   declare num_lesson: number;
   declare num_credit: number;
+  declare marking: CreationOptional<number>;
+  declare exam_create: CreationOptional<number>;
+  declare exam_supervision: CreationOptional<number>;
   declare classroom: string;
   declare startDate: string;
   declare endDate: string;
@@ -82,6 +84,15 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.INTEGER,
       },
       num_credit: {
+        type: dt.INTEGER,
+      },
+      marking: {
+        type: dt.INTEGER,
+      },
+      exam_create: {
+        type: dt.INTEGER,
+      },
+      exam_supervision: {
         type: dt.INTEGER,
       },
       classroom: {

@@ -14,8 +14,9 @@ export class RoleUser
   declare readonly id: CreationOptional<number>;
   declare readonly role_able_id: number;
   declare readonly user_id: number;
-  declare time: string;
+  declare time: number;
   declare type: number;
+  declare type_role: CreationOptional<number>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -40,9 +41,13 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.BIGINT.UNSIGNED,
       },
       time: {
-        type: dt.STRING,
+        type: dt.INTEGER,
       },
       type: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      type_role: {
         type: dt.INTEGER,
         allowNull: true,
       },

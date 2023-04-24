@@ -4,6 +4,7 @@ export interface ICompilationMainAttr {
     name: string;
     code: string;
     num_person: number;
+    form_construction: number;
     total_time: number;
     date_decision: Date;
     num_decision: string;
@@ -18,6 +19,7 @@ export interface ICompilationCreateParam {
     role: string;
     num_person: number;
     total_time: number;
+    form_construction: number;
     date_decision: Date;
     num_decision: string;
     number_credit: number;
@@ -30,6 +32,7 @@ export interface ICompilationUpdateParam {
     role: string;
     num_person: number;
     total_time: number;
+    form_construction: number;
     date_decision: Date;
     num_decision?: string;
     number_credit: number;

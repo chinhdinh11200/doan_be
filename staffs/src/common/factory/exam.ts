@@ -7,10 +7,15 @@ export interface IExamMainAttr {
     name: string;
     code: string;
     form_exam: string;
+    number_quizzes: number;
     number_question: number;
     num_code: number;
     time_work: number;
-    type: TypeExam
+    marking: number;
+    exam_create: number;
+    exam_supervision: number;
+    num_student: number;
+    type: number
 }
 
 export interface IExamAttr extends IExamMainAttr, ICommonAttr { }
@@ -23,9 +28,14 @@ export interface IExamCreateParam {
     code: string;
     form_exam: string;
     number_question: number;
+    number_quizzes?: number;
     num_code: number;
     time_work: number;
-    type: TypeExam
+    marking?: number;
+    exam_create?: number;
+    exam_supervision?: number;
+    num_student?: number;
+    type: number
 }
 
 export interface IExamUpdateParam {
@@ -36,9 +46,14 @@ export interface IExamUpdateParam {
     code: string;
     form_exam: string;
     number_question: number;
+    number_quizzes?: number;
     num_code: number;
     time_work: number;
-    type: TypeExam
+    marking?: number;
+    exam_create?: number;
+    exam_supervision?: number;
+    num_student?: number;
+    type: number
 }
 
 export interface IExamSearchParam extends ICommonSearchOption, ICommonSortOption {
@@ -47,6 +62,6 @@ export interface IExamSearchParam extends ICommonSearchOption, ICommonSortOption
     form_exam?: string;
     number_question?: number;
     time_work?: number;
-    type?: TypeExam
+    type?: number
     search?: string;
 }

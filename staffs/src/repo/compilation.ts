@@ -25,7 +25,7 @@ export default class Compilation extends BaseRepository {
 
     return data?.dataValues;
   };
-  
+
   public detail = async (id: string | number) => {
     const compilation = await this.model.findOne({
       where: {
@@ -34,7 +34,10 @@ export default class Compilation extends BaseRepository {
       include: [
         {
           model: this.modelUser,
-          through: { attributes: ['time', 'type'], as: 'role_user', },
+          through: { attributes: ['time', 'type'], as: 'role_user',
+          where: {
+            type_role: 7
+          } },
           attributes: ['id', 'name'],
         }
       ],
@@ -47,7 +50,7 @@ export default class Compilation extends BaseRepository {
     }
     return data;
   };
-  
+
   public search = async (params: types.compilation.CompilationSearchParam) => {
     // const a: = this.makeMultipleAmbiguousCondition(params, 'search', ['name', 'code']);
     const findOption: FindAndCountOptions = {
@@ -88,12 +91,35 @@ export default class Compilation extends BaseRepository {
   public create = async (params: types.compilation.CompilationCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      const roleUser = params.role;
+      const roleUserArray: string[] = roleUser.split(',');
+      var totalTime: number;
+      var timeMain: number;
+      var timeMember: number;
+      switch (params.form_construction) {
+        case 0:
+          totalTime = 42 * params.number_credit;
+          timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length;
+          timeMember = 0.6 * totalTime / roleUserArray.length;
+          break;
+        case 1:
+          totalTime = 14 * params.number_credit;
+          timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length;
+          timeMember = 0.6 * totalTime / roleUserArray.length;
+          break;
+        default:
+          totalTime = 0;
+          timeMain = 0;
+          timeMember = 0;
+          break;
+      }
       const compilation = await this.model.create(
         {
           name: params.name,
           code: params.code,
-          num_person: params.num_person,
-          total_time: params.total_time,
+          form_construction: params.form_construction,
+          num_person: roleUserArray.length,
+          total_time: totalTime,
           number_credit: params.number_credit,
           date_decision: params.date_decision,
           num_decision: params.num_decision,
@@ -106,35 +132,33 @@ export default class Compilation extends BaseRepository {
           type: params.type
         }
       });
-      const roleUser = params.role;
-      const roleUserArray: string[] = roleUser.split(',');
       if (role) {
         await this.modelRoleAble.create({
           role_id: role.id,
           role_able_id: compilation.dataValues.id,
           type: params.type,
-          time: String(params.total_time),
+          time: String(totalTime),
         })
         roleUserArray.forEach(async (roleUser, index) => {
           let type = TypeRoleUser.member;
-          let time: number = TypeRoleUser.member;
           if (index === 0) {
             type = TypeRoleUser.main;
-            time = 400;
-          } else if (index === 1) {
-            type = TypeRoleUser.support
-            time = 120;
+            await this.modelRoleUser.create({
+              role_able_id: compilation.dataValues.id,
+              user_id: Number(roleUser),
+              type: type,
+              type_role: params.type,
+              time: timeMain,
+            })
           } else {
-
-            time = 280 / (roleUserArray.length - 2)
+            await this.modelRoleUser.create({
+              role_able_id: compilation.dataValues.id,
+              user_id: Number(roleUser),
+              type: type,
+              type_role: params.type,
+              time: timeMember,
+            })
           }
-          // console.log("ROLE", time, type, roleUserArray.length);
-          await this.modelRoleUser.create({
-            role_able_id: compilation.dataValues.id,
-            user_id: Number(roleUser),
-            type: type,
-            time: String(time),
-          })
         })
       }
 
@@ -152,24 +176,55 @@ export default class Compilation extends BaseRepository {
   ) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      const roleUser = params.role;
+      const roleUserArray: string[] = roleUser.split(',');
+      var totalTime: number;
+      var timeMember: number;
+      var timeMain: number;
+      switch (params.form_construction) {
+        case 0:
+          totalTime = 42 * params.number_credit;
+          timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length;
+          timeMember = 0.6 * totalTime / roleUserArray.length;
+          break;
+        case 1:
+          totalTime = 14 * params.number_credit;
+          timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length;
+          timeMember = 0.6 * totalTime / roleUserArray.length;
+          break;
+        default:
+          totalTime = 0;
+          timeMain = 0;
+          timeMember = 0;
+          break;
+      }
       const compilationUpdate = await this.findById(compilationId);
       if (compilationUpdate) {
         const compilation = await compilationUpdate.update(
           {
             name: params.name,
             code: params.code,
+            form_construction: params.form_construction,
             num_person: params.num_person,
-            total_time: params.total_time,
+            total_time: totalTime,
             number_credit: params.number_credit,
             date_decision: params.date_decision,
             num_decision: params.num_decision,
           },
           { transaction }
         );
-        const roleUser = params.role;
-        if (roleUser !== '') {
-          const roleUserArray: string[] = roleUser.split(',');
 
+        const roleAble = await this.modelRoleAble.findOne({
+          where: {
+            role_able_id: compilationUpdate.id,
+            type: params.type,
+          }
+        });
+        roleAble?.set({
+          time: String(totalTime)
+        })
+        roleAble?.save();
+        if (roleUser !== '') {
           const role = await this.modelRole.findOne({
             where: {
               type: params.type
@@ -180,7 +235,8 @@ export default class Compilation extends BaseRepository {
           const object = await this.modelRoleUser.destroy({
             where: {
               role_able_id: compilationUpdate.dataValues.id,
-              type: TypeRoleUser.member
+              type: TypeRoleUser.member,
+              type_role: params.type,
             },
             force: true
           })
@@ -188,50 +244,32 @@ export default class Compilation extends BaseRepository {
             for (let index = 0; index < roleUserArray.length; index++) {
               const roleUser = roleUserArray[index];
               let type = TypeRoleUser.member;
-              let time: number = 0;
-              let user_id: number;
               if (index === 0) {
                 type = TypeRoleUser.main;
-                time = 400;
-                user_id = Number(roleUser);
                 const mainRole = await this.modelRoleUser.findOne({
                   where: {
                     role_able_id: compilation.dataValues.id,
-                    type: TypeRoleUser.main
+                    type: TypeRoleUser.main,
+                    type_role: params.type,
                   }
-                });
-                if (mainRole) {
-                  mainRole.set({ user_id: user_id })
-                  mainRole.save();
-                }
-              } else if (index === 1) {
-                type = TypeRoleUser.support
-                time = 120;
-                user_id = Number(roleUser);
-                const supportRole = await this.modelRoleUser.findOne({
-                  where: {
-                    role_able_id: compilation.dataValues.id,
-                    type: TypeRoleUser.support
-                  }
-                });
-                if (supportRole) {
-                  supportRole.set({ user_id: user_id })
-                  supportRole.save();
-                }
+                })
+                mainRole?.set({
+                  user_id: Number(roleUser), time: timeMain,
+                  type_role: params.type,
+                })
+                mainRole?.save();
               } else {
-                time = 280 / (roleUserArray.length - 2)
-                user_id = Number(roleUser);
                 await this.modelRoleUser.upsert({
                   role_able_id: compilation.dataValues.id,
                   user_id: Number(roleUser),
                   type: type,
-                  time: String(time),
+                  type_role: params.type,
+                  time: timeMember,
                 })
               }
             }
           }
         }
-
         await transaction.commit();
 
         return compilation.dataValues;

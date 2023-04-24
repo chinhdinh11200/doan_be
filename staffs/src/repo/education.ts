@@ -34,7 +34,10 @@ export default class Education extends BaseRepository {
       include: [
         {
           model: this.modelUser,
-          through: { attributes: ['time', 'type'], as: 'role_user', },
+          through: { attributes: ['time', 'type'], as: 'role_user',
+          where: {
+            type_role: 6
+          } },
           attributes: ['id', 'name'],
         }
       ],
@@ -80,19 +83,41 @@ export default class Education extends BaseRepository {
       }
     }
     const educations = this.model.findAndCountAll(findOption);
-    
+
     return educations;
   };
   public create = async (params: types.education.EducationCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      const roleUser = params.role;
+      const roleUserArray: string[] = roleUser.split(',');
+      var totalTime: number;
+      var timeMember: number;
+      switch (params.form_construction) {
+        case 0:
+          totalTime = 3.75 * params.num_credit;
+          break;
+        case 1:
+          totalTime = 11.5 * params.num_credit;
+          break;
+        case 2:
+          totalTime = 1.5 * params.num_credit;
+          break;
+        case 3:
+          totalTime = 3.5 * params.num_credit;
+          break;
+        default:
+          totalTime = 0;
+          break;
+      }
+      timeMember = totalTime / roleUserArray.length;
       const education = await this.model.create(
         {
           name: params.name,
           code: params.code,
           num_credit: params.num_credit,
-          num_person: params.num_person,
-          total_time: params.total_time,
+          num_person: roleUserArray.length,
+          total_time: totalTime,
           form_construction: params.form_construction,
           num_decision: params.num_decision,
           date_decision: params.date_decision,
@@ -105,34 +130,21 @@ export default class Education extends BaseRepository {
           type: params.type
         }
       });
-      const roleUser = params.role;
-      const roleUserArray: string[] = roleUser.split(',');
       if (role) {
         await this.modelRoleAble.create({
           role_id: role.id,
           role_able_id: education.dataValues.id,
           type: params.type,
-          time: String(params.total_time),
+          time: String(totalTime),
         })
         roleUserArray.forEach(async (roleUser, index) => {
           let type = TypeRoleUser.member;
-          let time: number = TypeRoleUser.member;
-          if (index === 0) {
-            type = TypeRoleUser.main;
-            time = 400;
-          } else if (index === 1) {
-            type = TypeRoleUser.support
-            time = 120;
-          } else {
-
-            time = 280 / (roleUserArray.length - 2)
-          }
-          // console.log("ROLE", time, type, roleUserArray.length);
           await this.modelRoleUser.create({
             role_able_id: education.dataValues.id,
             user_id: Number(roleUser),
             type: type,
-            time: String(time),
+            type_role: params.type,
+            time: timeMember,
           })
         })
       }
@@ -151,6 +163,28 @@ export default class Education extends BaseRepository {
   ) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      const roleUser = params.role;
+      const roleUserArray: string[] = roleUser.split(',');
+      var totalTime: number;
+      var timeMember: number;
+      switch (params.form_construction) {
+        case 0:
+          totalTime = 3.75 * params.num_credit;
+          break;
+        case 1:
+          totalTime = 11.5 * params.num_credit;
+          break;
+        case 2:
+          totalTime = 1.5 * params.num_credit;
+          break;
+        case 3:
+          totalTime = 3.5 * params.num_credit;
+          break;
+        default:
+          totalTime = 0;
+          break;
+      }
+      timeMember = totalTime / roleUserArray.length;
       const educationUpdate = await this.findById(educationId);
       if (educationUpdate) {
         const education = await educationUpdate.update(
@@ -159,17 +193,24 @@ export default class Education extends BaseRepository {
             code: params.code,
             num_credit: params.num_credit,
             num_person: params.num_person,
-            total_time: params.total_time,
+            total_time: totalTime,
             form_construction: params.form_construction,
             num_decision: params.num_decision,
             date_decision: params.date_decision,
           },
           { transaction }
         );
-        const roleUser = params.role;
+        const roleAble = await this.modelRoleAble.findOne({
+          where: {
+            role_able_id: educationUpdate.id,
+            type: params.type,
+          }
+        });
+        roleAble?.set({
+          time: String(totalTime)
+        })
+        roleAble?.save();
         if (roleUser !== '') {
-          const roleUserArray: string[] = roleUser.split(',');
-
           const role = await this.modelRole.findOne({
             where: {
               type: params.type
@@ -180,54 +221,20 @@ export default class Education extends BaseRepository {
           const object = await this.modelRoleUser.destroy({
             where: {
               role_able_id: educationUpdate.dataValues.id,
-              type: TypeRoleUser.member
+              type: TypeRoleUser.member,
+              type_role: params.type,
             },
             force: true
           })
           if (role) {
             for (let index = 0; index < roleUserArray.length; index++) {
-              const roleUser = roleUserArray[index];
-              let type = TypeRoleUser.member;
-              let time: number = 0;
-              let user_id: number;
-              if (index === 0) {
-                type = TypeRoleUser.main;
-                time = 400;
-                user_id = Number(roleUser);
-                const mainRole = await this.modelRoleUser.findOne({
-                  where: {
-                    role_able_id: education.dataValues.id,
-                    type: TypeRoleUser.main
-                  }
-                });
-                if (mainRole) {
-                  mainRole.set({ user_id: user_id })
-                  mainRole.save();
-                }
-              } else if (index === 1) {
-                type = TypeRoleUser.support
-                time = 120;
-                user_id = Number(roleUser);
-                const supportRole = await this.modelRoleUser.findOne({
-                  where: {
-                    role_able_id: education.dataValues.id,
-                    type: TypeRoleUser.support
-                  }
-                });
-                if (supportRole) {
-                  supportRole.set({ user_id: user_id })
-                  supportRole.save();
-                }
-              } else {
-                time = 280 / (roleUserArray.length - 2)
-                user_id = Number(roleUser);
-                await this.modelRoleUser.upsert({
-                  role_able_id: education.dataValues.id,
-                  user_id: Number(roleUser),
-                  type: type,
-                  time: String(time),
-                })
-              }
+              await this.modelRoleUser.upsert({
+                role_able_id: education.dataValues.id,
+                user_id: Number(roleUserArray[index]),
+                type: TypeRoleUser.member,
+                type_role: params.type,
+                time: timeMember,
+              })
             }
           }
         }

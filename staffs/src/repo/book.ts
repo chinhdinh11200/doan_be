@@ -34,7 +34,12 @@ export default class Book extends BaseRepository {
       include: [
         {
           model: this.modelUser,
-          through: { attributes: ['time', 'type'], as: 'role_user', },
+          through: {
+            attributes: ['time', 'type'], as: 'role_user',
+            where: {
+              type_role: 4
+            }
+          },
           attributes: ['id', 'name'],
           // as: 'role_user',
         }
@@ -88,13 +93,39 @@ export default class Book extends BaseRepository {
   public create = async (params: types.book.BookCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      const roleUser = params.role;
+      const roleUserArray: string[] = roleUser.split(',');
+      var totalTime: number;
+      var timeMain: number;
+      var timeMember: number;
+      switch (params.type_book) {
+        case 0:
+          totalTime = 600;
+          break;
+        case 1:
+          totalTime = 400;
+          break;
+        case 2:
+          totalTime = 300;
+          break;
+        case 3:
+          totalTime = 400;
+          break;
+        default:
+          totalTime = 0;
+          break;
+      }
+
+      timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length;
+      timeMember = 0.6 * totalTime / roleUserArray.length;
       const book = await this.model.create(
         {
           name: params.name,
           code: params.code,
           num_publish: params.num_publish,
-          num_person: params.num_person,
-          total_time: params.total_time,
+          num_person: roleUserArray.length,
+          total_time: totalTime,
+          type: params.type_book,
           num_page: params.num_page,
         },
         { transaction }
@@ -105,35 +136,33 @@ export default class Book extends BaseRepository {
           type: params.type
         }
       });
-      const roleUser = params.role;
-      const roleUserArray: string[] = roleUser.split(',');
       if (role) {
         await this.modelRoleAble.create({
           role_id: role.id,
           role_able_id: book.dataValues.id,
           type: params.type,
-          time: String(params.total_time),
+          time: String(totalTime),
         })
         roleUserArray.forEach(async (roleUser, index) => {
           let type = TypeRoleUser.member;
-          let time: number = TypeRoleUser.member;
           if (index === 0) {
             type = TypeRoleUser.main;
-            time = 400;
-          } else if (index === 1) {
-            type = TypeRoleUser.support
-            time = 120;
+            await this.modelRoleUser.create({
+              role_able_id: book.dataValues.id,
+              user_id: Number(roleUser),
+              type: type,
+              type_role: params.type,
+              time: timeMain,
+            })
           } else {
-
-            time = 280 / (roleUserArray.length - 2)
+            await this.modelRoleUser.create({
+              role_able_id: book.dataValues.id,
+              user_id: Number(roleUser),
+              type: type,
+              type_role: params.type,
+              time: timeMember,
+            })
           }
-          // console.log("ROLE", time, type, roleUserArray.length);
-          await this.modelRoleUser.create({
-            role_able_id: book.dataValues.id,
-            user_id: Number(roleUser),
-            type: type,
-            time: String(time),
-          })
         })
       }
 
@@ -151,6 +180,30 @@ export default class Book extends BaseRepository {
   ) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      const roleUser = params.role;
+      const roleUserArray: string[] = roleUser.split(',');
+      var totalTime: number;
+      var timeMain: number;
+      var timeMember: number;
+      switch (params.type_book) {
+        case 0:
+          totalTime = 600;
+          break;
+        case 1:
+          totalTime = 400;
+          break;
+        case 2:
+          totalTime = 300;
+          break;
+        case 3:
+          totalTime = 400;
+          break;
+        default:
+          totalTime = 0;
+          break;
+      }
+      timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length;
+      timeMember = 0.6 * totalTime / roleUserArray.length;
       const bookUpdate = await this.findById(bookId);
       if (bookUpdate) {
         const book = await bookUpdate.update(
@@ -158,17 +211,25 @@ export default class Book extends BaseRepository {
             name: params.name,
             code: params.code,
             num_publish: params.num_publish,
-            num_person: params.num_person,
-            total_time: params.total_time,
+            num_person: roleUserArray.length,
+            total_time: totalTime,
             num_page: params.num_page,
+            type: params.type_book,
           },
           { transaction }
         );
 
-        const roleUser = params.role;
+        const roleAble = await this.modelRoleAble.findOne({
+          where: {
+            role_able_id: bookUpdate.id,
+            type: params.type,
+          }
+        });
+        roleAble?.set({
+          time: String(totalTime)
+        })
+        roleAble?.save();
         if (roleUser !== '') {
-          const roleUserArray: string[] = roleUser.split(',');
-
           const role = await this.modelRole.findOne({
             where: {
               type: params.type
@@ -179,7 +240,8 @@ export default class Book extends BaseRepository {
           const object = await this.modelRoleUser.destroy({
             where: {
               role_able_id: bookUpdate.dataValues.id,
-              type: TypeRoleUser.member
+              type: TypeRoleUser.member,
+              type_role: params.type,
             },
             force: true
           })
@@ -187,50 +249,34 @@ export default class Book extends BaseRepository {
             for (let index = 0; index < roleUserArray.length; index++) {
               const roleUser = roleUserArray[index];
               let type = TypeRoleUser.member;
-              let time: number = 0;
               let user_id: number;
               if (index === 0) {
                 type = TypeRoleUser.main;
-                time = 400;
                 user_id = Number(roleUser);
                 const mainRole = await this.modelRoleUser.findOne({
                   where: {
                     role_able_id: book.dataValues.id,
-                    type: TypeRoleUser.main
+                    type: TypeRoleUser.main,
+                    type_role: params.type,
                   }
                 });
                 if (mainRole) {
-                  mainRole.set({ user_id: user_id })
+                  mainRole.set({ user_id: user_id, time: timeMain })
                   mainRole.save();
                 }
-              } else if (index === 1) {
-                type = TypeRoleUser.support
-                time = 120;
-                user_id = Number(roleUser);
-                const supportRole = await this.modelRoleUser.findOne({
-                  where: {
-                    role_able_id: book.dataValues.id,
-                    type: TypeRoleUser.support
-                  }
-                });
-                if (supportRole) {
-                  supportRole.set({ user_id: user_id })
-                  supportRole.save();
-                }
               } else {
-                time = 280 / (roleUserArray.length - 2)
                 user_id = Number(roleUser);
                 await this.modelRoleUser.upsert({
                   role_able_id: book.dataValues.id,
                   user_id: Number(roleUser),
                   type: type,
-                  time: String(time),
+                  type_role: params.type,
+                  time: timeMember,
                 })
               }
             }
           }
         }
-
         await transaction.commit();
 
         return book.dataValues;

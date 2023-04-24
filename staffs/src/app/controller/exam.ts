@@ -41,6 +41,7 @@ export default class ExamController extends Controller {
             number_question: Number(req.body.number_question),
             num_code: Number(req.body.num_code),
             time_work: Number(req.body.time_work),
+            num_student: Number(req.body.num_student),
             type: Number(req.body.type),
         }
         const data = await this.examRepo.create(params);
@@ -59,6 +60,11 @@ export default class ExamController extends Controller {
             number_question: Number(req.body.number_question),
             num_code: Number(req.body.num_code),
             time_work: Number(req.body.time_work),
+            number_quizzes: Number(req.body.number_quizzes),
+            marking: Number(req.body.marking),
+            num_student: Number(req.body.num_student),
+            exam_create: Number(req.body.exam_create),
+            exam_supervision: Number(req.body.exam_supervision),
             type: Number(req.body.type),
         }
 

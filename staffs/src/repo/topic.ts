@@ -36,9 +36,14 @@ export default class Topic extends BaseRepository {
       include: [
         {
           model: this.modelUser,
-          through: { attributes: ['time', 'type'], as: 'role_user', },
+          through: {
+            attributes: ['time', 'type'], as: 'role_user',
+            where: {
+              type_role: 1
+            }
+          },
           attributes: ['id', 'name'],
-          // as: 'role_user',
+          as: 'users',
         }
       ],
       order: [
@@ -48,6 +53,7 @@ export default class Topic extends BaseRepository {
     const data = {
       ...topic?.dataValues
     }
+
     return data;
   };
 
@@ -55,7 +61,6 @@ export default class Topic extends BaseRepository {
     const findOption: FindAndCountOptions = {
       include: [],
     };
-
     if (params !== undefined) {
       const andArray: WhereOptions[] = [];
       if (params.search !== undefined) {
@@ -85,11 +90,36 @@ export default class Topic extends BaseRepository {
     const topics = this.model.findAndCountAll(findOption);
     return topics;
   };
+
   public create = async (params: types.topic.TopicCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
     try {
       const roleUser = params.role;
       const roleUserArray: string[] = roleUser.split(',');
+      var totalTime: number = 0;
+      var timeMain: number = 0;
+      var timeSupport: number = 0;
+      var timeMember: number = 0;
+      switch (params.level) {
+        case 0:
+          totalTime = 200;
+          timeMain = roleUserArray.length === 1 ? 200 : 150
+          timeMember = roleUserArray.length === 1 ? 0 : 50 / (roleUserArray.length - 1)
+          break;
+        case 1:
+          totalTime = 450;
+          timeMain = 250;
+          timeSupport = 75
+          timeMember = 125 / (roleUserArray.length - 2)
+          break;
+        case 2:
+          totalTime = 800;
+          timeMain = 400;
+          timeSupport = 120
+          timeMember = 280 / (roleUserArray.length - 2)
+          break;
+        default:
+      }
       const topic = await this.model.create(
         {
           name: params.name,
@@ -100,7 +130,7 @@ export default class Topic extends BaseRepository {
           acceptDate: params.acceptDate,
           result: params.result,
           num_person: roleUserArray.length,
-          total_time: TotalTime.topic,
+          total_time: totalTime,
         },
         { transaction }
       );
@@ -115,28 +145,38 @@ export default class Topic extends BaseRepository {
           role_id: role.id,
           role_able_id: topic.dataValues.id,
           type: params.type,
-          time: String(params.total_time),
+          time: String(totalTime),
         })
         roleUserArray.forEach(async (roleUser, index) => {
-          let type = TypeRoleUser.member;
-          let time: number = TypeRoleUser.member;
+          let type = TypeRoleUser.member
           if (index === 0) {
-            type = TypeRoleUser.main;
-            time = 400;
-          } else if (index === 1) {
+            type = TypeRoleUser.main; await this.modelRoleUser.create({
+              role_able_id: topic.dataValues.id,
+              user_id: Number(roleUser),
+              type: type,
+              type_role: params.type,
+              time: timeMain,
+            })
+          } else if (index === 1 && params.level != 0) {
             type = TypeRoleUser.support
-            time = 120;
+            await this.modelRoleUser.create({
+              role_able_id: topic.dataValues.id,
+              user_id: Number(roleUser),
+              type: type,
+              type_role: params.type,
+              time: timeSupport,
+            })
           } else {
-
-            time = 280 / (roleUserArray.length - 2)
+            await this.modelRoleUser.create({
+              role_able_id: topic.dataValues.id,
+              user_id: Number(roleUser),
+              type: type,
+              type_role: params.type,
+              time: timeMember,
+            })
           }
           // console.log("ROLE", time, type, roleUserArray.length);
-          await this.modelRoleUser.create({
-            role_able_id: topic.dataValues.id,
-            user_id: Number(roleUser),
-            type: type,
-            time: String(time),
-          })
+
         })
       }
       await transaction.commit();
@@ -155,6 +195,32 @@ export default class Topic extends BaseRepository {
     try {
       const topicUpdate = await this.findById(topicId);
       if (topicUpdate) {
+        const roleUser = params.role;
+        const roleUserArray: string[] = roleUser.split(',');
+        var totalTime: number = 0;
+        var timeMain: number = 0;
+        var timeSupport: number = 0;
+        var timeMember: number = 0;
+        switch (params.level) {
+          case 0:
+            totalTime = 200;
+            timeMain = roleUserArray.length === 1 ? 200 : 150
+            timeMember = roleUserArray.length === 1 ? 0 : 50 / (roleUserArray.length - 1)
+            break;
+          case 1:
+            totalTime = 450;
+            timeMain = 250;
+            timeSupport = 75
+            timeMember = 125 / (roleUserArray.length - 2)
+            break;
+          case 2:
+            totalTime = 800;
+            timeMain = 400;
+            timeSupport = 120
+            timeMember = 280 / (roleUserArray.length - 2)
+            break;
+          default:
+        }
         const topic = await topicUpdate.update(
           {
             name: params.name,
@@ -164,54 +230,62 @@ export default class Topic extends BaseRepository {
             startDate: params.startDate,
             acceptDate: params.acceptDate,
             result: params.result,
-            num_person: params.num_person,
-            total_time: params.total_time,
+            num_person: roleUserArray.length,
+            total_time: totalTime,
           },
           { transaction }
         );
-        // update trung gian
-        const roleUser = params.role;
-        if (roleUser !== '') {
-          const roleUserArray: string[] = roleUser.split(',');
 
+        const roleAble = await this.modelRoleAble.findOne({
+          where: {
+            role_able_id: topicUpdate.id,
+            type: params.type,
+          }
+        });
+        roleAble?.set({
+          time: String(totalTime)
+        })
+        roleAble?.save();
+        // update trung gian
+        if (roleUser !== '') {
           const role = await this.modelRole.findOne({
             where: {
               type: params.type
             }
           });
-
           // roleUserDelete.
           const object = await this.modelRoleUser.destroy({
             where: {
               role_able_id: topicUpdate.dataValues.id,
-              type: TypeRoleUser.member
+              type: TypeRoleUser.member,
+              type_role: params.type,
             },
             force: true
           })
-          console.log(object);
           if (role) {
             for (let index = 0; index < roleUserArray.length; index++) {
               const roleUser = roleUserArray[index];
               let type = TypeRoleUser.member;
-              let time: number = 0;
               let user_id: number;
               if (index === 0) {
                 type = TypeRoleUser.main;
-                time = 400;
                 user_id = Number(roleUser);
                 const mainRole = await this.modelRoleUser.findOne({
                   where: {
                     role_able_id: topic.dataValues.id,
-                    type: TypeRoleUser.main
+                    type: TypeRoleUser.main,
+                    type_role: params.type,
                   }
                 });
                 if (mainRole) {
-                  mainRole.set({ user_id: user_id })
+                  mainRole.set({
+                    user_id: user_id, time: timeMain,
+                    type_role: params.type,
+                  })
                   mainRole.save();
                 }
-              } else if (index === 1) {
+              } else if (index === 1 && params.level !== 0) {
                 type = TypeRoleUser.support
-                time = 120;
                 user_id = Number(roleUser);
                 const supportRole = await this.modelRoleUser.findOne({
                   where: {
@@ -220,17 +294,20 @@ export default class Topic extends BaseRepository {
                   }
                 });
                 if (supportRole) {
-                  supportRole.set({ user_id: user_id })
+                  supportRole.set({
+                    user_id: user_id,
+                    type_role: params.type,
+                  })
                   supportRole.save();
                 }
               } else {
-                time = 280 / (roleUserArray.length - 2)
                 user_id = Number(roleUser);
                 await this.modelRoleUser.upsert({
                   role_able_id: topic.dataValues.id,
                   user_id: Number(roleUser),
                   type: type,
-                  time: String(time),
+                  type_role: params.type,
+                  time: timeMember,
                 })
               }
             }
@@ -254,7 +331,7 @@ export default class Topic extends BaseRepository {
           id: topicId,
         },
       });
-      
+
       await this.modelRoleUser.destroy({
         where: {
           role_able_id: topicId,

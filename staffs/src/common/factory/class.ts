@@ -6,6 +6,9 @@ export interface IClassMainAttr {
   parent_id?: number;
   name: string;
   code: string;
+  marking: number;
+  exam_create: number;
+  exam_supervision: number;
   form_teach: string;
   num_student: number;
   num_lesson: number;
@@ -27,6 +30,9 @@ export interface IClassCreateParam {
   name: string;
   code: string;
   form_teach: string;
+  marking?: number;
+  exam_create?: number;
+  exam_supervision?: number;
   num_student: number; 
   num_lesson: number;
   num_credit: number;
@@ -44,6 +50,9 @@ export interface IClassUpdateParam {
   parent_id: number;
   name: string;
   code: string;
+  marking?: number;
+  exam_create?: number;
+  exam_supervision?: number;
   form_teach: string;
   num_student: number;
   num_lesson: number;

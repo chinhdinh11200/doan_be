@@ -25,6 +25,11 @@ export class Exam
   declare code: string;
   declare form_exam: string;
   declare number_question: number;
+  declare number_quizzes: CreationOptional<number>;
+  declare marking: CreationOptional<number>;
+  declare exam_create: CreationOptional<number>;
+  declare exam_supervision: CreationOptional<number>;
+  declare num_student: CreationOptional<number>;
   declare num_code: number;
   declare time_work: number;
   declare type: number;
@@ -35,9 +40,6 @@ export class Exam
 
   public static ASSOCIATE() {
     Exam.belongsTo(User, { foreignKey: 'user_id' });
-    //   Exam.hasOne(Mark);
-    //   Exam.hasMany(Room);
-    //   Exam.belongsToMany(Classes, {through: ClassExam});
   }
 }
 
@@ -74,7 +76,26 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
       num_code: {
         type: dt.INTEGER,
       },
+      num_student: {
+        type: dt.INTEGER,
+      },
       form_exam: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      number_quizzes: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      marking: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      exam_create: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      exam_supervision: {
         type: dt.INTEGER,
         allowNull: true,
       },
@@ -82,6 +103,7 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.INTEGER,
         allowNull: true,
       },
+
       type: {
         type: dt.INTEGER,
         allowNull: true,

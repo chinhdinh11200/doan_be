@@ -8,6 +8,8 @@ import {
 } from 'sequelize';
 import { types } from '../common';
 import { commonFields } from './_common';
+import { User } from './user';
+import { RoleUser } from './role_user';
 
 export class Book
   extends Model<InferAttributes<Book>, InferCreationAttributes<Book>> implements types.book.Attr {
@@ -18,12 +20,15 @@ export class Book
   declare num_page: number;
   declare num_person: number;
   declare total_time: number;
+  declare type: number;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date>;
 
-  public static ASSOCIATE() { }
+  public static ASSOCIATE() {
+    Book.belongsToMany(User, { through: RoleUser, foreignKey: 'role_able_id' })
+  }
 }
 
 export default (sequelize: Sequelize, dt: typeof DataTypes) => {
@@ -48,6 +53,9 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.INTEGER,
       },
       num_person: {
+        type: dt.INTEGER,
+      },
+      type: {
         type: dt.INTEGER,
       },
       total_time: {

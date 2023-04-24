@@ -19,6 +19,7 @@ export interface IBookCreateParam {
     num_publish: string;
     num_page: number;
     total_time: number;
+    type_book: number;
     type: number;
 }
 
@@ -30,6 +31,7 @@ export interface IBookUpdateParam {
     num_publish: string;
     num_page: number;
     total_time: number;
+    type_book: number;
     type: number;
 }
 

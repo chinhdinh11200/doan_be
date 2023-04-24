@@ -35,9 +35,10 @@ export default class CompilationController extends Controller {
             code: req.body.code,
             role: req.body.role,
             type: req.body.type,
+            form_construction: req.body.form_construction,
             num_person: req.body.num_person,
             total_time: req.body.total_time,
-            number_credit: req.body.number_credit,
+            number_credit: req.body.num_credit,
             date_decision: req.body.date_decision,
             num_decision: req.body.num_decision,
         }
@@ -52,9 +53,10 @@ export default class CompilationController extends Controller {
             code: req.body.code,
             role: req.body.role,
             type: req.body.type,
+            form_construction: req.body.form_construction,
             num_person: req.body.num_person,
             total_time: req.body.total_time,
-            number_credit: req.body.number_credit,
+            number_credit: req.body.num_credit,
             date_decision: req.body.date_decision,
             num_decision: req.body.num_decision,
         }

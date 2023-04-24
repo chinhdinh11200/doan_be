@@ -33,5 +33,7 @@ export enum TypeRoleUser {
 
 export enum TotalTime {
   topic = 800,
+  article = 400,
+  book = 400,
 }
 

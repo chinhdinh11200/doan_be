@@ -34,7 +34,12 @@ export default class Invention extends BaseRepository {
       include: [
         {
           model: this.modelUser,
-          through: { attributes: ['time', 'type'], as: 'role_user', },
+          through: {
+            attributes: ['time', 'type'], as: 'role_user',
+            where: {
+              type_role: 3
+            }
+          },
           attributes: ['id', 'name'],
         }
       ],
@@ -87,13 +92,36 @@ export default class Invention extends BaseRepository {
   public create = async (params: types.invention.InventionCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      const roleUser = params.role;
+      const roleUserArray: string[] = roleUser.split(',');
+      var totalTime: number;
+      switch (params.level) {
+        case 0:
+          totalTime = 400;
+          break;
+        case 1:
+          totalTime = 250;
+          break;
+        case 2:
+          totalTime = 200;
+          break;
+        case 3:
+          totalTime = 100;
+          break;
+        case 4:
+          totalTime = 250;
+          break;
+        default:
+          totalTime = 0;
+          break;
+      }
       const invention = await this.model.create(
         {
           name: params.name,
           code: params.code,
           level: params.level,
-          num_person: params.num_person,
-          total_time: params.total_time,
+          num_person: roleUserArray.length,
+          total_time: totalTime,
           date_recognition: params.date_recognition,
           number_recognition: params.number_recognition,
         },
@@ -104,34 +132,23 @@ export default class Invention extends BaseRepository {
           type: params.type
         }
       });
-      const roleUser = params.role;
-      const roleUserArray: string[] = roleUser.split(',');
       if (role) {
         await this.modelRoleAble.create({
           role_id: role.id,
           role_able_id: invention.dataValues.id,
           type: params.type,
-          time: String(params.total_time),
+          time: String(totalTime),
         })
         roleUserArray.forEach(async (roleUser, index) => {
           let type = TypeRoleUser.member;
-          let time: number = TypeRoleUser.member;
-          if (index === 0) {
-            type = TypeRoleUser.main;
-            time = 400;
-          } else if (index === 1) {
-            type = TypeRoleUser.support
-            time = 120;
-          } else {
-
-            time = 280 / (roleUserArray.length - 2)
-          }
+          let time: number = totalTime / roleUserArray.length
           // console.log("ROLE", time, type, roleUserArray.length);
           await this.modelRoleUser.create({
             role_able_id: invention.dataValues.id,
             user_id: Number(roleUser),
             type: type,
-            time: String(time),
+            type_role: params.type,
+            time: time,
           })
         })
       }
@@ -149,7 +166,30 @@ export default class Invention extends BaseRepository {
   ) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      const roleUser = params.role;
+      const roleUserArray: string[] = roleUser.split(',');
       const inventionUpdate = await this.findById(inventionId);
+      var totalTime: number;
+      switch (params.level) {
+        case 0:
+          totalTime = 400;
+          break;
+        case 1:
+          totalTime = 250;
+          break;
+        case 2:
+          totalTime = 200;
+          break;
+        case 3:
+          totalTime = 100;
+          break;
+        case 4:
+          totalTime = 250;
+          break;
+        default:
+          totalTime = 0;
+          break;
+      }
       if (inventionUpdate) {
         const invention = await inventionUpdate.update(
           {
@@ -157,27 +197,34 @@ export default class Invention extends BaseRepository {
             code: params.code,
             level: params.level,
             num_person: params.num_person,
-            total_time: params.total_time,
+            total_time: totalTime,
             date_recognition: params.date_recognition,
             number_recognition: params.number_recognition,
           },
           { transaction }
         );
-        const roleUser = params.role;
+        const roleAble = await this.modelRoleAble.findOne({
+          where: {
+            role_able_id: inventionUpdate.id,
+            type: params.type,
+          }
+        });
+        roleAble?.set({
+          time: String(totalTime)
+        })
+        roleAble?.save();
         if (roleUser !== '') {
-          const roleUserArray: string[] = roleUser.split(',');
-
           const role = await this.modelRole.findOne({
             where: {
               type: params.type
             }
           });
-
           // roleUserDelete.
           const object = await this.modelRoleUser.destroy({
             where: {
               role_able_id: inventionUpdate.dataValues.id,
-              type: TypeRoleUser.member
+              type: TypeRoleUser.member,
+              type_role: params.type,
             },
             force: true
           })
@@ -185,46 +232,14 @@ export default class Invention extends BaseRepository {
             for (let index = 0; index < roleUserArray.length; index++) {
               const roleUser = roleUserArray[index];
               let type = TypeRoleUser.member;
-              let time: number = 0;
-              let user_id: number;
-              if (index === 0) {
-                type = TypeRoleUser.main;
-                time = 400;
-                user_id = Number(roleUser);
-                const mainRole = await this.modelRoleUser.findOne({
-                  where: {
-                    role_able_id: invention.dataValues.id,
-                    type: TypeRoleUser.main
-                  }
-                });
-                if (mainRole) {
-                  mainRole.set({ user_id: user_id })
-                  mainRole.save();
-                }
-              } else if (index === 1) {
-                type = TypeRoleUser.support
-                time = 120;
-                user_id = Number(roleUser);
-                const supportRole = await this.modelRoleUser.findOne({
-                  where: {
-                    role_able_id: invention.dataValues.id,
-                    type: TypeRoleUser.support
-                  }
-                });
-                if (supportRole) {
-                  supportRole.set({ user_id: user_id })
-                  supportRole.save();
-                }
-              } else {
-                time = 280 / (roleUserArray.length - 2)
-                user_id = Number(roleUser);
-                await this.modelRoleUser.upsert({
-                  role_able_id: invention.dataValues.id,
-                  user_id: Number(roleUser),
-                  type: type,
-                  time: String(time),
-                })
-              }
+              let time: number = totalTime / roleUserArray.length;
+              await this.modelRoleUser.upsert({
+                role_able_id: invention.dataValues.id,
+                user_id: Number(roleUser),
+                type: type,
+                type_role: params.type,
+                time: time,
+              })
             }
           }
         }
