@@ -33,16 +33,12 @@ export default class ExamController extends Controller {
     public create = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.exam.ExamCreateParam = {
             user_id: req.body.user_id,
-            semester_id: req.body.semester_id,
             subject_id: req.body.subject_id,
             name: req.body.name,
             code: req.body.code,
-            form_exam: req.body.form_exam,
-            number_question: Number(req.body.number_question),
-            num_code: Number(req.body.num_code),
-            time_work: Number(req.body.time_work),
-            num_student: Number(req.body.num_student),
-            type: Number(req.body.type),
+            factor: req.body.factor,
+            type: req.body.type,
+            num_question: req.body.num_question,
         }
         const data = await this.examRepo.create(params);
 
@@ -52,20 +48,12 @@ export default class ExamController extends Controller {
 
         const params: types.exam.ExamCreateParam = {
             user_id: req.body.user_id,
-            semester_id: req.body.semester_id,
             subject_id: req.body.subject_id,
             name: req.body.name,
             code: req.body.code,
-            form_exam: req.body.form_exam,
-            number_question: Number(req.body.number_question),
-            num_code: Number(req.body.num_code),
-            time_work: Number(req.body.time_work),
-            number_quizzes: Number(req.body.number_quizzes),
-            marking: Number(req.body.marking),
-            num_student: Number(req.body.num_student),
-            exam_create: Number(req.body.exam_create),
-            exam_supervision: Number(req.body.exam_supervision),
-            type: Number(req.body.type),
+            factor: req.body.factor,
+            type: req.body.type,
+            num_question: req.body.num_question,
         }
 
         const data = await this.examRepo.update(params, req.params.id);

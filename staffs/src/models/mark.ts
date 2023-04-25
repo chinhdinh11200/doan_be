@@ -11,23 +11,26 @@ import { types } from '../common';
 import { User } from './user';
 import { commonFields } from './_common';
 import { Subject } from './subject';
-import { MarkStaff } from './markstaff';
 
 export class Mark
   extends Model<InferAttributes<Mark>, InferCreationAttributes<Mark>>
   implements types.mark.Attr {
   declare readonly id: CreationOptional<number>;
-  declare readonly exam_id: number;
-  declare form_mark: number;
-  declare time_mark: number;
+  declare readonly subject_id: number;
+  declare readonly user_id: number;
+  declare form_mark: CreationOptional<number>;
+  declare type: CreationOptional<number>;
+  declare num_exam: CreationOptional<number>;
+  declare factor: CreationOptional<number>;
+  declare date_exam: CreationOptional<Date>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date>;
 
   public static ASSOCIATE() {
-    // Mark.belongsTo(Exam, { foreignKey: 'exam_id' });
-    // Mark.belongsToMany(User, { through: MarkStaff, uniqueKey: 'user_id' });
+    Mark.belongsTo(Subject, { foreignKey: 'subject_id', as: 'subject' })
+    Mark.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
   }
 }
 
@@ -40,16 +43,32 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      exam_id: {
+      subject_id: {
         type: dt.BIGINT.UNSIGNED,
         allowNull: true,
       },
-      time_mark: {
-        type: dt.STRING,
+      user_id: {
+        type: dt.BIGINT.UNSIGNED,
+        allowNull: true,
+      },
+      type: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      num_exam: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      date_exam: {
+        type: dt.DATE,
+        allowNull: true,
+      },
+      factor: {
+        type: dt.INTEGER,
         allowNull: true,
       },
       form_mark: {
-        type: dt.STRING,
+        type: dt.INTEGER,
         allowNull: true,
       },
       ...commonFields(),

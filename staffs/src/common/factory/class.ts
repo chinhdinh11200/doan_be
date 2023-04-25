@@ -25,7 +25,7 @@ export interface IClassAttr extends IClassMainAttr, ICommonAttr { }
 
 export interface IClassCreateParam {
   subject_id: number;
-  user_id: number;
+  user_id?: number;
   parent_id?: number;
   name: string;
   code: string;
@@ -70,4 +70,5 @@ export interface IClassSearchParam extends ICommonSearchOption, ICommonSortOptio
   code?: string;
   form_teach?: string;
   search?: string;
+  parent_id?: boolean;
 }

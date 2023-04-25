@@ -8,7 +8,7 @@ export class Subject extends Model<InferAttributes<Subject>, InferCreationAttrib
   declare readonly id : CreationOptional<number>;
   declare name: string; 
   declare code: string; 
-  declare form_exam: string; 
+  declare form_exam: CreationOptional<string>; 
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;

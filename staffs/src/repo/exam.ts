@@ -57,18 +57,32 @@ export default class ExamRepository extends BaseRepository {
   public create = async (params: types.exam.ExamCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      var factor: number = 0;
+      switch (params.type) {
+        case 0:
+          factor = 1.5;
+          break;
+        case 1:
+          factor = 0.1;
+          break;
+        case 2:
+          factor = 1.5;
+          break;
+        case 3:
+          factor = 1.5;
+          break;
+        default:
+          break;
+      }
       const exam = await this.model.create(
         {
           user_id: params.user_id,
-          semester_id: params.semester_id,
           subject_id: params.subject_id,
           name: params.name,
           code: params.code,
-          form_exam: params.form_exam,
-          time_work: params.time_work,
+          factor: factor,
           type: params.type,
-          number_question: params.number_question,
-          num_code: params.num_code,
+          num_question: params.num_question,
         },
         { transaction }
       );
@@ -86,20 +100,34 @@ export default class ExamRepository extends BaseRepository {
   ) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      var factor: number = 0;
+      switch (params.type) {
+        case 0:
+          factor = 1.5;
+          break;
+        case 1:
+          factor = 0.1;
+          break;
+        case 2:
+          factor = 1.5;
+          break;
+        case 3:
+          factor = 1.5;
+          break;
+        default:
+          break;
+      }
       const examUpdate = await this.findById(examId);
       if (examUpdate) {
         const exam = await examUpdate.update(
           {
             user_id: params.user_id,
-            semester_id: params.semester_id,
             subject_id: params.subject_id,
             name: params.name,
             code: params.code,
-            form_exam: params.form_exam,
-            time_work: params.time_work,
-            type: params.type, 
-            number_question: params.number_question,
-            num_code: params.num_code,
+            factor: factor,
+            type: params.type,
+            num_question: params.num_question,
           },
           { transaction }
         );

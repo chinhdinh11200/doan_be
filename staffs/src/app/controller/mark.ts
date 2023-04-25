@@ -15,9 +15,9 @@ export default class MarkController extends Controller {
     }
 
     public detail = async (req: Request, res: Response, next: NextFunction) => {
-        const user = await this.markRepo.findOneById(req.params.id);
+        const mark = await this.markRepo.detail(req.params.id);
 
-        res.json(user)
+        res.json(mark)
     }
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.mark.MarkSearchParam = {
@@ -31,9 +31,12 @@ export default class MarkController extends Controller {
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.mark.MarkCreateParam = {
-            exam_id: req.body.exam_id,
+            subject_id: req.body.subject_id,
+            user_id: req.body.user_id,
             form_mark: req.body.form_mark,
-            time_mark: req.body.time_mark,
+            type: req.body.type,
+            num_exam: req.body.num_exam,
+            date_exam: req.body.date_exam,
         }
         const data = await this.markRepo.create(params);
 
@@ -42,9 +45,12 @@ export default class MarkController extends Controller {
     public update = async (req: Request, res: Response, next: NextFunction) => {
 
         const params: types.mark.MarkCreateParam = {
-            exam_id: req.body.exam_id,
+            subject_id: req.body.subject_id,
+            user_id: req.body.user_id,
             form_mark: req.body.form_mark,
-            time_mark: req.body.time_mark,
+            type: req.body.type,
+            num_exam: req.body.num_exam,
+            date_exam: req.body.date_exam,
         }
 
         const data = await this.markRepo.update(params, req.params.id);

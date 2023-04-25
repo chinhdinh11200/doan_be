@@ -15,6 +15,13 @@ export interface ICommonSortOption {
   sortColumn?: string;
 }
 
+export const ROLE_USER = {
+  0: 'Chủ nhiệm khoa',
+  1: 'P.Chủ nhiệm khoa',
+  2: 'Chủ nhiệm bộ môn',
+  3: 'Giảng viên',
+}
+
 export enum TypeExam {
   middle = 0,
   end = 1,

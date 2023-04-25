@@ -48,15 +48,23 @@ export default class RoomRepository extends BaseRepository {
   public create = async (params: types.room.RoomCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      var factor: number = 0;
+      if (params.time && params.time <= 60) {
+        factor = 1.0
+      } else {
+        factor = 1.2
+      }
       const room = await this.model.create(
         {
-          exam_id: params.exam_id,
-          semester_id: params.semester_id,
+          subject_id: params.subject_id,
+          user_id: params.user_id,
           name: params.name,
+          type: params.type,
+          factor: factor, // được suy ra từ type
           code: params.code,
-          num_student: params.num_student,
+          num_exam_session: params.num_exam_session,
+          time: params.time,
           startDate: params.startDate,
-          endDate: params.endDate,
         },
         { transaction }
       );
@@ -79,17 +87,25 @@ export default class RoomRepository extends BaseRepository {
   ) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      var factor: number = 0;
+      if (params.time && params.time <= 60) {
+        factor = 1.0
+      } else {
+        factor = 1.2
+      }
       const roomUpdate = await this.findById(roomId);
       if (roomUpdate) {
         const room = await roomUpdate.update(
           {
-            exam_id: params.exam_id,
-            semester_id: params.semester_id,
+            subject_id: params.subject_id,
+            user_id: params.user_id,
             name: params.name,
+            type: params.type,
+            factor: factor, // được suy ra từ type
             code: params.code,
-            num_student: params.num_student,
+            num_exam_session: params.num_exam_session,
+            time: params.time,
             startDate: params.startDate,
-            endDate: params.endDate,
           },
           { transaction }
         );

@@ -5,10 +5,14 @@ import BaseRepository from './_base';
 
 export default class MarkRepository extends BaseRepository {
   private readonly model: DB['Mark'];
+  private readonly modelSubject: DB['Subject'];
+  private readonly modelUser: DB['User'];
   constructor(db: DB) {
     super(db);
 
     this.model = db.Mark;
+    this.modelSubject = db.Subject;
+    this.modelUser = db.User;
   }
 
   public findOneById = async (id: string | number) => {
@@ -16,9 +20,35 @@ export default class MarkRepository extends BaseRepository {
 
     return data?.dataValues;
   };
+
+  public detail = async (id: string | number) => {
+    const data = await this.model.findOne({
+      where: {
+        id,
+      },
+      include: [
+        {
+          model: this.modelSubject,
+        },
+        {
+          model: this.modelUser,
+        }
+      ]
+    })
+  }
+
   public search = async (params: types.mark.MarkSearchParam) => {
     const findOption: FindAndCountOptions = {
-      include: [],
+      include: [
+        {
+          model: this.modelSubject,
+          as: 'subject',
+        },
+        {
+          model: this.modelUser,
+          as: 'user',
+        }
+      ],
     };
 
     if (params !== undefined) {
@@ -54,11 +84,30 @@ export default class MarkRepository extends BaseRepository {
   public create = async (params: types.mark.MarkCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      var factor: number;
+      switch (params.type) {
+        case 0:
+          factor = 0.05
+          break;
+        case 1:
+          factor = 0.125
+          break;
+        case 2:
+          factor = 0.25
+          break;
+        default:
+          factor = 0;
+          break;
+      }
       const mark = await this.model.create(
         {
-          time_mark: params.time_mark,
+          subject_id: params.subject_id,
+          user_id: params.user_id,
           form_mark: params.form_mark,
-          exam_id: params.exam_id,
+          type: params.type,
+          num_exam: params.num_exam,
+          date_exam: params.date_exam,
+          factor: factor,
         },
         { transaction }
       );
@@ -76,13 +125,32 @@ export default class MarkRepository extends BaseRepository {
   ) => {
     const transaction = await this.db.sequelize.transaction();
     try {
+      var factor: number;
+      switch (params.type) {
+        case 0:
+          factor = 0.05
+          break;
+        case 1:
+          factor = 0.125
+          break;
+        case 2:
+          factor = 0.25
+          break;
+        default:
+          factor = 0;
+          break;
+      }
       const markUpdate = await this.findById(markId);
       if (markUpdate) {
         const mark = await markUpdate.update(
           {
-            exam_id: params.exam_id,
+            subject_id: params.subject_id,
+            user_id: params.user_id,
             form_mark: params.form_mark,
-            time_mark: params.time_mark,
+            type: params.type,
+            num_exam: params.num_exam,
+            date_exam: params.date_exam,
+            factor: factor,
           },
           { transaction }
         );

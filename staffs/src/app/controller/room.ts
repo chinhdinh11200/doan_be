@@ -24,7 +24,7 @@ export default class RoomController extends Controller {
 
         this.ok(res, data);
     }
-    
+
     public detail = async (req: Request, res: Response, next: NextFunction) => {
         const room = await this.roomRepo.findById(req.params.id);
 
@@ -33,28 +33,31 @@ export default class RoomController extends Controller {
 
     public create = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.room.RoomCreateParam = {
-            exam_id: Number(req.body.exam_id),
-            semester_id: Number(req.body.semester_id),
+            subject_id: req.body.subject_id,
+            user_id: req.body.user_id,
+            time: req.body.time,
+            type: req.body.type,
+            factor: req.body.factor,
             name: req.body.name,
             code: req.body.code,
-            num_student: Number(req.body.num_student),
+            num_exam_session: req.body.num_exam_session,
             startDate: req.body.startDate,
-            endDate: req.body.endDate,
         }
         const data = await this.roomRepo.create(params);
 
         this.created(res, data);
     }
     public update = async (req: Request, res: Response, next: NextFunction) => {
-
         const params: types.room.RoomCreateParam = {
-            exam_id: req.body.exam_id,
-            semester_id: req.body.semester_id,
+            subject_id: req.body.subject_id,
+            user_id: req.body.user_id,
+            time: req.body.time,
+            type: req.body.type,
+            factor: req.body.factor,
             name: req.body.name,
             code: req.body.code,
-            num_student: Number(req.body.num_student),
+            num_exam_session: req.body.num_exam_session,
             startDate: req.body.startDate,
-            endDate: req.body.endDate,
         }
 
         const data = await this.roomRepo.update(params, req.params.id);

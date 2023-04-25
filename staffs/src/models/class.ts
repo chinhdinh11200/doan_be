@@ -17,7 +17,7 @@ export class Classes
   extends Model<InferAttributes<Classes>, InferCreationAttributes<Classes>>
   implements types.classes.Attr {
   declare readonly id: CreationOptional<number>;
-  declare readonly user_id: number;
+  declare readonly user_id: CreationOptional<number>;
   declare readonly subject_id: number;
   declare readonly parent_id: CreationOptional<number>;
   declare name: string;

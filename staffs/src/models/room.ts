@@ -16,20 +16,24 @@ export class Room
   extends Model<InferAttributes<Room>, InferCreationAttributes<Room>>
   implements types.room.Attr {
   declare readonly id: CreationOptional<number>;
-  declare readonly exam_id: number;
-  declare readonly semester_id: number;
-  declare name: string;
-  declare code: string;
-  declare num_student: number;
-  declare startDate: string;
-  declare endDate: string;
+  declare readonly subject_id: CreationOptional<number>;
+  declare readonly user_id: CreationOptional<number>;
+  declare name: CreationOptional<string>;
+  declare code: CreationOptional<string>;
+  declare num_student: CreationOptional<number>;
+  declare time: CreationOptional<number>;
+  declare type: CreationOptional<number>;
+  declare factor: CreationOptional<number>;
+  declare num_exam_session: CreationOptional<number>;
+  declare startDate: CreationOptional<string>;
+  declare endDate: CreationOptional<string>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date>;
 
-  public static ASSOCIATE() {
-    // Room.belongsTo(Exam);
+  public static ASSOCIATE() { 
+    // Room.belongsTo(Exam); 
   }
 }
 
@@ -42,22 +46,41 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      exam_id: {
+      subject_id: {
         type: dt.BIGINT.UNSIGNED,
         allowNull: true,
       },
-      semester_id: {
+      user_id: {
         type: dt.BIGINT.UNSIGNED,
         allowNull: true,
       },
       name: {
         type: dt.STRING,
+        allowNull: true,
       },
       code: {
         type: dt.STRING,
+        allowNull: true,
+      },
+      time: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      num_exam_session: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      type: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      factor: {
+        type: dt.INTEGER,
+        allowNull: true,
       },
       num_student: {
         type: dt.INTEGER,
+        allowNull: true,
       },
       startDate: {
         type: dt.STRING,

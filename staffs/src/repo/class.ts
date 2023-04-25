@@ -16,7 +16,7 @@ export default class ClassRepository extends BaseRepository {
 
     return data?.dataValues;
   };
-  
+
   public search = async (params: types.classes.ClassSearchParam) => {
     const findOption: FindAndCountOptions = {
       include: [],
@@ -28,6 +28,31 @@ export default class ClassRepository extends BaseRepository {
         andArray.push(
           this.makeMultipleAmbiguousCondition(params, 'search', ['code', 'name'])
         );
+      }
+      if (params.code) {
+        andArray.push(
+          this.makeAmbiguousCondition(params, 'code')
+        )
+      }
+      if (params.name) {
+        andArray.push(
+          this.makeAmbiguousCondition(params, 'name')
+        )
+      }
+      if (params.parent_id !== undefined) {
+        if (params.parent_id == true) {
+          andArray.push({
+            parent_id: {
+              [Op.not]: null,
+            }
+          })
+        } else {
+          andArray.push({
+            parent_id: {
+              [Op.is]: null,
+            }
+          })
+        }
       }
       findOption.where = {
         [Op.and]: andArray,
