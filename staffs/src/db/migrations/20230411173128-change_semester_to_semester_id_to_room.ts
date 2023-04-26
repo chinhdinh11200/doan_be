@@ -8,7 +8,11 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.renameColumn('rooms', 'semester', 'semester_id');
+    
+    const tableInfo = await queryInterface.describeTable('rooms');
+    if (tableInfo.semester) {
+      await queryInterface.renameColumn('rooms', 'semester', 'semester_id');
+    }
   },
 
   down: async (queryInterface: QueryInterface) => {
@@ -18,6 +22,10 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.renameColumn('rooms', 'semester_id', 'semester');
+    
+    const tableInfo = await queryInterface.describeTable('rooms');
+    if (tableInfo.semester_id) {
+      await queryInterface.renameColumn('rooms', 'semester_id', 'semester');
+    }
   }
 };

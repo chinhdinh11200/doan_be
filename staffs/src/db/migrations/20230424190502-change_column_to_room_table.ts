@@ -8,11 +8,10 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.renameColumn('rooms', 'exam_id', 'subject_id');
-    // const tableInfo = await queryInterface.describeTable('rooms');
-    // if (tableInfo.semester_id) {
+    const tableInfo = await queryInterface.describeTable('rooms');
+    if (tableInfo.semester_id) {
       await queryInterface.removeColumn('rooms', 'semester_id');
-    // }
+    }
     await queryInterface.addColumn('rooms', 'user_id', {
       type: dt.BIGINT.UNSIGNED,
       allowNull: true,

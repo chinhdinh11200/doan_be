@@ -15,13 +15,9 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      exam_id: {
+      subject_id: {
         type: dataTypes.BIGINT.UNSIGNED,
         allowNull: true,
-        references: {
-          model: 'exams',
-          key: 'id',
-        },
       },
       name: {
         type: dataTypes.STRING,

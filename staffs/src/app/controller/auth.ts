@@ -25,8 +25,8 @@ export default class AuthController extends Controller {
       password: req.body.password,
     };
     let dataLogin = await this.authRepo.login(data);
-    if(dataLogin === false) {
-      res.status(401).json({message: "Unauthorized"});
+    if (dataLogin === false) {
+      res.status(401).json({ message: "Unauthorized", success: false });
       // throw new Error();
       return;
     }
@@ -46,7 +46,7 @@ export default class AuthController extends Controller {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.json({ accessToken: accessToken, refreshToken });
+    res.json({ accessToken: accessToken, refreshToken, success: true, user: dataLogin });
 
     req.user = dataLogin.id;
   };
@@ -64,30 +64,32 @@ export default class AuthController extends Controller {
     const refreshToken = cookie.jwt;
     jwt.verify(refreshToken, this.userRepo.getSecret(), async (err: any, decoded: any) => {
       if (err) {
-        return res.status(403).json({"message": "Forbidden"});
+        return res.status(403).json({ "message": "Forbidden" });
       }
       const staffFind = decoded;
       const staff = await this.userRepo.findOneById(staffFind.id);
 
-      if(!staff) {
-        return res.status(401).json({"message": "Unauthorized"});
+      if (!staff) {
+        return res.status(401).json({ "message": "Unauthorized" });
       }
-      
-      const {token: accessToken} = await this.userRepo.signToken({id: staff.id.toString() , username:staff.code}, this.timeAccessTokenExpired);
-      res.json({accessToken});
-      
+
+      const { token: accessToken } = await this.userRepo.signToken({ id: staff.id.toString(), username: staff.code }, this.timeAccessTokenExpired);
+      res.json({ accessToken });
+
     });
   };
 
   public logout = async (req: Request, res: Response, next: NextFunction) => {
     const cookie = req.cookies;
+    // console.log(cookie, 111);
+    // if (!cookie.jwt) {
+    //   return res.status(204).json({ message: 'No content' });
+    // }
 
-    if (!cookie.jwt) {
-      return res.status(204).json({ message: 'No content' });
-    }
-
-    res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: false });
-    res.json('Logout');
+    // res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: false });
+    res.json({
+      success: true,
+    });
   };
 
 
@@ -102,7 +104,7 @@ export default class AuthController extends Controller {
     const token = req.body.token;
     const email = req.body.email;
     const password = req.body.password;
-    const user = await this.authRepo.resetPassword({email, token, password})
+    const user = await this.authRepo.resetPassword({ email, token, password })
 
     res.status(200).json(user);
   }

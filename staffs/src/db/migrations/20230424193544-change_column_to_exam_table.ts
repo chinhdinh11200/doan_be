@@ -19,6 +19,12 @@ module.exports = {
         allowNull: true,
       })
     }
+    if (!tableInfo.subject_id) {
+      await queryInterface.addColumn('exams', 'subject_id', {
+        type: dt.BIGINT.UNSIGNED,
+        allowNull: true,
+      })
+    }
     if (!tableInfo.num_question) {
       await queryInterface.addColumn('exams', 'num_question', {
         type: dt.INTEGER,
@@ -46,9 +52,6 @@ module.exports = {
     if (tableInfo.number_quizzes) {
       await queryInterface.removeColumn('exams', 'number_quizzes');
     }
-    if (tableInfo.number_question) {
-      await queryInterface.removeColumn('exams', 'number_question');
-    }
   },
 
   down: async (queryInterface: QueryInterface) => {
@@ -58,7 +61,12 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.removeColumn('exams', 'subject_id');
-    await queryInterface.removeColumn('exams', 'factor');
+    const tableInfo = await queryInterface.describeTable('exams');
+    if (tableInfo.factor) {
+      await queryInterface.removeColumn('exams', 'factor');
+    }
+    if (tableInfo.subject_id) {
+      await queryInterface.removeColumn('exams', 'subject_id');
+    }
   }
 };

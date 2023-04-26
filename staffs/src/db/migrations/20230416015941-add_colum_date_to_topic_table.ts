@@ -29,7 +29,13 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.removeColumn('topics', 'startDate');
-    await queryInterface.removeColumn('topics', 'acceptDate');
+    
+    const tableInfo = await queryInterface.describeTable('topics');
+    if (tableInfo.startDate) {
+      await queryInterface.removeColumn('topics', 'startDate');
+    }
+    if (tableInfo.acceptDate) {
+      await queryInterface.removeColumn('topics', 'acceptDate');
+    }
   }
 };

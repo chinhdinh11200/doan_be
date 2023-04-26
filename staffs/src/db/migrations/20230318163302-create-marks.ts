@@ -9,10 +9,9 @@ module.exports = {
         primaryKey: true,
         type: dataTypes.BIGINT.UNSIGNED
       },
-      exam_id: {
+      subject_id: {
         allowNull: true,
         type: dataTypes.BIGINT.UNSIGNED,
-        references: { model: 'exams', key: 'id' }
       },
       time_mark: {
         type: dataTypes.INTEGER

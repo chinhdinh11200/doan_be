@@ -21,6 +21,9 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.removeColumn('compilations', 'form_construction');
+    const tableInfo = await queryInterface.describeTable('compilations');
+    if (tableInfo.form_construction) {
+      await queryInterface.removeColumn('compilations', 'form_construction');
+    }
   }
 };

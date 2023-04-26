@@ -8,8 +8,6 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.renameColumn('marks', 'exam_id', 'subject_id');
-    
     const tableInfo = await queryInterface.describeTable('marks');
     if (tableInfo.semester_id) {
       await queryInterface.removeColumn('marks', 'semester_id');
@@ -28,7 +26,7 @@ module.exports = {
     await queryInterface.addColumn('marks', 'factor', {
       type: dt.INTEGER,
       allowNull: true,
-    }); 
+    });
     await queryInterface.addColumn('marks', 'num_exam', {
       type: dt.INTEGER,
       allowNull: true,
@@ -46,10 +44,21 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.removeColumn('marks', 'user_id');
-    await queryInterface.removeColumn('marks', 'type');
-    await queryInterface.removeColumn('marks', 'factor');
-    await queryInterface.removeColumn('marks', 'num_exam');
-    await queryInterface.removeColumn('marks', 'date_exam');
+    const tableInfo = await queryInterface.describeTable('marks');
+    if (tableInfo.user_id) {
+      await queryInterface.removeColumn('marks', 'user_id');
+    }
+    if (tableInfo.type) {
+      await queryInterface.removeColumn('marks', 'type');
+    }
+    if (tableInfo.factor) {
+      await queryInterface.removeColumn('marks', 'factor');
+    }
+    if (tableInfo.num_exam) {
+      await queryInterface.removeColumn('marks', 'num_exam');
+    }
+    if (tableInfo.date_exam) {
+      await queryInterface.removeColumn('marks', 'date_exam');
+    }
   }
 };

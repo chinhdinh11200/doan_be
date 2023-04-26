@@ -21,6 +21,9 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.removeColumn('departments', 'parent_id');
+    const tableInfo = await queryInterface.describeTable('departments');
+    if (tableInfo.parent_id) {
+      await queryInterface.removeColumn('departments', 'parent_id');
+    }
   }
 };

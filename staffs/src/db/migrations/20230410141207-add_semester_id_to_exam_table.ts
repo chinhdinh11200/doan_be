@@ -8,10 +8,10 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.addColumn('exams', 'semester_id', {
-      type: dt.INTEGER,
-      allowNull: true,
-    });
+    // await queryInterface.addColumn('exams', 'semester_id', {
+    //   type: dt.INTEGER,
+    //   allowNull: true,
+    // });
     await queryInterface.addColumn('exams', 'subject_id', {
       type: dt.INTEGER,
       allowNull: true,
@@ -29,8 +29,13 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.removeColumn('exams', 'semester_id');
-    await queryInterface.removeColumn('exams', 'subject_id');
-    await queryInterface.removeColumn('exams', 'num_code');
+    // await queryInterface.removeColumn('exams', 'semester_id');
+    const tableInfo = await queryInterface.describeTable('exams');
+    if (tableInfo.subject_id) {
+      await queryInterface.removeColumn('exams', 'subject_id');
+    }
+    if (tableInfo.num_code) {
+      await queryInterface.removeColumn('exams', 'num_code');
+    }
   }
 };
