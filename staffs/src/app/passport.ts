@@ -21,13 +21,17 @@ export const jwtAuthenticate = (
   res: Response,
   next: NextFunction
 ) => {
+  // console.log("req : ", req); 
   passport.authenticate('jwt', { session: false }, (err, user) => {
     if (err) {
+      console.log("Lỗi middleware passport : ", err);
       next(err);
     } else if (!user) {
-      next();
+      console.log("test lỗi : ", err);
+      next(err);
     } else {
       req.user = user;
+      console.log("user", user);
       next();
     }
   })(req, res, next);

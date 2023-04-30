@@ -12,6 +12,10 @@ module.exports = {
       type: dt.INTEGER,
       allowNull: true,
     });
+    await queryInterface.addColumn('articles', 'open_access_scopus', {
+      type: dt.INTEGER,
+      allowNull: true,
+    });
   },
 
   down: async (queryInterface: QueryInterface) => {
@@ -23,7 +27,10 @@ module.exports = {
      */
 
     const tableInfo = await queryInterface.describeTable('articles');
-    if (tableInfo.num_student) {
+    if (tableInfo.open_access_scopus) {
+      await queryInterface.removeColumn('articles', 'open_access_scopus');
+    }
+    if (tableInfo.open_access) {
       await queryInterface.removeColumn('articles', 'open_access');
     }
   }

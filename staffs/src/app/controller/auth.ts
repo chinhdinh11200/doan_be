@@ -31,11 +31,25 @@ export default class AuthController extends Controller {
       return;
     }
     const { token: accessToken } = await this.userRepo.signToken(
-      { id: dataLogin.id.toString(), username: dataLogin.code },
+      {
+        id: dataLogin.id.toString(),
+        username: dataLogin.name,
+        email: dataLogin.email,
+        code: dataLogin.code,
+        role: dataLogin.department_id,
+        position: dataLogin.position
+      },
       this.timeAccessTokenExpired
     );
     const { token: refreshToken } = await this.userRepo.signToken(
-      { id: dataLogin.id.toString(), username: dataLogin.code },
+      {
+        id: dataLogin.id.toString(),
+        username: dataLogin.name,
+        email: dataLogin.email,
+        code: dataLogin.code,
+        role: dataLogin.department_id,
+        position: dataLogin.position
+      },
       this.timeRefreshTokenExpired
     );
 
@@ -47,8 +61,6 @@ export default class AuthController extends Controller {
     });
 
     res.json({ accessToken: accessToken, refreshToken, success: true, user: dataLogin });
-
-    req.user = dataLogin.id;
   };
 
   public refreshToken = async (
@@ -73,7 +85,14 @@ export default class AuthController extends Controller {
         return res.status(401).json({ "message": "Unauthorized" });
       }
 
-      const { token: accessToken } = await this.userRepo.signToken({ id: staff.id.toString(), username: staff.code }, this.timeAccessTokenExpired);
+      const { token: accessToken } = await this.userRepo.signToken({
+        id: staff.id.toString(),
+        username: staff.name,
+        email: staff.email,
+        code: staff.code,
+        role: staff.department_id,
+        position: staff.position
+      }, this.timeAccessTokenExpired);
       res.json({ accessToken });
 
     });

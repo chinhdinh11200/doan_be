@@ -5,6 +5,8 @@ export interface IArticleMainAttr {
     code: string;
     type: number;
     index_article: number;
+    open_access: number;
+    open_access_scopus: number;
     total_time: number;
     num_person: number;
 }
@@ -17,6 +19,8 @@ export interface IArticleCreateParam {
     role: string;
     type: number;
     type_article: number;
+    open_access?: number;
+    open_access_scopus?: number;
     index_article: number;
     total_time: number;
     num_person: number;
@@ -28,6 +32,8 @@ export interface IArticleUpdateParam {
     role: string;
     type: number;
     type_article: number;
+    open_access?: number;
+    open_access_scopus?: number;
     index_article: number;
     total_time: number;
     num_person: number;

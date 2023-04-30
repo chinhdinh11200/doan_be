@@ -17,13 +17,15 @@ import { Compilation } from './compilation';
 import { Scientific } from './scientific';
 import { Education } from './education';
 import { Invention } from './invention';
+import { Thesis } from './thesis';
+import { ThesisUser } from './thesisUser';
 
 export class User extends Model<
   InferAttributes<User>,
   InferCreationAttributes<User>
 > implements types.user.Attr {
   declare readonly id: CreationOptional<number>;
-  declare readonly department_id : number;
+  declare readonly department_id: number;
   declare name: string;
   declare email: string;
   declare password: string;
@@ -43,13 +45,14 @@ export class User extends Model<
 
   public static ASSOCIATE() {
     User.belongsTo(Department, { foreignKey: 'department_id' });
-    User.belongsToMany(Topic, {through: RoleUser,  foreignKey: 'user_id'});
-    User.belongsToMany(Article, {through: RoleUser,  foreignKey: 'user_id'});
-    User.belongsToMany(Book, {through: RoleUser,  foreignKey: 'user_id'});
-    User.belongsToMany(Compilation, {through: RoleUser,  foreignKey: 'user_id'});
-    User.belongsToMany(Scientific, {through: RoleUser,  foreignKey: 'user_id'});
-    User.belongsToMany(Education, {through: RoleUser,  foreignKey: 'user_id'});
-    User.belongsToMany(Invention, {through: RoleUser,  foreignKey: 'user_id'});
+    User.belongsToMany(Topic, { through: RoleUser, foreignKey: 'user_id' });
+    User.belongsToMany(Article, { through: RoleUser, foreignKey: 'user_id' });
+    User.belongsToMany(Book, { through: RoleUser, foreignKey: 'user_id' });
+    User.belongsToMany(Compilation, { through: RoleUser, foreignKey: 'user_id' });
+    User.belongsToMany(Scientific, { through: RoleUser, foreignKey: 'user_id' });
+    User.belongsToMany(Education, { through: RoleUser, foreignKey: 'user_id' });
+    User.belongsToMany(Invention, { through: RoleUser, foreignKey: 'user_id' });
+    User.belongsToMany(Thesis, { through: ThesisUser, foreignKey: 'user_id' });
   }
 
 }
@@ -108,7 +111,7 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
     {
       sequelize,
       tableName: 'users',
-      name: {plural: 'users', singular: 'users'},
+      name: { plural: 'users', singular: 'users' },
       underscored: false,
       paranoid: true,
     }

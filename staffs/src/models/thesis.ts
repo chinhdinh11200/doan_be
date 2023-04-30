@@ -8,32 +8,32 @@ import {
 } from 'sequelize';
 import { types } from '../common';
 import { commonFields } from './_common';
-import { User } from './user';
 import { RoleUser } from './role_user';
+import { User } from './user';
+import { ThesisUser } from './thesisUser';
 
-export class Article
-  extends Model<InferAttributes<Article>, InferCreationAttributes<Article>> implements types.article.Attr {
+export class Thesis
+  extends Model<InferAttributes<Thesis>, InferCreationAttributes<Thesis>> implements types.thesis.Attr {
   declare readonly id: CreationOptional<number>;
-  declare name: string;
-  declare code: string;
-  declare type: number;
-  declare index_article: number;
+  declare course: string;
+  declare name_student: string;
+  declare num_year: number;
   declare num_person: number;
+  declare num_decision: string;
+  declare type: number;
   declare total_time: number;
-  declare open_access: CreationOptional<number>;
-  declare open_access_scopus: CreationOptional<number>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date>;
 
   public static ASSOCIATE() {
-    Article.belongsToMany(User, {through: RoleUser, foreignKey: 'role_able_id'})
+    Thesis.belongsToMany(User, { through: ThesisUser, foreignKey: 'thesis_id' })
   }
 }
 
 export default (sequelize: Sequelize, dt: typeof DataTypes) => {
-  Article.init(
+  Thesis.init(
     {
       id: {
         type: dt.BIGINT.UNSIGNED,
@@ -41,25 +41,22 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
+      name_student: {
         type: dt.STRING,
       },
-      code: {
+      course: {
         type: dt.STRING,
       },
-      open_access: {
-        type: dt.NUMBER,
-      },
-      open_access_scopus: {
-        type: dt.NUMBER,
+      num_decision: {
+        type: dt.STRING,
       },
       type: {
         type: dt.INTEGER,
       },
-      index_article: {
+      num_person: {
         type: dt.INTEGER,
       },
-      num_person: {
+      num_year: {
         type: dt.INTEGER,
       },
       total_time: {
@@ -69,12 +66,12 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
     },
     {
       sequelize,
-      name: { singular: 'articles', plural: 'articles' },
-      tableName: 'articles',
+      name: { singular: 'thesis', plural: 'thesis' },
+      tableName: 'thesis',
       underscored: false,
       paranoid: true,
     }
   );
 
-  return Article;
+  return Thesis;
 };

@@ -17,6 +17,7 @@ import CompilationRepository from './compilation';
 import TimeRepository from './time';
 import ExportRepository from './export';
 import ImportRepository from './import';
+import ThesisRepository from './thesis';
 
 export class Department extends DepartmentRepository {}
 export class User extends UserRepository {}
@@ -37,3 +38,4 @@ export class Role extends RoleRepository {}
 export class Time extends TimeRepository {}
 export class Export extends ExportRepository {}
 export class Import extends ImportRepository {}
+export class Thesis extends ThesisRepository {}

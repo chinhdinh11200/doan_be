@@ -103,11 +103,59 @@ export default class Article extends BaseRepository {
           timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
           timeMember = 0.6 * totalTime / roleUserArray.length
           break;
-        case 1:
-          totalTime = 300;
-          timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
-          timeMember = 0.6 * totalTime / roleUserArray.length
-          break;
+          case 1:
+            totalTime = 700;
+            totalTime = params.open_access ? totalTime - 50 : totalTime;
+            totalTime = params.open_access_scopus ? totalTime - 100 : totalTime;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          case 2:
+            totalTime = 600;
+            totalTime = params.open_access ? totalTime - 50 : totalTime;
+            totalTime = params.open_access_scopus ? totalTime - 100 : totalTime;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          case 3:
+            totalTime = 500;
+            totalTime = params.open_access ? totalTime - 50 : totalTime;
+            totalTime = params.open_access_scopus ? totalTime - 100 : totalTime;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          case 4:
+            totalTime = 400;
+            totalTime = params.open_access ? totalTime - 50 : totalTime;
+            totalTime = params.open_access_scopus ? totalTime - 100 : totalTime;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          case 5:
+            totalTime = 300;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          case 6:
+            totalTime = 250;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          case 7:
+            totalTime = 200;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          case 8:
+            totalTime = 100;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+        // case 1:
+        //   totalTime = 300;
+        //   timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+        //   timeMember = 0.6 * totalTime / roleUserArray.length
+        //   break;
         default:
       }
       const article = await this.model.create(
@@ -115,6 +163,8 @@ export default class Article extends BaseRepository {
           name: params.name,
           code: params.code,
           type: params.type_article,
+          open_access: params.open_access,
+          open_access_scopus: params.open_access_scopus,
           index_article: params.index_article,
           total_time: totalTime,
           num_person: roleUserArray.length,
@@ -185,10 +235,50 @@ export default class Article extends BaseRepository {
             timeMember = 0.6 * totalTime / roleUserArray.length
             break;
           case 1:
+            totalTime = 700;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          case 2:
+            totalTime = 600;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          case 3:
+            totalTime = 500;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          case 4:
+            totalTime = 400;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          case 5:
             totalTime = 300;
             timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
             timeMember = 0.6 * totalTime / roleUserArray.length
             break;
+          case 6:
+            totalTime = 250;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          case 7:
+            totalTime = 200;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          case 8:
+            totalTime = 100;
+            timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+            timeMember = 0.6 * totalTime / roleUserArray.length
+            break;
+          // case 1:
+          //   totalTime = 300;
+          //   timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
+          //   timeMember = 0.6 * totalTime / roleUserArray.length
+          //   break;
           default:
         }
         const article = await articleUpdate.update(
@@ -199,6 +289,8 @@ export default class Article extends BaseRepository {
             index_article: params.index_article,
             total_time: totalTime,
             num_person: roleUserArray.length,
+            open_access: params.open_access,
+            open_access_scopus: params.open_access_scopus,
           },
           { transaction }
         );

@@ -15,6 +15,7 @@ import * as compilationFactory from './factory/compilation';
 import * as bookFactory from './factory/book';
 import * as scientificFactory from './factory/scientific';
 import * as educationFactory from './factory/education';
+import * as thesisFactory from './factory/thesis';
 
 export namespace user {
   export import Attr = userFactory.IUserAttr;
@@ -132,4 +133,11 @@ export namespace education {
   export import EducationCreateParam = educationFactory.IEducationCreateParam;
   export import EducationUpdateParam = educationFactory.IEducationUpdateParam;
   export import EducationSearchParam = educationFactory.IEducationSearchParam;
+}
+
+export namespace thesis {
+  export import Attr = thesisFactory.IThesisAttr;
+  export import ThesisCreateParam = thesisFactory.IThesisCreateParam;
+  export import ThesisUpdateParam = thesisFactory.IThesisUpdateParam;
+  export import ThesisSearchParam = thesisFactory.IThesisSearchParam;
 }

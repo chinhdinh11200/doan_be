@@ -36,7 +36,8 @@ export class AuthRepository extends BaseRepository {
         return user;
       }
     } else {
-      throw new Error();
+      // throw new Error();
+      return false;
     }
 
     return false;

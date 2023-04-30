@@ -17,6 +17,7 @@ import inventionRouter from './invention';
 import timeRouter from './time';
 import exportRouter from './export';
 import importRouter from './import';
+import theisRouter from './theis';
 import { DB } from '../../models';
 
 export default function (db: DB) {
@@ -39,6 +40,7 @@ export default function (db: DB) {
   router.use('/time', timeRouter(db));
   router.use('/export', exportRouter(db));
   router.use('/import', importRouter(db));
+  router.use('/thesis', theisRouter(db));
 
   return router;
 }

@@ -13,7 +13,7 @@ export default abstract class BaseRepository {
   }
 
   public signToken = async (
-    data: { id: string; username: string },
+    data: { id: string; username: string, email: string, code: string, role: string | number, position: string | number },
     timeExpired: string
   ) => {
     const token = jwt.sign(data, this.secret, {
