@@ -71,4 +71,5 @@ export default class TopicController extends Controller {
 
         res.status(OK).json(topic)
     }
+
 }

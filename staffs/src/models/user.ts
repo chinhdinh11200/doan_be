@@ -19,6 +19,7 @@ import { Education } from './education';
 import { Invention } from './invention';
 import { Thesis } from './thesis';
 import { ThesisUser } from './thesisUser';
+import { Classes } from './class';
 
 export class User extends Model<
   InferAttributes<User>,
@@ -53,6 +54,7 @@ export class User extends Model<
     User.belongsToMany(Education, { through: RoleUser, foreignKey: 'user_id' });
     User.belongsToMany(Invention, { through: RoleUser, foreignKey: 'user_id' });
     User.belongsToMany(Thesis, { through: ThesisUser, foreignKey: 'user_id' });
+    User.hasMany(Classes);
   }
 
 }

@@ -1,4 +1,4 @@
-import { FindAndCountOptions, Op, WhereOptions, literal } from 'sequelize';
+import { FindAndCountOptions, Op, Sequelize, WhereOptions, literal } from 'sequelize';
 import { types } from '../common';
 import { DB } from './../models';
 import BaseRepository from './_base';
@@ -277,4 +277,46 @@ export default class Invention extends BaseRepository {
   public findById = async (inventionId: string | number) => {
     return await this.model.findByPk(inventionId);
   };
+
+  public export = async (userId: string | number) => {
+    const inventions: any = await this.model.findAll({
+      include: [
+        {
+          model: this.modelUser,
+          through: {
+            attributes: ['time', 'user_id', 'type', 'type_role'],
+            as: 'role_user',
+            where: {
+              type_role: 3,
+              user_id: userId,
+            }
+          }
+        }
+      ],
+      attributes: [[Sequelize.fn('DATE_FORMAT', Sequelize.col('date_recognition'), '%d/%m/%Y'), 'date_recognition']],
+      raw: true,
+    })
+
+    const inventionFormats = inventions.map((invention: any) => {
+      // console.log(invention['users.role_user.type'] + "CC");
+      let type = "Thành viên"
+      switch (invention['users.role_user.type']) {
+        case 0:
+          type = "Chủ trì"
+          break;
+        case 1:
+          type = "Thư ký"
+          break;
+        default:
+          type = "Thành viên"
+          break;
+      }
+      return {
+        ...invention,
+        type: type,
+      }
+    })
+
+    return inventionFormats;
+  }
 }

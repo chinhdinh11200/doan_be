@@ -27,7 +27,7 @@ export const jwtAuthenticate = (
       console.log("Lỗi middleware passport : ", err);
       next(err);
     } else if (!user) {
-      console.log("test lỗi : ", err);
+      // console.log("test lỗi : ", err);
       next(err);
     } else {
       req.user = user;

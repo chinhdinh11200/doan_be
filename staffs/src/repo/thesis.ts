@@ -299,4 +299,42 @@ export default class Scientific extends BaseRepository {
   public findById = async (thesisId: string | number) => {
     return await this.model.findByPk(thesisId);
   };
+  
+  public export = async (userId: string | number) => {
+    const thesis: any = await this.model.findAll({
+      include: [
+        {
+          model: this.modelUser,
+          through: {
+            attributes: ['time', 'type'],
+            where: {
+              user_id: userId,
+            },
+            as: 'thesis_user'
+          }
+        }
+      ],
+      raw: true,
+    })
+
+    const thesisFormats = thesis.map((ths: any) => {
+      // console.log(topic['users.role_user.type'] + "CC");
+      let type = "Thành viên"
+      switch (ths['users.thesis_user.type']) {
+        case 0:
+          type = "HD chính"
+          break;
+        default:
+          type = "HD phụ"
+          break;
+      }
+
+      return {
+        ...ths,
+        type: type,
+      }
+    })
+
+    return thesisFormats;
+  }
 }

@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import router from './app/routes';
 import authRouter from './app/routes/auth';
 import createClient from './app/sequelize';
+import errorHandler from './app/middlewares/errorHandle'
 import * as http from 'http';
 import passport from 'passport';
 import helmet from 'helmet';
@@ -72,6 +73,8 @@ export const createApp = async function () {
     preflightContinue: false,
     optionsSuccessStatus: 204
   };
+  app.set('view engine', 'pug');
+  // app.set('views', `${__dirname}/views`);
   app.use(cors(corsOption));
   app.use(helmet({
     // referrerPolicy: {
@@ -96,6 +99,8 @@ export const createApp = async function () {
   passport.use(strategy());
 
   app.use('/', jwtAuthenticate, router(sequelize));
+
+  app.use(errorHandler);
 
   return { app };
 };

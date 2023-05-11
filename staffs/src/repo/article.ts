@@ -3,6 +3,7 @@ import { types } from '../common';
 import { DB } from './../models';
 import BaseRepository from './_base';
 import { TypeRoleUser } from '../common/factory/_common';
+import { TYPE_ARTICLESCIENTIFIC } from '../common/constant';
 
 export default class Article extends BaseRepository {
   private readonly model: DB['Article'];
@@ -392,4 +393,43 @@ export default class Article extends BaseRepository {
   public findById = async (articleId: string | number) => {
     return await this.model.findByPk(articleId);
   };
+  
+  public export = async (userId: string | number) => {
+    const articles: any = await this.model.findAll({
+      include: [
+        {
+          model: this.modelUser,
+          through: {
+            attributes: ['time', 'user_id', 'type', 'type_role'],
+            as: 'role_user',
+            where: {
+              type_role: 2,
+              user_id: userId,
+            }
+          }
+        }
+      ],
+      raw: true,
+    })
+
+    const articleFormats = articles.map((article: any) => {
+      let type = TYPE_ARTICLESCIENTIFIC.find(type => type.value == article.type)?.label;
+      let role = 'Thành viên';
+      switch (article['users.role_user.type']) {
+        case 0:
+          role = "Tác giả chính"
+          break;
+        default:
+          role = "Thành viên"
+          break;
+      }
+      return {
+        ...article,
+        type: type,
+        role: role,
+      }
+    })
+    
+    return articleFormats;
+  }
 }

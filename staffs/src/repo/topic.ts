@@ -1,9 +1,8 @@
-import { FindAndCountOptions, Op, Sequelize, WhereOptions, where, literal } from 'sequelize';
+import { FindAndCountOptions, Op, Sequelize, WhereOptions, where, literal, fn, col } from 'sequelize';
 import { types } from '../common';
 import { DB } from './../models';
 import BaseRepository from './_base';
 import { TotalTime, TypeRoleUser } from '../common/factory/_common';
-import { Fn } from 'sequelize/types/utils';
 import { RoleUser } from '../models/role_user';
 
 export default class Topic extends BaseRepository {
@@ -347,4 +346,73 @@ export default class Topic extends BaseRepository {
   public findById = async (topicId: string | number) => {
     return await this.model.findByPk(topicId);
   };
+
+  public export = async (userId: string | number) => {
+    const topics: any = await this.model.findAll({
+      include: [
+        {
+          model: this.modelUser,
+          through: {
+            attributes: ['time', 'user_id', 'type', 'type_role'],
+            as: 'role_user',
+            where: {
+              type_role: 1,
+              user_id: userId,
+            }
+          }
+        }
+      ],
+      raw: true,
+      attributes: [[Sequelize.fn('DATE_FORMAT', Sequelize.col('acceptDate'), '%d/%m/%Y'), 'acceptDate']]
+    })
+
+    const topicFormats = topics.map((topic: any) => {
+      // console.log(topic['users.role_user.type'] + "CC");
+      let type = "Thành viên"
+      switch (topic['users.role_user.type']) {
+        case 0:
+          type = "Chủ trì"
+          break;
+        case 1:
+          type = "Thư ký"
+          break;
+        default:
+          type = "Thành viên"
+          break;
+      }
+      let level = "Nhà nước"
+      switch (topic['level']) {
+        case 0:
+          level = "Cơ sở"
+          break;
+        case 1:
+          level = "Ban"
+          break;
+        default:
+          level = "Nhà nước"
+          break;
+      }
+      let result = "Xuất sắc"
+      switch (topic.result) {
+        case 0:
+          result = "Đạt"
+          break;
+        case 1:
+          result = "Giỏi"
+          break;
+        default:
+          result = "Xuất sắc"
+          break;
+      }
+
+      return {
+        ...topic,
+        type: type,
+        level: level,
+        result: result,
+      }
+    })
+
+    return topicFormats;
+  }
 }

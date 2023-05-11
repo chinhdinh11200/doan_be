@@ -272,4 +272,45 @@ export default class Education extends BaseRepository {
   public findById = async (educationId: string | number) => {
     return await this.model.findByPk(educationId);
   };
+  
+  public export = async (userId: string | number) => {
+    const educations: any = await this.model.findAll({
+      include: [
+        {
+          model: this.modelUser,
+          through: {
+            attributes: ['time', 'user_id', 'type', 'type_role'],
+            as: 'role_user',
+            where: {
+              type_role: 6,
+              user_id: userId,
+            }
+          }
+        }
+      ],
+      raw: true,
+    })
+
+    const educationFormats = educations.map((education: any) => {
+      // console.log(education['users.role_user.type'] + "CC");
+      let type = "Thành viên"
+      switch (education['users.role_user.type']) {
+        case 0:
+          type = "Chủ trì"
+          break;
+        case 1:
+          type = "Thư ký"
+          break;
+        default:
+          type = "Thành viên"
+          break;
+      }
+      return {
+        ...education,
+        type: type,
+      }
+    })
+
+    return educationFormats;
+  }
 }

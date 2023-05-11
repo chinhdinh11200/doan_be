@@ -58,6 +58,7 @@ export default class ScientificController extends Controller {
             result_academy: req.body.result_academy,
             date_decision: req.body.date_decision,
         }
+        console.log(params);
 
         const data = await this.scientificRepo.update(params, req.params.id);
 

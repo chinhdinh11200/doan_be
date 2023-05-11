@@ -1,0 +1,514 @@
+table(style="border: 1px solid")
+  thead
+    tr
+      th
+      th
+      th
+      th
+      th
+      th
+      th
+      th
+      th
+      th
+      th
+      th
+      th
+      th
+  tbody
+    tr
+      td(colspan="7" style="text-align:center")= "HỌC VIỆN KỸ THUẬT MẬT MÃ"
+      td(colspan="7" style="text-align:center")= "Cộng hoà xã hội chủ nghĩa Việt Nam"
+    tr
+      td(colspan="7" style="text-align:center")= "KHOA: Công nghệ thông tin"
+      td(colspan="7" style="text-align:center")= "Độc lập - Tự do - Hạnh phúc"
+    tr
+      td(colspan="7" style="text-align:center")= "BỘ MÔN: Kỹ thuật máy tính"
+      td(colspan="7" style="text-align:center")= "Hà nội, ngày 16 tháng 8 năm 2022"
+    tr 
+      td(colspan="14")
+    tr 
+      td(colspan="14" style="text-align:center")= "KÊ KHAI"
+    tr 
+      td(colspan="14" style="text-align:center")= "Khối lượng thực hiện nhiệm vụ đào tạo, khoa học và công nghệ năm học 2021-2022"
+    tr 
+      td(colspan="14" style="text-align:center")= "(Căn cứ theo Quyết định số 1409/QĐ-HVM ngày /12/2021 về việc quy định chế độ làm việc của giảng viên Học viện Kỹ thuật mật mã)"
+    
+    tr 
+      td(colspan="14" style="text-align:center")
+    tr 
+      td(colspan="7" style="text-align:left")= "Họ và tên: Lê Đức Thuận"
+      td(colspan="7" style="text-align:left")= "Ngày sinh: 25/5/1987"
+    tr 
+      td(colspan="14" style="text-align:left")= "Học hàm học vị"
+    tr 
+      td(colspan="14" style="text-align:left")= "Chức vụ hiện nay"
+    tr 
+      td(colspan="14" style="text-align:left")= "Hệ số lương"
+    tr 
+      td(colspan="14" style="text-align:left")= "Thu nhập (lương thực nhận, không tính phụ cấp học hàm, học vị): "
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "A.GIẢNG DẠY VÀ ĐÁNH GIÁ HỌC PHẦN (không thống kê số giờ đã được thanh toán)"
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "A.1.Giảng dạy (Căn cứ vào mục 1 và 2 Phụ lục I. QĐ số 1409/QĐ-HVM)"
+    tr 
+      td(colspan="14" style="text-align:left")= "Học kỳ I - Đào tạo chuyên ngành Kỹ thuật mật mã"
+    tr 
+      td(colspan="1" style="text-align:center")= "TT" 
+      td(colspan="3" style="text-align:center")= "Tên học phần" 
+      td(colspan="1" style="text-align:center")= "Số TC(HT)" 
+      td(colspan="3" style="text-align:center")= "Lớp học phầnT" 
+      td(colspan="2" style="text-align:center")= "Loại hình đào tạo" 
+      td(colspan="2" style="text-align:center")= "Số tiết theo TKB" 
+      td(colspan="2" style="text-align:center")= "Số tiết QC" 
+    - let oneHVMM = dataTeachSemesterOneHVMM?.reduce((acc, curr) => acc + curr.time, 0);
+    - let oneHVMMlesson = dataTeachSemesterOneHVMM?.reduce((acc, curr) => acc + curr.num_lesson, 0);
+    each user, index in dataTeachSemesterOneHVMM
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1
+        td(colspan="3" style="text-align:center")= user.name
+        td(colspan="1" style="text-align:center")= user.num_credit
+        td(colspan="3" style="text-align:center")= user.code 
+        td(colspan="2" style="text-align:center")= "chính quy" 
+        td(colspan="2" style="text-align:center")= user.num_lesson 
+        td(colspan="2" style="text-align:center")= user.time
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng cộng (1)"
+      td(colspan="2" style="text-align:left; font-weight: bold")= oneHVMMlesson
+      td(colspan="2" style="text-align:left; font-weight: bold")= oneHVMM
+    - let oneFee = dataTeachSemesterOneFee?.reduce((acc, curr) => acc + curr.time, 0);
+    - let oneFeelesson = dataTeachSemesterOneFee?.reduce((acc, curr) => acc + curr.num_lesson, 0);
+    tr 
+      td(colspan="14" style="text-align:left")= "Học kỳ I - Đào tạo hệ đóng học phí"
+    each user, index in dataTeachSemesterOneFee
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1
+        td(colspan="3" style="text-align:center")= user.name
+        td(colspan="1" style="text-align:center")= user.num_credit
+        td(colspan="3" style="text-align:center")= user.code 
+        td(colspan="2" style="text-align:center")= "chính quy" 
+        td(colspan="2" style="text-align:center")= user.num_lesson 
+        td(colspan="2" style="text-align:center")= user.time 
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng cộng (2)"
+      td(colspan="2" style="text-align:left; font-weight: bold")= oneFeelesson
+      td(colspan="2" style="text-align:left; font-weight: bold")= oneFee
+    tr 
+      td(colspan="14" style="text-align:left")= "Học kỳ II - Đào tạo chuyên ngành Kỹ thuật mật mã"
+    - let twoHVMM = dataTeachSemesterTwoHVMM?.reduce((acc, curr) => acc + curr.time, 0);
+    - let twoHVMMlesson = dataTeachSemesterTwoHVMM?.reduce((acc, curr) => acc + curr.num_lesson, 0);
+    each user, index in dataTeachSemesterTwoHVMM
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1
+        td(colspan="3" style="text-align:center")= user.name
+        td(colspan="1" style="text-align:center")= user.num_credit
+        td(colspan="3" style="text-align:center")= user.code 
+        td(colspan="2" style="text-align:center")= "chính quy" 
+        td(colspan="2" style="text-align:center")= user.num_lesson 
+        td(colspan="2" style="text-align:center")= user.time 
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng cộng (3)"
+      td(colspan="2" style="text-align:left; font-weight: bold")= twoHVMMlesson
+      td(colspan="2" style="text-align:left; font-weight: bold")= twoHVMM
+    tr 
+      td(colspan="14" style="text-align:left")= "Học kỳ II - Đào tạo hệ đóng học phí"
+    - let twoFee = dataTeachSemesterTwoFee?.reduce((acc, curr) => acc + curr.time, 0);
+    - let twoFeelesson = dataTeachSemesterTwoFee?.reduce((acc, curr) => acc + curr.num_lesson, 0);
+    each user, index in dataTeachSemesterTwoFee
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1
+        td(colspan="3" style="text-align:center")= user.name
+        td(colspan="1" style="text-align:center")= user.num_credit
+        td(colspan="3" style="text-align:center")= user.code 
+        td(colspan="2" style="text-align:center")= "chính quy" 
+        td(colspan="2" style="text-align:center")= user.num_lesson 
+        td(colspan="2" style="text-align:center")= user.time 
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng cộng (4)"
+      td(colspan="2" style="text-align:left; font-weight: bold")= twoFeelesson
+      td(colspan="2" style="text-align:left; font-weight: bold")= twoFee
+    - var totalA1Lesson = oneHVMMlesson + oneFeelesson + twoHVMMlesson + twoFeelesson
+    - var totalA1 = oneHVMM + oneFee + twoHVMM + twoFee
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng A.1= (1) + (2) + (3) + (4)"
+      td(colspan="2" style="text-align:; font-weight: bold")= totalA1Lesson
+      td(colspan="2" style="text-align:; font-weight: bold")= totalA1
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "A.2.Đánh giá giữa học phần (Căn cứ vào Mục 6.1 Phụ lục I. QĐ số 1409/QĐ-HVM)"
+    tr 
+      td(colspan="1" style="text-align:center")= "TT" 
+      td(colspan="3" style="text-align:center")= "Tên học phần" 
+      td(colspan="1" style="text-align:center")= "Ra đề/ coi thi/chấm thi giữa học phần" 
+      td(colspan="3" style="text-align:center")= "Lớp học phầnT" 
+      td(colspan="2" style="text-align:center")= "Số sinh viên của lớp" 
+      td(colspan="2" style="text-align:center")= "Số đề" 
+      td(colspan="2" style="text-align:center")= "Số tiết ra đề/ Coi thi/ Chấm thi" 
+    tr 
+      td(colspan="14" style="text-align:left")= "Học kỳ I - Đào tạo chuyên ngành Kỹ thuật mật mã"
+    - let timeMiddleOneHVMM = dataTeachSemesterOneHVMM?.reduce((acc, curr) => acc + curr.timeMiddle, 0);
+    each user, index in dataTeachSemesterOneHVMM
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1
+        td(colspan="3" style="text-align:center")= user.name
+        td(colspan="1" style="text-align:center")= user.middleSemester
+        td(colspan="3" style="text-align:center")= user.code 
+        td(colspan="2" style="text-align:center")= user.num_student
+        td(colspan="2" style="text-align:center")=  ''
+        td(colspan="2" style="text-align:center")= user.timeMiddle
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng cộng (1)"
+      td(colspan="2" style="text-align:left; font-weight: bold")= ""
+      td(colspan="2" style="text-align:left; font-weight: bold")= timeMiddleOneHVMM
+    tr 
+      td(colspan="14" style="text-align:left")= "Học kỳ I - Đào tạo hệ đóng học phí"
+    - let timeMiddleOneFee = dataTeachSemesterOneFee?.reduce((acc, curr) => acc + curr.timeMiddle, 0);
+    each user, index in dataTeachSemesterOneFee
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1
+        td(colspan="3" style="text-align:center")= user.name
+        td(colspan="1" style="text-align:center")= user.middleSemester
+        td(colspan="3" style="text-align:center")= user.code 
+        td(colspan="2" style="text-align:center")= user.num_student
+        td(colspan="2" style="text-align:center")= '' 
+        td(colspan="2" style="text-align:center")= user.timeMiddle
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng cộng (2)"
+      td(colspan="2" style="text-align:left; font-weight: bold")= ""
+      td(colspan="2" style="text-align:left; font-weight: bold")= timeMiddleOneFee
+    tr 
+      td(colspan="14" style="text-align:left")= "Học kỳ II - Đào tạo chuyên ngành Kỹ thuật mật mã"
+    - let timeMiddleTwoHVMM = dataTeachSemesterTwoHVMM?.reduce((acc, curr) => acc + curr.timeMiddle, 0);
+    each user, index in dataTeachSemesterTwoHVMM
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1
+        td(colspan="3" style="text-align:center")= user.name
+        td(colspan="1" style="text-align:center")= user.middleSemester
+        td(colspan="3" style="text-align:center")= user.code 
+        td(colspan="2" style="text-align:center")= user.num_student
+        td(colspan="2" style="text-align:center")= '' 
+        td(colspan="2" style="text-align:center")= user.timeMiddle
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng cộng (3)"
+      td(colspan="2" style="text-align:left; font-weight: bold")= ""
+      td(colspan="2" style="text-align:left; font-weight: bold")= timeMiddleTwoHVMM
+    tr 
+      td(colspan="14" style="text-align:left")= "Học kỳ II - Đào tạo hệ đóng học phí"
+    - let timeMiddleTwoFee = dataTeachSemesterTwoFee?.reduce((acc, curr) => acc + curr.timeMiddle, 0);
+    each user, index in dataTeachSemesterTwoFee
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1
+        td(colspan="3" style="text-align:center")= user.name
+        td(colspan="1" style="text-align:center")= user.middleSemester
+        td(colspan="3" style="text-align:center")= user.code 
+        td(colspan="2" style="text-align:center")= user.num_student
+        td(colspan="2" style="text-align:center")= '' 
+        td(colspan="2" style="text-align:center")= user.timeMiddle
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng cộng (4)"
+      td(colspan="2" style="text-align:left; font-weight: bold")= ""
+      td(colspan="2" style="text-align:left; font-weight: bold")= timeMiddleTwoFee
+    - let totalA2 = timeMiddleOneHVMM + timeMiddleOneFee + timeMiddleTwoHVMM + timeMiddleTwoFee;
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng A.1= (1) + (2) + (3) + (4)"
+      td(colspan="2" style="text-align:; font-weight: bold")= ""
+      td(colspan="2" style="text-align:; font-weight: bold")= totalA2
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "A.3.Đánh giá kết thúc học phần"
+    tr 
+      td(colspan="1" style="text-align:center")= "TT" 
+      td(colspan="3" style="text-align:center")= "Tên học phần" 
+      td(colspan="1" style="text-align:center")= "Ra đề/ coi thi/chấm thi giữa học phần" 
+      td(colspan="3" style="text-align:center")= "Lớp học phầnT" 
+      td(colspan="2" style="text-align:center")= "Số sinh viên của lớp" 
+      td(colspan="2" style="text-align:center")= "Số đề" 
+      td(colspan="2" style="text-align:center")= "Số tiết ra đề/ Coi thi/ Chấm thi" 
+    tr 
+      td(colspan="14" style="text-align:left")= "Học kỳ I - Đào tạo chuyên ngành Kỹ thuật mật mã"
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng cộng (9)"
+      td(colspan="2" style="text-align:left; font-weight: bold")= ""
+      td(colspan="2" style="text-align:left; font-weight: bold")= ""
+    tr 
+      td(colspan="14" style="text-align:left")= "Học kỳ I - Đào tạo hệ đóng học phí"
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng cộng (10)"
+      td(colspan="2" style="text-align:left; font-weight: bold")= ""
+      td(colspan="2" style="text-align:left; font-weight: bold")= ""
+    tr 
+      td(colspan="14" style="text-align:left")= "Học kỳ II - Đào tạo chuyên ngành Kỹ thuật mật mã"
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng cộng (11)"
+      td(colspan="2" style="text-align:left; font-weight: bold")= ""
+      td(colspan="2" style="text-align:left; font-weight: bold")= ""
+    tr 
+      td(colspan="14" style="text-align:left")= "Học kỳ II - Đào tạo hệ đóng học phí"
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng cộng (12)"
+      td(colspan="2" style="text-align:left; font-weight: bold")= ""
+      td(colspan="2" style="text-align:left; font-weight: bold")= ""
+    - let totalA3 = 0;
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng A.3= (9) + (10) + (11) + (12)"
+      td(colspan="2" style="text-align:; font-weight: bold")= ""
+      td(colspan="2" style="text-align:; font-weight: bold")= totalA3
+    - let totalA = totalA1 + totalA2 + totalA3;
+    tr 
+      td(colspan="10" style="text-align:left; font-weight: bold")= "Tổng A.3= (9) + (10) + (11) + (12)"
+      td(colspan="2" style="text-align:; font-weight: bold")= ""
+      td(colspan="2" style="text-align:; font-weight: bold")= totalA
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "B. HƯỚNG DẪN LUẬN ÁN, LUẬN VĂN, ĐỒ ÁN TỐT NGHIỆP (Phụ lục I.3 Quyết định số 1409/QĐ-HVM)"
+    tr 
+      td(colspan="1" style="text-align:center")= "TT" 
+      td(colspan="3" style="text-align:center")= "Họ tên NCS, Học viên, Sinh viên" 
+      td(colspan="1" style="text-align:center")= "Khóa đào tạo" 
+      td(colspan="3" style="text-align:center")= "Số QĐ Giao Luận án, Luận văn, đồ án" 
+      td(colspan="2" style="text-align:center")= "Số người HD" 
+      td(colspan="2" style="text-align:center")= "HD chính/ HD hai" 
+      td(colspan="2" style="text-align:center")= "Số tiết quy đổi" 
+    - let totalB = thesis?.reduce((acc, curr) => acc + curr['users.thesis_user.time'], 0);
+    each ths, index in thesis
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1
+        td(colspan="3" style="text-align:center")= ths.name_student
+        td(colspan="1" style="text-align:center")= ths.course
+        td(colspan="3" style="text-align:center")= ths.num_decision 
+        td(colspan="2" style="text-align:center")= ths.num_person
+        td(colspan="2" style="text-align:center")= ths.type
+        td(colspan="2" style="text-align:center")= ths['users.thesis_user.time']
+    tr
+      td(colspan="12" style="text-align:left; font-weight: bold")= "Tổng B" 
+      td(colspan="2" style="text-align:left; font-weight: bold")= totalB 
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "C. NGHIÊN CỨU KHOA HỌC"
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "C.1 Đề tài, dự án (Phụ lục II.1 Quyết định số 1409/QĐ-HVM)"
+    tr 
+      td(colspan="1" style="text-align:center")= "TT" 
+      td(colspan="3" style="text-align:center")= "Tên đề tài, dự án, mã số đề tài" 
+      td(colspan="2" style="text-align:center")= "Chủ trì/ Thư ký/ thành viên" 
+      td(colspan="2" style="text-align:center")= "Cấp đề tài (Cơ sở, Ban, Nhà nước)" 
+      td(colspan="2" style="text-align:center")= "Ngày nghiệm thu" 
+      td(colspan="2" style="text-align:center")= "Kết quả xếp loại " 
+      td(colspan="2" style="text-align:center")= "Số giờ quy đổi" 
+    - let timeTopic = topics?.reduce((acc, curr) => acc + curr['users.role_user.time'], 0);
+    each topic, index in topics 
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1 
+        td(colspan="3" style="text-align:center")= topic.name
+        td(colspan="2" style="text-align:center")= topic.type 
+        td(colspan="2" style="text-align:center")= topic.level
+        td(colspan="2" style="text-align:center")= topic.acceptDate
+        td(colspan="2" style="text-align:center")= topic.result
+        td(colspan="2" style="text-align:center")= topic['users.role_user.time']
+    tr
+      td(colspan="12" style="text-align:left; font-weight: bold")= "Tổng C1" 
+      td(colspan="2" style="text-align:left; font-weight: bold")= timeTopic
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "C.2 Bài báo khoa học(Phụ lục II.3 Quyết định số 1409/QĐ-HVM)"
+    tr 
+      td(colspan="1" style="text-align:center")= "TT" 
+      td(colspan="3" style="text-align:center")= "Tên bài báo" 
+      td(colspan="2" style="text-align:center")= "Loại tạp chí/ hội nghị" 
+      td(colspan="2" style="text-align:center")= "Chỉ số tạp chí/ hội nghị" 
+      td(colspan="2" style="text-align:center")= "Số người" 
+      td(colspan="2" style="text-align:center")= "Tác giả chính/ thành viên" 
+      td(colspan="2" style="text-align:center")= "Số giờ quy đổi" 
+    - let timeArticle = articles?.reduce((acc, curr) => acc + curr['users.role_user.time'], 0);
+    each article, index in articles 
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1 
+        td(colspan="3" style="text-align:center")= article.name
+        td(colspan="2" style="text-align:center")= article.type 
+        td(colspan="2" style="text-align:center")= article.index_article
+        td(colspan="2" style="text-align:center")= article.num_person
+        td(colspan="2" style="text-align:center")= article.role
+        td(colspan="2" style="text-align:center")= article['users.role_user.time']
+    tr
+      td(colspan="12" style="text-align:left; font-weight: bold")= "Tổng C.2" 
+      td(colspan="2" style="text-align:left; font-weight: bold")= timeArticle
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "C.3 Bằng sáng chế, giải thưởng khoa học trong năm (Phụ lục II.4 Quyết định số 1409/QĐ-HVM)"
+    tr 
+      td(colspan="1" style="text-align:center")= "TT" 
+      td(colspan="3" style="text-align:center")= "Tên bằng sáng chế, giải thưởng" 
+      td(colspan="2" style="text-align:center")= "Số QĐ công nhận" 
+      td(colspan="2" style="text-align:center")= "Ngày QĐ công nhận" 
+      td(colspan="2" style="text-align:center")= "Số người" 
+      td(colspan="2" style="text-align:center")= "Tác giả chính/ thành viên" 
+      td(colspan="2" style="text-align:center")= "Số giờ quy đổi" 
+    - let timeInvention = inventions?.reduce((acc, curr) => acc + curr['users.role_user.time'], 0);
+    each invention, index in inventions 
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1 
+        td(colspan="3" style="text-align:center")= invention.name
+        td(colspan="2" style="text-align:center")= invention.num_recognition
+        td(colspan="2" style="text-align:center")= invention.date_recognition
+        td(colspan="2" style="text-align:center")= invention.num_person
+        td(colspan="2" style="text-align:center")= invention.role
+        td(colspan="2" style="text-align:center")= invention['users.role_user.time']
+    tr
+      td(colspan="12" style="text-align:left; font-weight: bold")= "Tổng C.3" 
+      td(colspan="2" style="text-align:left; font-weight: bold")= timeInvention
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "C.4 Sách, giáo trình xuất bản trong nước được Hội đồng GSNN tính điểm (Phụ lục II.5 Quyết định số 1409/QĐ-HVM)"
+    tr 
+      td(colspan="1" style="text-align:center")= "TT" 
+      td(colspan="3" style="text-align:center")= "Tên sách, giáo trình" 
+      td(colspan="2" style="text-align:center")= "Số xuất bản" 
+      td(colspan="2" style="text-align:center")= "Số trang" 
+      td(colspan="2" style="text-align:center")= "Số người" 
+      td(colspan="2" style="text-align:center")= "Tác giả chính/ thành viên" 
+      td(colspan="2" style="text-align:center")= "Số giờ quy đổi" 
+    - let timeBook = books?.reduce((acc, curr) => acc + curr['users.role_user.time'], 0);
+    each book, index in books 
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1 
+        td(colspan="3" style="text-align:center")= book.name
+        td(colspan="2" style="text-align:center")= book.num_publish 
+        td(colspan="2" style="text-align:center")= book.num_page
+        td(colspan="2" style="text-align:center")= book.num_person
+        td(colspan="2" style="text-align:center")= book.role
+        td(colspan="2" style="text-align:center")= book['users.role_user.time']
+    tr
+      td(colspan="12" style="text-align:left; font-weight: bold")= "Tổng C.4" 
+      td(colspan="2" style="text-align:left; font-weight: bold")= timeBook
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "C.5"
+    tr 
+      td(colspan="1" style="text-align:center")= "TT" 
+      td(colspan="3" style="text-align:center")= "Tên đề tài" 
+      td(colspan="2" style="text-align:center")= "Số QĐ giao nhiệm vụ" 
+      td(colspan="3" style="text-align:center")= "Ngày ký QĐ giao nhiệm vụ" 
+      td(colspan="2" style="text-align:center")= "Kết quả bảo vệ cấp Khoa " 
+      td(colspan="2" style="text-align:center")= "Kết quả bảo vệ cấp Học viện" 
+      td(colspan="1" style="text-align:center")= "Số giờ quy đổi" 
+    - let timeScientific = scientifics?.reduce((acc, curr) => acc + curr['users.role_user.time'], 0);
+    each scientific, index in scientifics 
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1 
+        td(colspan="3" style="text-align:center")= scientific.name
+        td(colspan="2" style="text-align:center")= scientific.num_decision 
+        td(colspan="2" style="text-align:center")= scientific.date_decision
+        td(colspan="2" style="text-align:center")= scientific.result_level
+        td(colspan="2" style="text-align:center")= scientific.result_academy
+        td(colspan="2" style="text-align:center")= scientific['users.role_user.time']
+    tr
+      td(colspan="12" style="text-align:left; font-weight: bold")= "Tổng C.5" 
+      td(colspan="2" style="text-align:left; font-weight: bold")= timeScientific 
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "C.6 Xây dựng chương trình đào tạo (Phụ lục II.8 Quyết định số 1409/QĐ-HVM)"
+    tr
+      td(colspan="1" style="text-align:center")= "TT" 
+      td(colspan="3" style="text-align:center")= "Tên chương trình đào tạo" 
+      td(colspan="1" style="text-align:center")= "Số tín chỉ" 
+      td(colspan="3" style="text-align:center")= "Số QĐ giao nhiệm vụ, ngày ký QĐ" 
+      td(colspan="2" style="text-align:center")= "Số thành viên" 
+      td(colspan="2" style="text-align:center")= "Tác giả chính/ thành viên" 
+      td(colspan="2" style="text-align:center")= "Số giờ quy đổi" 
+    - let timeEducation = educations?.reduce((acc, curr) => acc + curr['users.role_user.time'], 0);
+    each education, index in educations 
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1 
+        td(colspan="3" style="text-align:center")= education.name
+        td(colspan="2" style="text-align:center")= education.num_credit 
+        td(colspan="2" style="text-align:center")= education.num_decision
+        td(colspan="2" style="text-align:center")= education.num_person
+        td(colspan="2" style="text-align:center")= education.form_construction
+        td(colspan="2" style="text-align:center")= education['users.role_user.time']
+    tr
+      td(colspan="12" style="text-align:left; font-weight: bold")= "Tổng C.6" 
+      td(colspan="2" style="text-align:left; font-weight: bold")= timeEducation
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "C.7 Biên soạn giáo trình, bài giảng (Phụ lục II.9 Quyết định số 1409/QĐ-HVM)"
+    tr
+      td(colspan="1" style="text-align:center")= "TT" 
+      td(colspan="3" style="text-align:center")= "Tên giáo trình/ bài giảng" 
+      td(colspan="3" style="text-align:center")= "Số QĐ giao nhiệm vụ, ngày ký" 
+      td(colspan="1" style="text-align:center")= "Số tín chỉ" 
+      td(colspan="2" style="text-align:center")= "Số thành viên" 
+      td(colspan="2" style="text-align:center")= "Tác giả chính/ thành viên" 
+      td(colspan="2" style="text-align:center")= "Số giờ quy đổi"
+    - let timeCompilation = compilations?.reduce((acc, curr) => acc + curr['users.role_user.time'], 0);
+    each compilation, index in compilations 
+      tr 
+        td(colspan="1" style="text-align:center")= index + 1 
+        td(colspan="3" style="text-align:center")= compilation.name
+        td(colspan="2" style="text-align:center")= compilation.num_decision 
+        td(colspan="2" style="text-align:center")= compilation.date_decision
+        td(colspan="2" style="text-align:center")= compilation.result_level
+        td(colspan="2" style="text-align:center")= compilation.result_academy
+        td(colspan="2" style="text-align:center")= compilation['users.role_user.time']
+    tr
+      td(colspan="12" style="text-align:left; font-weight: bold")= "Tổng C.7" 
+      td(colspan="2" style="text-align:left; font-weight: bold")= timeCompilation
+    - var totalC = timeTopic + timeArticle + timeBook + timeInvention + timeEducation + timeScientific + timeCompilation;
+    tr
+      td(colspan="12" style="text-align:left; font-weight: bold")= "Tổng C = C.1+C.2+C.3+C.4+C.5+C.6+C.7" 
+      td(colspan="2" style="text-align:left; font-weight: bold")= totalC
+    tr 
+      td(colspan="1" style="text-align:left")= "D. TỔNG HỢP KHỐI LƯỢNG ĐÃ THỰC HIỆN:"
+    tr 
+      td(colspan="1" style="text-align:left")= "TT"
+      td(colspan="3" style="text-align:left")= "Nội dung công việc"
+      td(colspan="1" style="text-align:left")= "Số tiết"
+      td(colspan="2" style="text-align:left")= "Lý do giảm trừ tại mục IV"
+    tr 
+      td(colspan="1" style="text-align:left")= "I"
+      td(colspan="3" style="text-align:left")= "Tổng số tiết thực hiện (A + B)"
+      td(colspan="1" style="text-align:left")= totalA + totalB
+      td(colspan="2" rowSpan="5" style="text-align:left")= "Chủ nhiệm bổ môn"
+    tr 
+      td(colspan="1" style="text-align:left")= "II"
+      td(colspan="3" style="text-align:left")= "Số tiết phải giảng"
+      td(colspan="1" style="text-align:left")= 230
+    tr 
+      td(colspan="1" style="text-align:left")= "III"
+      td(colspan="3" style="text-align:left")= "Số tiết chưa hoàn thành NCKH"
+      td(colspan="1" style="text-align:left")= 0
+    tr 
+      td(colspan="1" style="text-align:left")= "IV"
+      td(colspan="3" style="text-align:left")= "Số tiết được giảm trừ"
+      td(colspan="1" style="text-align:left")= 54
+    tr 
+      td(colspan="1" style="text-align:left")= "V"
+      td(colspan="3" style="text-align:left")= "Tổng số tiết vượt giờ đề nghị thanh toán (I - II - III + IV)"
+      td(colspan="1" style="text-align:left")= (totalA + totalB - 230 - 0 + 54)
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "E. TỔNG SỐ TIẾT ĐỀ NGHỊ THANH TOÁN VƯỢT GIỜ"
+    tr 
+      td(colspan="2" rowSpan="2" style="text-align:left;")= "TT"
+      td(colspan="2" rowSpan="2" style="text-align:left;")= "Tổng số tiết theo thời khóa biểu"
+      td(colspan="6" rowSpan="1" style="text-align:left;")= "Chuyên ngành KTMM"
+      td(colspan="2" rowSpan="1" style="text-align:left;")= "Hệ đóng học phí"
+      td(colspan="2" rowSpan="1" style="text-align:left;")= "Tổng quy chuẩn"
+    tr 
+      td(colspan="2" rowSpan="1" style="text-align:left;")= "Việt Nam"
+      td(colspan="2" rowSpan="1" style="text-align:left;")= "Lào"
+      td(colspan="2" rowSpan="1" style="text-align:left;")= "Campuchia"
+
+    tr 
+      td(colspan="14" style="text-align:left; font-weight: bold")= "F. TỔNG SỐ TIẾT NGHIÊN CỨU KHOA HỌC ĐƯỢC BẢO LƯU (không thanh toán)"
+    tr 
+      td(colspan="2" rowSpan="2" style="text-align:left;")= "TT"
+      td(colspan="4" rowSpan="2" style="text-align:left;")= "Nội dung bảo lưu"
+      td(colspan="4" rowSpan="1" style="text-align:left;")= "Tổng số tiết NCKH vượt định mức"
+      td(colspan="4" rowSpan="1" style="text-align:left;")= "Tổng số tiết NCKH được bảo lưu"
+    tr 
+    tr 
+    tr 
+      td(colspan="1" style="text-align:left")= ""
+      td(colspan="4" style="text-align:left")= "P.CHỦ NHIỆM KHOA"
+      td(colspan="4" style="text-align:left")= "CHỦ NHIỆM BỘ MÔN"
+      td(colspan="4" style="text-align:left")= "NGƯỜI KÊ KHAI"
+      td(colspan="1" style="text-align:left")= ""
+    tr 
+      td(colspan="1" style="text-align:left")= ""
+      td(colspan="4" style="text-align:left")= "(ký, ghi rõ họ tên)"
+      td(colspan="4" style="text-align:left")= "(ký, ghi rõ họ tên)"
+      td(colspan="4" style="text-align:left")= "(ký, ghi rõ họ tên)"
+      td(colspan="1" style="text-align:left")= ""
+    tr 
+      td(colspan="14" style="text-align:left")= ""
+    tr 
+      td(colspan="14" style="text-align:left")= ""

@@ -1,6 +1,7 @@
 import { map } from 'lodash';
 import { validationResult } from 'express-validator';
 import { NextFunction, Request, Response } from 'express';
+import { BAD_REQUEST } from 'http-status';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   const validateResult = validationResult(req);
@@ -25,7 +26,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         }
       }
     );
-    res.json(errors);
+    res.status(BAD_REQUEST).json(errors);
   } else {
     next();
   }

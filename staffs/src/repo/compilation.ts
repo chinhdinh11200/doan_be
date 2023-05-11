@@ -304,4 +304,45 @@ export default class Compilation extends BaseRepository {
   public findById = async (compilationId: string | number) => {
     return await this.model.findByPk(compilationId);
   };
+  
+  public export = async (userId: string | number) => {
+    const compilations: any = await this.model.findAll({
+      include: [
+        {
+          model: this.modelUser,
+          through: {
+            attributes: ['time', 'user_id', 'type', 'type_role'],
+            as: 'role_user',
+            where: {
+              type_role: 7,
+              user_id: userId,
+            }
+          }
+        }
+      ],
+      raw: true,
+    })
+
+    const compilationFormats = compilations.map((compilation: any) => {
+      // console.log(compilation['users.role_user.type'] + "CC");
+      let type = "Thành viên"
+      switch (compilation['users.role_user.type']) {
+        case 0:
+          type = "Chủ trì"
+          break;
+        case 1:
+          type = "Thư ký"
+          break;
+        default:
+          type = "Thành viên"
+          break;
+      }
+      return {
+        ...compilation,
+        type: type,
+      }
+    })
+
+    return compilationFormats;
+  }
 }

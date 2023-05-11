@@ -35,11 +35,11 @@ export const duplicated = (check: ValidationChain, fieldName: string) =>
     .custom((value) => {
       return User.findOne({
         where: {
-          email: value,
+          [fieldName]: value,
         },
       }).then((user) => {
         if (user) {
-          return Promise.reject('E-mail already in use');
+          return Promise.reject("cccccc");
         } else {
           return Promise.resolve(true);
         }

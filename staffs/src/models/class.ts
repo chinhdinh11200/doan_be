@@ -63,6 +63,7 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
       user_id: {
         type: dt.BIGINT.UNSIGNED,
         allowNull: true,
+        field: 'user_id',
       },
       parent_id: {
         type: dt.BIGINT.UNSIGNED,
@@ -102,10 +103,12 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
       startDate: {
         type: dt.STRING,
         allowNull: true,
+        field: 'startDate'
       },
       endDate: {
         type: dt.STRING,
         allowNull: true,
+        field: 'endDate'
       },
       level_teach: {
         type: dt.STRING,
@@ -125,7 +128,7 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
       sequelize,
       name: { singular: 'classes', plural: 'classes' },
       tableName: 'classes',
-      underscored: false,
+      underscored: true,
       paranoid: true,
     }
   );

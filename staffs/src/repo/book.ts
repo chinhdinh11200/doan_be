@@ -174,6 +174,7 @@ export default class Book extends BaseRepository {
       throw error;
     }
   };
+
   public update = async (
     params: types.book.BookUpdateParam,
     bookId: number | string
@@ -286,6 +287,7 @@ export default class Book extends BaseRepository {
       throw error;
     }
   };
+
   public delete = async (bookId: number | string) => {
     const transaction = await this.db.sequelize.transaction();
 
@@ -311,4 +313,41 @@ export default class Book extends BaseRepository {
   public findById = async (bookId: string | number) => {
     return await this.model.findByPk(bookId);
   };
+  
+  public export = async (userId: string | number) => {
+    const articles: any = await this.model.findAll({
+      include: [
+        {
+          model: this.modelUser,
+          through: {
+            attributes: ['time', 'user_id', 'type', 'type_role'],
+            as: 'role_user',
+            where: {
+              type_role: 4,
+              user_id: userId,
+            }
+          }
+        } 
+      ],
+      raw: true,
+    })
+
+    const articleFormats = articles.map((article: any) => {
+      let role = 'Thành viên';
+      switch (article['users.role_user.type']) {
+        case 0:
+          role = "Tác giả chính"
+          break;
+        default:
+          role = "Thành viên"
+          break;
+      }
+      return {
+        ...article,
+        role: role,
+      }
+    })
+    
+    return articleFormats;
+  }
 }
