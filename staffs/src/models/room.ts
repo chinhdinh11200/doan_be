@@ -24,6 +24,7 @@ export class Room
   declare time: CreationOptional<number>;
   declare type: CreationOptional<number>;
   declare factor: CreationOptional<number>;
+  declare semester: CreationOptional<number>;
   declare num_exam_session: CreationOptional<number>;
   declare startDate: CreationOptional<string>;
   declare endDate: CreationOptional<string>;
@@ -75,6 +76,10 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         allowNull: true,
       },
       factor: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      semester: {
         type: dt.INTEGER,
         allowNull: true,
       },

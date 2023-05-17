@@ -2,11 +2,12 @@ import { DB } from '../../models';
 import Controller from './base';
 import * as repository from '../../repo';
 import { NextFunction, Request, Response } from 'express';
-import { codeFee, codeHVMM } from '../../common/constant';
+import { FORM_EXAM, codeFee, codeHVMM } from '../../common/constant';
 
 export default class ExportController extends Controller {
   private readonly exportRepo: repository.Export
   private readonly topicRepo: repository.Topic
+  private readonly subjectRepo: repository.Subject
   private readonly articleRepo: repository.Article
   private readonly bookRepo: repository.Book
   private readonly compilationRepo: repository.Compilation
@@ -36,6 +37,7 @@ export default class ExportController extends Controller {
     this.inventionRepo = new repository.Invention(db);
     this.scientificRepo = new repository.Scientific(db);
     this.thesisRepo = new repository.Thesis(db);
+    this.subjectRepo = new repository.Subject(db);
     this.modelClasses = db.Classes;
     this.modelUser = db.User;
     this.modelTopic = db.Topic;
@@ -50,12 +52,16 @@ export default class ExportController extends Controller {
   }
 
   public user = async (req: Request, res: Response, next: NextFunction) => {
-    // const filepath = await this.exportRepo.userTemplate();
+    // const filepath = await this.exportRepo.userTemplate(); 
     // return res.download(filepath)
     // return
 
+    const subjects = await this.subjectRepo.export(36);
+    // res.json(subjects);
+    // return 
+
     const dataTeachSemesterOne = await this.modelClasses.findAll({
-      attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking'],
+      attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam'],
       where: {
         user_id: 40,
         semester: 0
@@ -68,27 +74,7 @@ export default class ExportController extends Controller {
       return codeHVMM.some(t => classs.code.includes(t))
     }).map(classs => {
       let time = classs.num_lesson
-      if (classs.num_student > 40 && classs.num_student <= 50) {
-        time = time * 1.1
-      } else if (classs.num_student > 50 && classs.num_student <= 65) {
-        time *= 1.2
-      } else if (classs.num_student > 65 && classs.num_student <= 80) {
-        time *= 1.3
-      } else if (classs.num_student > 80 && classs.num_student <= 100) {
-        time *= 1.4
-      } else if (classs.num_student > 100) {
-        time *= 1.5
-      }
-      return {
-        ...classs,
-        time,
-      }
-    })
-
-    const dataTeachSemesterOneFee = dataTeachSemesterOne.filter(classs => {
-      return codeFee.some(t => classs.code.includes(t))
-    }).map(classs => {
-      let time = classs.num_lesson
+      let timeMiddle = 0
       let middleSemester = ''
       if (classs.num_student > 40 && classs.num_student <= 50) {
         time = time * 1.1
@@ -102,19 +88,98 @@ export default class ExportController extends Controller {
         time *= 1.5
       }
 
-      classs.exam_create ? middleSemester = middleSemester + 'Ra đề,' : ''
-      classs.exam_supervision ? middleSemester = middleSemester + 'coi thi,' : ''
-      classs.marking ? middleSemester = middleSemester + 'chấm thi' : ''
+      if (classs.exam_create) {
+        timeMiddle += 1;
+        middleSemester += 'Ra đề, '
+      }
+      if (classs.exam_supervision) {
+        timeMiddle += 1;
+        middleSemester += 'coi thi, '
+      }
+      if (classs.marking) {
+        middleSemester += 'chấm thi '
+        switch (classs.form_exam) {
+          case FORM_EXAM.TL:
+            timeMiddle += classs.num_student * 0.05
+            middleSemester += 'TL'
+            break;
+          case FORM_EXAM.TN:
+            timeMiddle += classs.num_student * 0.05
+            middleSemester += 'TN'
+            break;
+          case FORM_EXAM.VD:
+            timeMiddle += classs.num_student * 0.125
+            middleSemester += 'VD'
+            break;
+          default:
+            break;
+        }
+      }
 
       return {
         ...classs,
         time,
+        timeMiddle,
+        middleSemester,
+      }
+    })
+
+    const dataTeachSemesterOneFee = dataTeachSemesterOne.filter(classs => {
+      return codeFee.some(t => classs.code.includes(t))
+    }).map(classs => {
+      let time = classs.num_lesson
+      let timeMiddle = 0
+      let middleSemester = ''
+      if (classs.num_student > 40 && classs.num_student <= 50) {
+        time = time * 1.1
+      } else if (classs.num_student > 50 && classs.num_student <= 65) {
+        time *= 1.2
+      } else if (classs.num_student > 65 && classs.num_student <= 80) {
+        time *= 1.3
+      } else if (classs.num_student > 80 && classs.num_student <= 100) {
+        time *= 1.4
+      } else if (classs.num_student > 100) {
+        time *= 1.5
+      }
+
+      if (classs.exam_create) {
+        timeMiddle += 1;
+        middleSemester += 'Ra đề, '
+      }
+      if (classs.exam_supervision) {
+        timeMiddle += 1;
+        middleSemester += 'coi thi, '
+      }
+      if (classs.marking) {
+        middleSemester += 'chấm thi '
+        switch (classs.form_exam) {
+          case FORM_EXAM.TL:
+            timeMiddle += classs.num_student * 0.05
+            middleSemester += 'TL'
+            break;
+          case FORM_EXAM.TN:
+            timeMiddle += classs.num_student * 0.05
+            middleSemester += 'TN'
+            break;
+          case FORM_EXAM.VD:
+            timeMiddle += classs.num_student * 0.125
+            middleSemester += 'VD'
+            break;
+          default:
+            break;
+        }
+      }
+
+      return {
+        ...classs,
+        time,
+        timeMiddle,
         middleSemester,
       }
     })
 
     const dataTeachSemesterTwo = await this.modelClasses.findAll({
-      attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking'],
+      attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam'],
       where: {
         user_id: 40,
         semester: 1
@@ -126,6 +191,7 @@ export default class ExportController extends Controller {
       return codeHVMM.some(t => classs.code.includes(t))
     }).map(classs => {
       let time = classs.num_lesson
+      let timeMiddle = 0
       let middleSemester = '';
       if (classs.num_student > 40 && classs.num_student <= 50) {
         time = time * 1.1
@@ -138,13 +204,39 @@ export default class ExportController extends Controller {
       } else if (classs.num_student > 100) {
         time *= 1.5
       }
-      classs.exam_create ? middleSemester + 'Ra đề,' : ''
-      classs.exam_supervision ? middleSemester + 'coi thi,' : ''
-      classs.marking ? middleSemester + 'chấm thi' : ''
+
+      if (classs.exam_create) {
+        timeMiddle += 1;
+        middleSemester += 'Ra đề, '
+      }
+      if (classs.exam_supervision) {
+        timeMiddle += 1;
+        middleSemester += 'coi thi, '
+      }
+      if (classs.marking) {
+        middleSemester += 'chấm thi '
+        switch (classs.form_exam) {
+          case FORM_EXAM.TL:
+            timeMiddle += classs.num_student * 0.05
+            middleSemester += 'TL'
+            break;
+          case FORM_EXAM.TN:
+            timeMiddle += classs.num_student * 0.05
+            middleSemester += 'TN'
+            break;
+          case FORM_EXAM.VD:
+            timeMiddle += classs.num_student * 0.125
+            middleSemester += 'VD'
+            break;
+          default:
+            break;
+        }
+      }
 
       return {
         ...classs,
         time,
+        timeMiddle,
         middleSemester,
       }
     })
@@ -153,6 +245,8 @@ export default class ExportController extends Controller {
       return codeFee.some(t => classs.code.includes(t))
     }).map(classs => {
       let time = classs.num_lesson
+      let timeMiddle = 0
+      let middleSemester = ''
       if (classs.num_student > 40 && classs.num_student <= 50) {
         time = time * 1.1
       } else if (classs.num_student > 50 && classs.num_student <= 65) {
@@ -164,9 +258,40 @@ export default class ExportController extends Controller {
       } else if (classs.num_student > 100) {
         time *= 1.5
       }
+
+      if (classs.exam_create) {
+        timeMiddle += 1;
+        middleSemester += 'Ra đề, '
+      }
+      if (classs.exam_supervision) {
+        timeMiddle += 1;
+        middleSemester += 'coi thi, '
+      }
+      if (classs.marking) {
+        middleSemester += 'chấm thi '
+        switch (classs.form_exam) {
+          case FORM_EXAM.TL:
+            timeMiddle += classs.num_student * 0.05
+            middleSemester += 'TL'
+            break;
+          case FORM_EXAM.TN:
+            timeMiddle += classs.num_student * 0.05
+            middleSemester += 'TN'
+            break;
+          case FORM_EXAM.VD:
+            timeMiddle += classs.num_student * 0.125
+            middleSemester += 'VD'
+            break;
+          default:
+            break;
+        }
+      }
+
       return {
         ...classs,
         time,
+        timeMiddle,
+        middleSemester,
       }
     })
 
@@ -185,6 +310,7 @@ export default class ExportController extends Controller {
       dataTeachSemesterOneFee,
       dataTeachSemesterTwoHVMM,
       dataTeachSemesterTwoFee,
+      subjects,
       topics,
       articles,
       books,

@@ -23,6 +23,7 @@ export default class ExportRepository extends BaseRepository {
   private readonly inventionRepo: repository.Invention
   private readonly scientificRepo: repository.Scientific
   private readonly thesisRepo: repository.Thesis
+  private readonly subjectRepo: repository.Subject
   private readonly modelTopic: DB['Topic'];
   private readonly modelScientific: DB['Scientific'];
   private readonly modelCompilation: DB['Compilation'];
@@ -46,6 +47,7 @@ export default class ExportRepository extends BaseRepository {
     this.inventionRepo = new repository.Invention(db);
     this.scientificRepo = new repository.Scientific(db);
     this.thesisRepo = new repository.Thesis(db);
+    this.subjectRepo = new repository.Subject(db);
     this.modelClasses = db.Classes;
     this.modelUser = db.User;
     this.modelTopic = db.Topic;
@@ -141,6 +143,7 @@ export default class ExportRepository extends BaseRepository {
       return codeHVMM.some(t => classs.code.includes(t))
     }).map(classs => {
       let time = classs.num_lesson
+      let middleSemester = ''
       if (classs.num_student > 40 && classs.num_student <= 50) {
         time = time * 1.1
       } else if (classs.num_student > 50 && classs.num_student <= 65) {
@@ -152,9 +155,14 @@ export default class ExportRepository extends BaseRepository {
       } else if (classs.num_student > 100) {
         time *= 1.5
       }
+      classs.exam_create ? middleSemester = middleSemester + 'Ra đề,' : ''
+      classs.exam_supervision ? middleSemester = middleSemester + 'coi thi,' : ''
+      classs.marking ? middleSemester = middleSemester + 'chấm thi' : ''
+
       return {
         ...classs,
         time,
+        middleSemester,
       }
     })
 
@@ -226,6 +234,7 @@ export default class ExportRepository extends BaseRepository {
       return codeFee.some(t => classs.code.includes(t))
     }).map(classs => {
       let time = classs.num_lesson
+      let middleSemester = ''
       if (classs.num_student > 40 && classs.num_student <= 50) {
         time = time * 1.1
       } else if (classs.num_student > 50 && classs.num_student <= 65) {
@@ -237,12 +246,19 @@ export default class ExportRepository extends BaseRepository {
       } else if (classs.num_student > 100) {
         time *= 1.5
       }
+
+      classs.exam_create ? middleSemester = middleSemester + 'Ra đề,' : ''
+      classs.exam_supervision ? middleSemester = middleSemester + 'coi thi,' : ''
+      classs.marking ? middleSemester = middleSemester + 'chấm thi' : ''
+
       return {
         ...classs,
         time,
+        middleSemester,
       }
     })
 
+    const subjects = await this.subjectRepo.export(36);
     const thesis = await this.thesisRepo.export(41);
     const topics = await this.topicRepo.export(41);
     const articles = await this.articleRepo.export(41);
@@ -259,10 +275,15 @@ export default class ExportRepository extends BaseRepository {
       dataTeachSemesterOneFee,
       dataTeachSemesterTwoHVMM,
       dataTeachSemesterTwoFee,
+      subjects,
       topics,
       articles,
       books,
       thesis,
+      inventions,
+      compilations,
+      educations,
+      scientifics,
     };
 
     // return path.basename('/views');

@@ -14,6 +14,12 @@ export const validationMessage = {
   min: "Trường %1 nhỏ hơn %2 kí tự.",
   number: "Trường %1 chỉ là các chữ số.",
 }
+ 
+export const FORM_EXAM = {
+  'TL' : 0,
+  'TN' : 1,
+  'VD' : 2,
+}
 
 export const codeHVMM = ['H', 'TC']
 

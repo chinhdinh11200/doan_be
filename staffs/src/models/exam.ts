@@ -25,7 +25,9 @@ export class Exam
   declare factor: CreationOptional<number>;
   declare num_question: CreationOptional<number>;
   declare type: CreationOptional<number>;
- 
+  declare num_exam: CreationOptional<number>;
+  declare semester: CreationOptional<number>;
+
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date>;
@@ -62,7 +64,15 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.INTEGER,
         allowNull: true,
       },
+      semester: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
       num_question: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      num_exam: {
         type: dt.INTEGER,
         allowNull: true,
       },

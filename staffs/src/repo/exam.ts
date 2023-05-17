@@ -82,6 +82,8 @@ export default class ExamRepository extends BaseRepository {
           code: params.code,
           factor: factor,
           type: params.type,
+          num_exam: params.num_exam,
+          semester: params.semester,
           num_question: params.num_question,
         },
         { transaction }
@@ -127,6 +129,8 @@ export default class ExamRepository extends BaseRepository {
             code: params.code,
             factor: factor,
             type: params.type,
+            num_exam: params.num_exam,
+            semester: params.semester,
             num_question: params.num_question,
           },
           { transaction }

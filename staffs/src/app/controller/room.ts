@@ -40,6 +40,7 @@ export default class RoomController extends Controller {
             factor: req.body.factor,
             name: req.body.name,
             code: req.body.code,
+            semester: req.body.semester,
             num_exam_session: req.body.num_exam_session,
             startDate: req.body.startDate,
         }
@@ -56,6 +57,7 @@ export default class RoomController extends Controller {
             factor: req.body.factor,
             name: req.body.name,
             code: req.body.code,
+            semester: req.body.semester,
             num_exam_session: req.body.num_exam_session,
             startDate: req.body.startDate,
         }

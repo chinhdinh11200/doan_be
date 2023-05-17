@@ -3,7 +3,8 @@ import { ICommonAttr, ICommonSearchOption, ICommonSortOption, TypeScientific } f
 export interface IScientificMainAttr {
     name: string;
     code: string;
-    num_decision: string;
+    type: number;
+    num_person: number;
     total_time: number;
     result_level: number;
     result_academy: number;
@@ -17,6 +18,7 @@ export interface IScientificCreateParam {
     code: string;
     role: string;
     type: number;
+    typeScientific: number;
     num_decision: string;
     total_time: number;
     result_level?: number;
@@ -29,6 +31,7 @@ export interface IScientificUpdateParam {
     code: string;
     role: string;
     type: number;
+    typeScientific: number;
     num_decision: string;
     total_time: number;
     result_level: number;

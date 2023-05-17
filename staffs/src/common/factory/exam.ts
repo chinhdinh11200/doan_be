@@ -8,6 +8,8 @@ export interface IExamMainAttr {
     code: string;
     factor: number; // hệ số
     type: number;
+    num_exam: number;
+    semester: number;
     num_question: number; // số đề / số câu trắc nghiệm
 }
 
@@ -21,7 +23,9 @@ export interface IExamCreateParam {
     code?: string;
     factor?: number; // hệ số
     type?: number;
+    num_exam: number;
     num_question?: number; 
+    semester: number;
 }
 
 export interface IExamUpdateParam {
@@ -32,7 +36,9 @@ export interface IExamUpdateParam {
     code?: string;
     factor?: number; // hệ số
     type?: number;
+    num_exam: number;
     num_question?: number; 
+    semester: number;
 }
 
 export interface IExamSearchParam extends ICommonSearchOption, ICommonSortOption {

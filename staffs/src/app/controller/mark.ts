@@ -37,6 +37,7 @@ export default class MarkController extends Controller {
             type: req.body.type,
             num_exam: req.body.num_exam,
             date_exam: req.body.date_exam,
+            semester: req.body.semester,
         }
         const data = await this.markRepo.create(params);
 
@@ -51,6 +52,7 @@ export default class MarkController extends Controller {
             type: req.body.type,
             num_exam: req.body.num_exam,
             date_exam: req.body.date_exam,
+            semester: req.body.semester,
         }
 
         const data = await this.markRepo.update(params, req.params.id);

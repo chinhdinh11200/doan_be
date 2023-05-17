@@ -26,6 +26,7 @@ export class Classes
   declare num_student: number;
   declare num_lesson: number;
   declare num_credit: number;
+  declare form_exam: CreationOptional<number>;
   declare marking: CreationOptional<number>;
   declare exam_create: CreationOptional<number>;
   declare exam_supervision: CreationOptional<number>;
@@ -85,6 +86,9 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.INTEGER,
       },
       num_credit: {
+        type: dt.INTEGER,
+      },
+      form_exam: {
         type: dt.INTEGER,
       },
       marking: {

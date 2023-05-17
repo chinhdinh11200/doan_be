@@ -18,6 +18,7 @@ import timeRouter from './time';
 import exportRouter from './export';
 import importRouter from './import';
 import theisRouter from './theis';
+import yearRouter from './year';
 import { DB } from '../../models';
 
 export default function (db: DB) {
@@ -41,6 +42,7 @@ export default function (db: DB) {
   router.use('/export', exportRouter(db));
   router.use('/import', importRouter(db));
   router.use('/thesis', theisRouter(db));
+  router.use('/year', yearRouter(db));
 
   return router;
 }

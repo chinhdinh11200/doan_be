@@ -30,15 +30,17 @@ export default class ScientificController extends Controller {
         this.ok(res, data);
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {
+
         const params: types.scientific.ScientificCreateParam = {
             name: req.body.name,
             code: req.body.code,
             role: req.body.role,
             type: req.body.type,
+            typeScientific: req.body.typeScientific,
             num_decision: req.body.num_decision,
             total_time: req.body.total_time,
             result_level: req.body.result_level,
-            result_academy: req.body.result_academy,
+            result_academy: req.body.result_academy !== null ? req.body.result_academy : undefined,
             date_decision: req.body.date_decision,
         }
         const data = await this.scientificRepo.create(params);
@@ -46,19 +48,18 @@ export default class ScientificController extends Controller {
         this.created(res, data);
     }
     public update = async (req: Request, res: Response, next: NextFunction) => {
-
         const params: types.scientific.ScientificUpdateParam = {
             name: req.body.name,
             code: req.body.code,
             role: req.body.role,
             type: req.body.type,
+            typeScientific: req.body.typeScientific,
             num_decision: req.body.num_decision,
             total_time: req.body.total_time,
             result_level: req.body.result_level,
-            result_academy: req.body.result_academy,
+            result_academy: req.body.result_academy !== null ? req.body.result_academy : undefined,
             date_decision: req.body.date_decision,
         }
-        console.log(params);
 
         const data = await this.scientificRepo.update(params, req.params.id);
 

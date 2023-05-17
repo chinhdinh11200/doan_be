@@ -21,6 +21,7 @@ import invention from './invention';
 import scientific from './scientific';
 import thesis from './thesis';
 import thesisUser from './thesisUser';
+import year from './year';
 export type DB = ReturnType<typeof initialize>;
 
 export const initialize = (sqlize: Sequelize.Sequelize) => {
@@ -46,6 +47,7 @@ export const initialize = (sqlize: Sequelize.Sequelize) => {
     RoleUser:  roleUser(sqlize, Sequelize.DataTypes),
     Thesis:  thesis(sqlize, Sequelize.DataTypes),
     ThesisUser:  thesisUser(sqlize, Sequelize.DataTypes),
+    Year:  year(sqlize, Sequelize.DataTypes),
   };
 
   for (const model of values(db)) {

@@ -2,6 +2,9 @@ import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, 
 import { types } from "../common";
 import { Classes } from "./class";
 import { commonFields } from "./_common";
+import { Room } from "./room";
+import { Mark } from "./mark";
+import { Exam } from "./exam";
 
 
 export class Subject extends Model<InferAttributes<Subject>, InferCreationAttributes<Subject>> implements types.subject.Attr {
@@ -19,6 +22,9 @@ export class Subject extends Model<InferAttributes<Subject>, InferCreationAttrib
    */
   public static ASSOCIATE() {
     Subject.hasMany(Classes, {foreignKey: 'subject_id'});
+    Subject.hasMany(Room, {foreignKey: 'subject_id'});
+    Subject.hasMany(Mark, {foreignKey: 'subject_id'});
+    Subject.hasMany(Exam, {foreignKey: 'subject_id'});
   }
 }
 

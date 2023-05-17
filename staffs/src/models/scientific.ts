@@ -18,7 +18,9 @@ export class Scientific
   declare code: string;
   declare num_decision: string;
   // declare num_person: number;
-  declare total_time: number;
+  declare total_time: number; 
+  declare type: number; 
+  declare num_person: number; 
   declare result_level: CreationOptional<number>;
   declare result_academy: CreationOptional<number>;
   declare date_decision: Date;
@@ -53,9 +55,12 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
       date_decision: {
         type: dt.DATE,
       },
-      // num_person: {
-      //   type: dt.INTEGER,
-      // },
+      num_person: {
+        type: dt.INTEGER,
+      },
+      type: {
+        type: dt.INTEGER,
+      },
       result_level: {
         type: dt.INTEGER,
       },

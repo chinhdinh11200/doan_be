@@ -65,6 +65,7 @@ export default class RoomRepository extends BaseRepository {
           num_exam_session: params.num_exam_session,
           time: params.time,
           startDate: params.startDate,
+          semester: params.semester,
         },
         { transaction }
       );
@@ -106,6 +107,7 @@ export default class RoomRepository extends BaseRepository {
             num_exam_session: params.num_exam_session,
             time: params.time,
             startDate: params.startDate,
+            semester: params.semester,
           },
           { transaction }
         );

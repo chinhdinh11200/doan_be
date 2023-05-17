@@ -8,6 +8,7 @@ export interface IMarkMainAttr {
     factor: number, // hế ố nhân bao nhieeu
     date_exam: Date;
     form_mark: number;
+    semester: number;
 }
 
 export interface IMarkAttr extends IMarkMainAttr, ICommonAttr { }
@@ -20,6 +21,7 @@ export interface IMarkCreateParam {
     factor?: number, // hế ố nhân bao nhieeu
     date_exam?: Date;
     form_mark?: number;
+    semester: number;
 }
 
 export interface IMarkUpdateParam {
@@ -30,6 +32,7 @@ export interface IMarkUpdateParam {
     factor?: number, // hế ố nhân bao nhieeu
     date_exam?: Date;
     form_mark?: number;
+    semester: number;
 }
 
 export interface IMarkSearchParam extends ICommonSearchOption, ICommonSortOption {

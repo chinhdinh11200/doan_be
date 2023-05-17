@@ -16,6 +16,7 @@ import * as bookFactory from './factory/book';
 import * as scientificFactory from './factory/scientific';
 import * as educationFactory from './factory/education';
 import * as thesisFactory from './factory/thesis';
+import * as yearFactory from './factory/year';
 
 export namespace user {
   export import Attr = userFactory.IUserAttr;
@@ -140,4 +141,11 @@ export namespace thesis {
   export import ThesisCreateParam = thesisFactory.IThesisCreateParam;
   export import ThesisUpdateParam = thesisFactory.IThesisUpdateParam;
   export import ThesisSearchParam = thesisFactory.IThesisSearchParam;
+}
+
+export namespace year {
+  export import Attr = yearFactory.IYearAttr;
+  export import YearCreateParam = yearFactory.IYearCreateParam;
+  export import YearUpdateParam = yearFactory.IYearUpdateParam;
+  export import YearSearchParam = yearFactory.IYearSearchParam;
 }

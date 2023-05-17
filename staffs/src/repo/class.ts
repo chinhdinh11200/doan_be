@@ -20,6 +20,7 @@ export default class ClassRepository extends BaseRepository {
   public search = async (params: types.classes.ClassSearchParam) => {
     const findOption: FindAndCountOptions = {
       include: [],
+      attributes: ['id', 'name', 'code', 'form_teach', 'form_exam', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam', 'startDate', 'endDate'],
     };
 
     if (params !== undefined) {
@@ -92,6 +93,7 @@ export default class ClassRepository extends BaseRepository {
           exam_create: params.exam_create,
           exam_supervision: params.exam_supervision,
           form_teach: params.form_teach,
+          form_exam: params.form_exam,
           num_student: params.num_student,
           num_lesson: params.num_lesson,
           num_credit: params.num_credit,
@@ -131,6 +133,7 @@ export default class ClassRepository extends BaseRepository {
             exam_create: params.exam_create,
             exam_supervision: params.exam_supervision,
             form_teach: params.form_teach,
+            form_exam: params.form_exam,
             num_student: params.num_student,
             classroom: params.classroom,
             startDate: params.startDate,
@@ -167,6 +170,9 @@ export default class ClassRepository extends BaseRepository {
   };
 
   public findById = async (subjectId: string | number) => {
-    return await this.model.findByPk(subjectId);
+    return await this.model.findOne({
+      where: { id: subjectId },
+      attributes: ['id', 'subject_id', 'user_id', 'form_teach', 'form_exam', 'name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam', 'startDate', 'endDate', 'semester'],
+    });
   };
 }

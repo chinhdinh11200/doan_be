@@ -43,7 +43,7 @@ export default class Scientific extends BaseRepository {
           attributes: ['id', 'name'],
         }
       ],
-      attributes: ['name', 'code', 'num_decision', 'total_time', 'result_level', 'date_decision', 'result_academy', [Sequelize.fn('DATE_FORMAT', Sequelize.col('date_decision'), '%Y-%m-%d'), 'date_decision']],
+      attributes: ['name', 'code', 'num_decision', 'total_time', 'result_level', 'date_decision', 'result_academy', 'type', 'num_person', [Sequelize.fn('DATE_FORMAT', Sequelize.col('date_decision'), '%Y-%m-%d'), 'date_decision']],
       order: [
         [literal('`users->role_user`.`type`'), 'ASC']
       ]
@@ -89,16 +89,69 @@ export default class Scientific extends BaseRepository {
     return scientifics;
   };
   public create = async (params: types.scientific.ScientificCreateParam) => {
+    const typeGroup = 1;
     const transaction = await this.db.sequelize.transaction();
     try {
-      // const roleUser = params.role;
-      // const roleUserArray: string[] = roleUser.split(',');
+      const roleUser = params.role;
+      const roleUserArray: string[] = roleUser.split(',');
+      var totalTime: number = 0;
+      var timeMember: number = 0;
+      var level = params.result_level
+      if (params.typeScientific == typeGroup) {
+        switch (level) {
+          case 0:
+            totalTime = 100;
+            break;
+          case 1:
+            totalTime = 90;
+            break;
+          default:
+            totalTime = 0;
+            break;
+        }
+      } else {
+        switch (level) {
+          case 0:
+            totalTime = 25;
+            break;
+          case 1:
+            totalTime = 0;
+            break;
+          default:
+            totalTime = 0;
+            break;
+        }
+        if (params.result_academy !== undefined) {
+          level = params.result_academy;
+          switch (level) {
+            case 0:
+              totalTime = 35;
+              break;
+            case 1:
+              totalTime = 40;
+              break;
+            case 2:
+              totalTime = 45;
+              break;
+            case 3:
+              totalTime = 50;
+              break;
+            default:
+              totalTime = 0;
+              break;
+          }
+        }
+      }
+      timeMember = totalTime / roleUserArray.length;
+
       const scientific = await this.model.create(
         {
           name: params.name,
           code: params.code,
           num_decision: params.num_decision,
-          total_time: params.total_time,
+          total_time: totalTime,
+          type: params.typeScientific,
+          num_person: roleUserArray.length,
           result_level: params.result_level,
           result_academy: params.result_academy,
           date_decision: params.date_decision,
@@ -110,35 +163,26 @@ export default class Scientific extends BaseRepository {
           type: params.type
         }
       });
-      // if (role) {
-      //   await this.modelRoleAble.create({
-      //     role_id: role.id,
-      //     role_able_id: scientific.dataValues.id,
-      //     type: params.type,
-      //     time: String(params.total_time),
-      //   })
-      //   roleUserArray.forEach(async (roleUser, index) => {
-      //     let type = TypeRoleUser.member;
-      //     let time: number = TypeRoleUser.member;
-      //     if (index === 0) {
-      //       type = TypeRoleUser.main;
-      //       time = 400;
-      //     } else if (index === 1) {
-      //       type = TypeRoleUser.support
-      //       time = 120;
-      //     } else {
-
-      //       time = 280 / (roleUserArray.length - 2)
-      //     }
-      //     // console.log("ROLE", time, type, roleUserArray.length);
-      //     await this.modelRoleUser.create({
-      //       role_able_id: scientific.dataValues.id,
-      //       user_id: Number(roleUser),
-      //       type: type,
-      //       time: String(time),
-      //     })
-      //   })
-      // }
+      if (role) {
+        await this.modelRoleAble.create({
+          role_id: role.id,
+          role_able_id: scientific.dataValues.id,
+          type: params.type,
+          time: String(params.total_time),
+        })
+        roleUserArray.forEach(async (roleUser, index) => {
+          let type = TypeRoleUser.member;
+          let time: number = TypeRoleUser.member;
+          // console.log("ROLE", time, type, roleUserArray.length);
+          await this.modelRoleUser.create({
+            role_able_id: scientific.dataValues.id,
+            user_id: Number(roleUser),
+            type: type,
+            type_role: params.type,
+            time: Number(timeMember),
+          })
+        })
+      }
       await transaction.commit();
 
       return scientific.dataValues;
@@ -151,11 +195,63 @@ export default class Scientific extends BaseRepository {
     params: types.scientific.ScientificUpdateParam,
     scientificId: number | string
   ) => {
+    const typeGroup = 1;
     const transaction = await this.db.sequelize.transaction();
-    console.log(params);
     try {
-      // const roleUser = params.role;
-      // const roleUserArray: string[] = roleUser.split(',');
+      const roleUser = params.role;
+      const roleUserArray: string[] = roleUser.split(',');
+      var totalTime: number = 0;
+      var timeMember: number = 0;
+      var level = params.result_level
+      if (params.typeScientific == typeGroup) {
+        switch (level) {
+          case 0:
+            totalTime = 100;
+            break;
+          case 1:
+            totalTime = 90;
+            break;
+          default:
+            totalTime = 0;
+            break;
+        }
+      } else {
+        console.log("cccccccc");
+        switch (level) {
+          case 0:
+            totalTime = 25;
+
+            break;
+          case 1:
+            totalTime = 0;
+            break;
+          default:
+            totalTime = 0;
+            break;
+        }
+        if (params.result_academy !== undefined) {
+          console.log("ccccccccccc222");
+          level = params.result_academy;
+          switch (level) {
+            case 0:
+              totalTime = 35;
+              break;
+            case 1:
+              totalTime = 40;
+              break;
+            case 2:
+              totalTime = 45;
+              break;
+            case 3:
+              totalTime = 50;
+              break;
+            default:
+              totalTime = 0;
+              break;
+          }
+        }
+      }
+      timeMember = totalTime / roleUserArray.length;
       const scientificUpdate = await this.findById(scientificId);
       if (scientificUpdate) {
         const scientific = await scientificUpdate.update(
@@ -163,76 +259,45 @@ export default class Scientific extends BaseRepository {
             name: params.name,
             code: params.code,
             num_decision: params.num_decision,
-            total_time: params.total_time,
+            total_time: totalTime,
             result_level: params.result_level,
             result_academy: params.result_academy,
             date_decision: params.date_decision,
           },
           { transaction }
         );
-        // if (roleUser !== '') {
+        if (roleUser !== '') {
 
-        //   const role = await this.modelRole.findOne({
-        //     where: {
-        //       type: params.type
-        //     }
-        //   });
+          const role = await this.modelRole.findOne({
+            where: {
+              type: params.type
+            }
+          });
 
-        //   // roleUserDelete.
-        //   const object = await this.modelRoleUser.destroy({
-        //     where: {
-        //       role_able_id: scientificUpdate.dataValues.id,
-        //       type: TypeRoleUser.member
-        //     },
-        //     force: true
-        //   })
-        //   if (role) {
-        //     for (let index = 0; index < roleUserArray.length; index++) {
-        //       const roleUser = roleUserArray[index];
-        //       let type = TypeRoleUser.member;
-        //       let time: number = 0;
-        //       let user_id: number;
-        //       if (index === 0) {
-        //         type = TypeRoleUser.main;
-        //         time = 400;
-        //         user_id = Number(roleUser);
-        //         const mainRole = await this.modelRoleUser.findOne({
-        //           where: {
-        //             role_able_id: scientific.dataValues.id,
-        //             type: TypeRoleUser.main
-        //           }
-        //         });
-        //         if (mainRole) {
-        //           mainRole.set({ user_id: user_id })
-        //           mainRole.save();
-        //         }
-        //       } else if (index === 1) {
-        //         type = TypeRoleUser.support
-        //         time = 120;
-        //         user_id = Number(roleUser);
-        //         const supportRole = await this.modelRoleUser.findOne({
-        //           where: {
-        //             role_able_id: scientific.dataValues.id,
-        //             type: TypeRoleUser.support
-        //           }
-        //         });
-        //         if (supportRole) {
-        //           supportRole.set({ user_id: user_id })
-        //           supportRole.save();
-        //         }
-        //       } else {
-        //         time = 280 / (roleUserArray.length - 2)
-        //         user_id = Number(roleUser);
-        //         await this.modelRoleUser.upsert({
-        //           role_able_id: scientific.dataValues.id,
-        //           user_id: Number(roleUser),
-        //           type: type,
-        //           time: time,
-        //         })
-        //       }
-        //     }
-        //   }
-        // }
+          // roleUserDelete.
+          const object = await this.modelRoleUser.destroy({
+            where: {
+              role_able_id: scientificUpdate.dataValues.id,
+              type: TypeRoleUser.member,
+              type_role: 5
+            },
+            force: true
+          })
+          if (role) {
+            for (let index = 0; index < roleUserArray.length; index++) {
+              const roleUser = roleUserArray[index];
+              let type = TypeRoleUser.member;
+              let time: number = timeMember;
+              await this.modelRoleUser.upsert({
+                role_able_id: scientific.dataValues.id,
+                user_id: Number(roleUser),
+                type: type,
+                type_role: params.type,
+                time: Number(timeMember),
+              })
+            }
+          }
+        }
         await transaction.commit();
 
         return scientific.dataValues;

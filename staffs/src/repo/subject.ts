@@ -2,13 +2,20 @@ import { FindAndCountOptions, Op, WhereOptions } from 'sequelize';
 import { types } from '../common';
 import { DB } from './../models';
 import BaseRepository from './_base';
+import { codeFee, codeHVMM } from '../common/constant';
 
 export default class Subject extends BaseRepository {
   private readonly model: DB['Subject'];
+  private readonly modelMark: DB['Mark'];
+  private readonly modelExam: DB['Exam'];
+  private readonly modelRoom: DB['Room'];
   constructor(db: DB) {
     super(db);
 
     this.model = db.Subject;
+    this.modelExam = db.Exam;
+    this.modelMark = db.Mark;
+    this.modelRoom = db.Room;
   }
 
   public findOneById = async (id: string | number) => {
@@ -118,4 +125,97 @@ export default class Subject extends BaseRepository {
   public findById = async (subjectId: string | number) => {
     return await this.model.findByPk(subjectId);
   };
+
+  public export = async (userId: string | number) => {
+    const subjects: any = await this.model.findAll({
+      include: [
+        {
+          model: this.modelExam,
+          where: {
+            user_id: userId
+          }
+        },
+        {
+          model: this.modelMark,
+          where: {
+            user_id: userId
+          }
+        },
+        {
+          model: this.modelRoom,
+          where: {
+            user_id: userId
+          }
+        },
+      ],
+      // raw: true
+    })
+
+    const subjectHVMMFormats = subjects.filter((subject: any) => {
+      return codeHVMM.some(t => subject.code.includes(t))
+    }).map((subject: any) => {
+      let endSemester: string = '';
+      let time: number = 0;
+      if (subject.exams !== undefined) {
+        endSemester += 'Ra đề, ';
+        subject.exams.map((exam: any) => {
+          time += exam.num_exam * exam.factor;
+        })
+      }
+      if (subject.rooms !== undefined) {
+        endSemester += 'coi thi, ';
+        subject.rooms.map((room: any) => {
+          time += room.num_exam_session * room.factor;
+        })
+      }
+      if (subject.marks !== undefined) {
+        endSemester += 'chấm thi';
+        subject.exams.map((exam: any) => {
+          time += exam.num_exam * exam.factor;
+        })
+      }
+
+      return {
+        ...subject.dataValues,
+        time,
+        endSemester,
+      }
+    });
+
+    const subjectFeeFormats = subjects.filter((subject: any) => {
+      return codeFee.some(t => subject.code.includes(t))
+    }).map((subject: any) => {
+      let endSemester: string = '';
+      let time: number = 0;
+      if (subject.exams !== undefined) {
+        endSemester += 'Ra đề, ';
+        subject.exams.map((exam: any) => {
+          time += exam.num_exam * exam.factor;
+        })
+      }
+      if (subject.rooms !== undefined) {
+        endSemester += 'coi thi, ';
+        subject.rooms.map((room: any) => {
+          time += room.num_exam_session * room.factor;
+        })
+      }
+      if (subject.marks !== undefined) {
+        endSemester += 'chấm thi';
+        subject.exams.map((exam: any) => {
+          time += exam.num_exam * exam.factor;
+        })
+      }
+
+      return {
+        ...subject.dataValues,
+        time,
+        endSemester,
+      }
+    });
+
+    return {
+      subjectHVMMFormats,
+      subjectFeeFormats ,
+    }
+  }
 }
