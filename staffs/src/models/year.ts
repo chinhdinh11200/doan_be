@@ -8,6 +8,7 @@ import {
 } from 'sequelize';
 import { types } from '../common';
 import { commonFields } from './_common';
+import { Classes } from './class';
 
 export class Year
   extends Model<InferAttributes<Year>, InferCreationAttributes<Year>>
@@ -23,6 +24,7 @@ export class Year
   declare deletedAt: CreationOptional<Date>;
 
   public static ASSOCIATE() {
+    Year.hasMany(Classes);
   }
 }
 

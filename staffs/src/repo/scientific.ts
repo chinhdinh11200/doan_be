@@ -155,6 +155,7 @@ export default class Scientific extends BaseRepository {
           result_level: params.result_level,
           result_academy: params.result_academy,
           date_decision: params.date_decision,
+          year_id: params.year_id,
         },
         { transaction }
       );
@@ -173,7 +174,6 @@ export default class Scientific extends BaseRepository {
         roleUserArray.forEach(async (roleUser, index) => {
           let type = TypeRoleUser.member;
           let time: number = TypeRoleUser.member;
-          // console.log("ROLE", time, type, roleUserArray.length);
           await this.modelRoleUser.create({
             role_able_id: scientific.dataValues.id,
             user_id: Number(roleUser),
@@ -216,7 +216,6 @@ export default class Scientific extends BaseRepository {
             break;
         }
       } else {
-        console.log("cccccccc");
         switch (level) {
           case 0:
             totalTime = 25;
@@ -230,7 +229,6 @@ export default class Scientific extends BaseRepository {
             break;
         }
         if (params.result_academy !== undefined) {
-          console.log("ccccccccccc222");
           level = params.result_academy;
           switch (level) {
             case 0:
@@ -263,6 +261,7 @@ export default class Scientific extends BaseRepository {
             result_level: params.result_level,
             result_academy: params.result_academy,
             date_decision: params.date_decision,
+            year_id: params.year_id,
           },
           { transaction }
         );
@@ -353,7 +352,6 @@ export default class Scientific extends BaseRepository {
     })
 
     const scientificFormats = scientifics.map((scientific: any) => {
-      // console.log(scientific['users.role_user.type'] + "CC");
       let type = "Thành viên"
       switch (scientific['users.role_user.type']) {
         case 0:

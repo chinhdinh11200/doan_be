@@ -9,6 +9,7 @@ export interface IUserMainAttr {
   code: string;
   birthday: Date;
   position: string;
+  avatar?: string;
   degree: string;
   number_salary: number;
   income: number;
@@ -22,6 +23,7 @@ export interface IUserCreateParam {
   department_id: number;
   name: string;
   email: string;
+  avatar?: string;
   password: string;
   code: string;
   birthday?: Date;
@@ -36,6 +38,7 @@ export interface IUserUpdateParam {
   department_id: number;
   name: string;
   email: string;
+  avatar?: string;
   code: string;
   birthday?: Date;
   position: string;

@@ -7,6 +7,7 @@ export interface IBookMainAttr {
     num_publish: string;
     num_page: number;
     total_time: number;
+    year_id: number;
 }
 
 export interface IBookAttr extends IBookMainAttr, ICommonAttr { }
@@ -21,6 +22,7 @@ export interface IBookCreateParam {
     total_time: number;
     type_book: number;
     type: number;
+    year_id?: number;
 }
 
 export interface IBookUpdateParam {
@@ -33,6 +35,7 @@ export interface IBookUpdateParam {
     total_time: number;
     type_book: number;
     type: number;
+    year_id?: number;
 }
 
 export interface IBookSearchParam extends ICommonSearchOption, ICommonSortOption {

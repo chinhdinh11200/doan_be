@@ -22,6 +22,7 @@ export class Thesis
   declare num_decision: string;
   declare type: number;
   declare total_time: number;
+  declare year_id: CreationOptional<number>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -57,6 +58,9 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.INTEGER,
       },
       num_year: {
+        type: dt.INTEGER,
+      },
+      year_id: {
         type: dt.INTEGER,
       },
       total_time: {

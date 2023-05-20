@@ -4,20 +4,44 @@ import BaseRepository from './_base';
 import { DB } from '../models';
 import { FindAndCountOptions, Op, WhereOptions } from 'sequelize';
 import { log } from 'console';
+import { addBaseUrlToData } from '../utils';
 
 export default class UserRepository extends BaseRepository {
   public readonly model: DB['User'];
+  public readonly modelDepartment: DB['Department'];
   constructor(db: DB) {
     super(db);
 
     this.model = db.User;
+    this.modelDepartment = db.Department;
   }
 
   public findOneById = async (id: string | number) => {
-    const user = await this.model.findByPk(id);
+    let user = await this.model.findByPk(id);
+    // user = addBaseUrlToData(user, 'avatar')
 
-    return user?.dataValues;
+    return user;
   };
+
+  public detail = async (id: string | number) => {
+    let user: any = await this.model.findOne({
+      where: {
+        id: id,
+      },
+      include: [
+        {
+          model: this.modelDepartment,
+          attributes: ['name'],
+          as: 'department'
+        }
+      ]
+    });
+
+    return {
+      ...user?.dataValues,
+      departmentName: user?.department.name
+    };
+  }
 
   public create = async (data: types.user.UserCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
@@ -27,6 +51,7 @@ export default class UserRepository extends BaseRepository {
         {
           department_id: data.department_id,
           name: data.name,
+          avatar: data.avatar,
           email: data.email,
           code: data.code,
           ...this.hashPassword(data.password),
@@ -65,6 +90,7 @@ export default class UserRepository extends BaseRepository {
           department_id: data.department_id,
           name: data.name,
           code: data.code,
+          avatar: data.avatar,
           email: data.email,
           birthday: data.birthday,
           position: data.position,
@@ -99,7 +125,7 @@ export default class UserRepository extends BaseRepository {
     const findOption: FindAndCountOptions = {
       include: [],
     };
-    
+
     this.setOffsetLimit(findOption, params);
     if (params !== undefined) {
       const andArray: WhereOptions[] = [];

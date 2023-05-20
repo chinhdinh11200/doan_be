@@ -9,6 +9,7 @@ export interface IEducationMainAttr {
     form_construction: number;
     num_decision: string;
     date_decision: Date;
+    year_id: number;
 }
 
 export interface IEducationAttr extends IEducationMainAttr, ICommonAttr { }
@@ -24,6 +25,7 @@ export interface IEducationCreateParam {
     type: number;
     num_decision: string;
     date_decision: Date;
+    year_id?: number;
 }
 
 export interface IEducationUpdateParam {
@@ -37,6 +39,7 @@ export interface IEducationUpdateParam {
     type: number;
     num_decision: string;
     date_decision: Date;
+    year_id?: number;
 }
 
 export interface IEducationSearchParam  extends ICommonSearchOption, ICommonSortOption{

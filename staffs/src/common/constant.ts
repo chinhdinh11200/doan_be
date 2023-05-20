@@ -63,3 +63,18 @@ export const TYPE_ARTICLESCIENTIFIC = [
     value: 8
   }
 ]
+
+export const POSITION_STAFF = [
+  {
+    value: 1,
+    label: 'Trưởng Khoa'
+  },
+  {
+    value: 2,
+    label: 'Phó Khoa'
+  },
+  {
+    value: 3,
+    label: 'Giảng viên'
+  },
+]

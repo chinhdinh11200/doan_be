@@ -123,6 +123,7 @@ export default class Compilation extends BaseRepository {
           number_credit: params.number_credit,
           date_decision: params.date_decision,
           num_decision: params.num_decision,
+          year_id: params.year_id,
         },
         { transaction }
       );
@@ -210,6 +211,7 @@ export default class Compilation extends BaseRepository {
             number_credit: params.number_credit,
             date_decision: params.date_decision,
             num_decision: params.num_decision,
+            year_id: params.year_id,
           },
           { transaction }
         );
@@ -324,7 +326,6 @@ export default class Compilation extends BaseRepository {
     })
 
     const compilationFormats = compilations.map((compilation: any) => {
-      // console.log(compilation['users.role_user.type'] + "CC");
       let type = "Thành viên"
       switch (compilation['users.role_user.type']) {
         case 0:

@@ -124,6 +124,7 @@ export default class Invention extends BaseRepository {
           total_time: totalTime,
           date_recognition: params.date_recognition,
           number_recognition: params.number_recognition,
+          year_id: params.year_id,
         },
         { transaction }
       );
@@ -142,7 +143,6 @@ export default class Invention extends BaseRepository {
         roleUserArray.forEach(async (roleUser, index) => {
           let type = TypeRoleUser.member;
           let time: number = totalTime / roleUserArray.length
-          // console.log("ROLE", time, type, roleUserArray.length);
           await this.modelRoleUser.create({
             role_able_id: invention.dataValues.id,
             user_id: Number(roleUser),
@@ -200,6 +200,7 @@ export default class Invention extends BaseRepository {
             total_time: totalTime,
             date_recognition: params.date_recognition,
             number_recognition: params.number_recognition,
+            year_id: params.year_id,
           },
           { transaction }
         );
@@ -298,7 +299,6 @@ export default class Invention extends BaseRepository {
     })
 
     const inventionFormats = inventions.map((invention: any) => {
-      // console.log(invention['users.role_user.type'] + "CC");
       let type = "Thành viên"
       switch (invention['users.role_user.type']) {
         case 0:

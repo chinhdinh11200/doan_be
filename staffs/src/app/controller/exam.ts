@@ -41,6 +41,7 @@ export default class ExamController extends Controller {
             num_exam: req.body.num_exam,
             semester: req.body.semester,
             num_question: req.body.num_question,
+            year_id: req.body.year_id,
         }
         const data = await this.examRepo.create(params);
 
@@ -58,6 +59,7 @@ export default class ExamController extends Controller {
             num_exam: req.body.num_exam,
             semester: req.body.semester,
             num_question: req.body.num_question,
+            year_id: req.body.year_id,
         }
 
         const data = await this.examRepo.update(params, req.params.id);

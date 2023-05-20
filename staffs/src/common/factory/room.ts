@@ -14,6 +14,7 @@ export interface IRoomMainAttr {
     startDate: string;
     endDate: string;
     semester: number;
+    year_id: number;
 }
 
 export interface IRoomAttr extends IRoomMainAttr, ICommonAttr { }
@@ -32,6 +33,7 @@ export interface IRoomCreateParam {
     startDate?: string;
     endDate?: string;
     semester: number;
+    year_id?: number;
 }
 
 export interface IRoomUpdateParam {
@@ -48,6 +50,7 @@ export interface IRoomUpdateParam {
     startDate?: string;
     endDate?: string;
     semester: number;
+    year_id?: number;
 }
 
 export interface IRoomSearchParam extends ICommonSearchOption, ICommonSortOption {
@@ -57,6 +60,6 @@ export interface IRoomSearchParam extends ICommonSearchOption, ICommonSortOption
     num_student?: number;
     startDate?: string;
     endDate?: string;
-    semester?: string;
+    // semester?: string;
     search?: string;
 }

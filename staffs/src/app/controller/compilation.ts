@@ -41,6 +41,7 @@ export default class CompilationController extends Controller {
             number_credit: req.body.num_credit,
             date_decision: req.body.date_decision,
             num_decision: req.body.num_decision,
+            year_id: req.body.year_id,
         }
         const data = await this.compilationRepo.create(params);
 
@@ -59,6 +60,7 @@ export default class CompilationController extends Controller {
             number_credit: req.body.num_credit,
             date_decision: req.body.date_decision,
             num_decision: req.body.num_decision,
+            year_id: req.body.year_id,
         }
 
         const data = await this.compilationRepo.update(params, req.params.id);

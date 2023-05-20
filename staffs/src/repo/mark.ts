@@ -109,6 +109,7 @@ export default class MarkRepository extends BaseRepository {
           date_exam: params.date_exam,
           semester: params.semester,
           factor: factor,
+          year_id: params.year_id,
         },
         { transaction }
       );
@@ -153,6 +154,7 @@ export default class MarkRepository extends BaseRepository {
             date_exam: params.date_exam,
             semester: params.semester,
             factor: factor,
+            year_id: params.year_id,
           },
           { transaction }
         );

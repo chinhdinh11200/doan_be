@@ -130,6 +130,7 @@ export default class Topic extends BaseRepository {
           result: params.result,
           num_person: roleUserArray.length,
           total_time: totalTime,
+          year_id: params.year_id,
         },
         { transaction }
       );
@@ -174,7 +175,6 @@ export default class Topic extends BaseRepository {
               time: timeMember,
             })
           }
-          // console.log("ROLE", time, type, roleUserArray.length);
 
         })
       }
@@ -231,6 +231,7 @@ export default class Topic extends BaseRepository {
             result: params.result,
             num_person: roleUserArray.length,
             total_time: totalTime,
+            year_id: params.year_id,
           },
           { transaction }
         );
@@ -367,7 +368,6 @@ export default class Topic extends BaseRepository {
     })
 
     const topicFormats = topics.map((topic: any) => {
-      // console.log(topic['users.role_user.type'] + "CC");
       let type = "Thành viên"
       switch (topic['users.role_user.type']) {
         case 0:

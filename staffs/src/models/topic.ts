@@ -25,6 +25,7 @@
     declare result: number;
     declare num_person: number;
     declare total_time: number;
+    declare year_id: CreationOptional<number>;
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
@@ -74,6 +75,9 @@
           type: dt.INTEGER,
         },
         total_time: {
+          type: dt.INTEGER,
+        },
+        year_id: {
           type: dt.INTEGER,
         },
         ...commonFields(),

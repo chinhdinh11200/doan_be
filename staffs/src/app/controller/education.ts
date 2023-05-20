@@ -41,6 +41,7 @@ export default class EducationController extends Controller {
             form_construction: req.body.form_construction,
             num_decision: req.body.num_decision,
             date_decision: req.body.date_decision,
+            year_id: req.body.year_id,
         }
         const data = await this.educationRepo.create(params);
 
@@ -59,6 +60,7 @@ export default class EducationController extends Controller {
             form_construction: req.body.form_construction,
             num_decision: req.body.num_decision,
             date_decision: req.body.date_decision,
+            year_id: req.body.year_id,
         }
 
         const data = await this.educationRepo.update(params, req.params.id);

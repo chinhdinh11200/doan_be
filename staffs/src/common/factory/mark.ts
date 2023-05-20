@@ -9,6 +9,7 @@ export interface IMarkMainAttr {
     date_exam: Date;
     form_mark: number;
     semester: number;
+    year_id: number;
 }
 
 export interface IMarkAttr extends IMarkMainAttr, ICommonAttr { }
@@ -22,6 +23,7 @@ export interface IMarkCreateParam {
     date_exam?: Date;
     form_mark?: number;
     semester: number;
+    year_id?: number;
 }
 
 export interface IMarkUpdateParam {
@@ -33,6 +35,7 @@ export interface IMarkUpdateParam {
     date_exam?: Date;
     form_mark?: number;
     semester: number;
+    year_id?: number;
 }
 
 export interface IMarkSearchParam extends ICommonSearchOption, ICommonSortOption {

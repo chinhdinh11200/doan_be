@@ -38,8 +38,6 @@ export default class yearController extends Controller {
       semester: req.body.semester,
     }
 
-    console.log(params);
-
     const data = await this.yearRepo.create(params);
 
     this.created(res, data.dataValues);

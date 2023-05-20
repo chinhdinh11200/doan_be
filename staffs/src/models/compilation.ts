@@ -22,6 +22,7 @@ export class Compilation
   declare num_decision: string;
   declare number_credit: number;
   declare form_construction: number;
+  declare year_id: CreationOptional<number>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -64,6 +65,9 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.INTEGER,
       },
       form_construction: {
+        type: dt.INTEGER,
+      },
+      year_id: {
         type: dt.INTEGER,
       },
       ...commonFields(),

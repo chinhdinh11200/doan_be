@@ -85,6 +85,7 @@ export default class ExamRepository extends BaseRepository {
           num_exam: params.num_exam,
           semester: params.semester,
           num_question: params.num_question,
+          year_id: params.year_id,
         },
         { transaction }
       );
@@ -132,6 +133,7 @@ export default class ExamRepository extends BaseRepository {
             num_exam: params.num_exam,
             semester: params.semester,
             num_question: params.num_question,
+            year_id: params.year_id,
           },
           { transaction }
         );

@@ -9,8 +9,9 @@ export interface IExamMainAttr {
     factor: number; // hệ số
     type: number;
     num_exam: number;
-    semester: number;
     num_question: number; // số đề / số câu trắc nghiệm
+    semester: number;
+    year_id: number;
 }
 
 export interface IExamAttr extends IExamMainAttr, ICommonAttr { }
@@ -26,6 +27,7 @@ export interface IExamCreateParam {
     num_exam: number;
     num_question?: number; 
     semester: number;
+    year_id?: number;
 }
 
 export interface IExamUpdateParam {
@@ -39,6 +41,7 @@ export interface IExamUpdateParam {
     num_exam: number;
     num_question?: number; 
     semester: number;
+    year_id?: number;
 }
 
 export interface IExamSearchParam extends ICommonSearchOption, ICommonSortOption {

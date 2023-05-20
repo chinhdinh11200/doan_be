@@ -41,6 +41,7 @@ export default class InventionController extends Controller {
             total_time: req.body.total_time,
             date_recognition: req.body.date_recognition,
             number_recognition: req.body.number_recognition,
+            year_id: req.body.year_id,
         }
         const data = await this.inventionRepo.create(params);
 
@@ -58,6 +59,7 @@ export default class InventionController extends Controller {
             total_time: req.body.total_time,
             date_recognition: req.body.date_recognition,
             number_recognition: req.body.number_recognition,
+            year_id: req.body.year_id,
         }
 
         const data = await this.inventionRepo.update(params, req.params.id);

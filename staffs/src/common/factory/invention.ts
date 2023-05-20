@@ -8,6 +8,7 @@ export interface IInventionMainAttr {
     total_time: number;
     date_recognition: Date;
     number_recognition: string;
+    year_id: number;
 }
 
 export interface IInventionAttr extends IInventionMainAttr, ICommonAttr { }
@@ -22,6 +23,7 @@ export interface IInventionCreateParam {
     total_time: number;
     date_recognition: Date;
     number_recognition: string;
+    year_id?: number;
 }
 
 export interface IInventionUpdateParam {
@@ -34,6 +36,7 @@ export interface IInventionUpdateParam {
     total_time: number;
     date_recognition: Date;
     number_recognition: string;
+    year_id?: number;
 }
 
 export interface IInventionSearchParam extends ICommonSearchOption, ICommonSortOption {

@@ -17,6 +17,11 @@ import * as scientificFactory from './factory/scientific';
 import * as educationFactory from './factory/education';
 import * as thesisFactory from './factory/thesis';
 import * as yearFactory from './factory/year';
+import * as authFactory from './factory/auth';
+
+export namespace auth {
+  export import UserInfo = authFactory.IUserInfo;
+}
 
 export namespace user {
   export import Attr = userFactory.IUserAttr;

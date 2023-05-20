@@ -41,6 +41,7 @@ export default class BookController extends Controller {
             num_person: req.body.num_person,
             total_time: req.body.total_time,
             num_page: req.body.num_page,
+            year_id: req.body.year_id,
         }
         const data = await this.bookRepo.create(params);
 
@@ -57,7 +58,8 @@ export default class BookController extends Controller {
             num_publish: req.body.num_publish,
             num_person: req.body.num_person,
             total_time: req.body.total_time,
-            num_page: req.body.num_page,
+            num_page: req.body.num_page, 
+            year_id: req.body.year_id,
         }
 
         const data = await this.bookRepo.update(params, req.params.id);

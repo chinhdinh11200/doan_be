@@ -9,6 +9,7 @@ export interface IScientificMainAttr {
     result_level: number;
     result_academy: number;
     date_decision: Date;
+    year_id: number;
 }
 
 export interface IScientificAttr extends IScientificMainAttr, ICommonAttr { }
@@ -24,6 +25,7 @@ export interface IScientificCreateParam {
     result_level?: number;
     result_academy?: number;
     date_decision: Date;
+    year_id?: number;
 }
 
 export interface IScientificUpdateParam {
@@ -37,6 +39,7 @@ export interface IScientificUpdateParam {
     result_level: number;
     result_academy: number;
     date_decision: Date;
+    year_id?: number;
 }
 
 export interface IScientificSearchParam extends ICommonSearchOption, ICommonSortOption {

@@ -28,6 +28,7 @@ export class Room
   declare num_exam_session: CreationOptional<number>;
   declare startDate: CreationOptional<string>;
   declare endDate: CreationOptional<string>;
+  declare year_id: CreationOptional<number>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -84,6 +85,10 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         allowNull: true,
       },
       num_student: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      year_id: {
         type: dt.INTEGER,
         allowNull: true,
       },

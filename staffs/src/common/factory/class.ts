@@ -20,6 +20,7 @@ export interface IClassMainAttr {
   level_teach: string;
   time_teach: string;
   semester: string;
+  year_id: number;
 }
 
 export interface IClassAttr extends IClassMainAttr, ICommonAttr { }
@@ -44,6 +45,7 @@ export interface IClassCreateParam {
   level_teach: string;
   time_teach: string;
   semester: string;
+  year_id?: number;
 }
 
 export interface IClassUpdateParam {
@@ -66,6 +68,7 @@ export interface IClassUpdateParam {
   level_teach: string;
   time_teach: string;
   semester: string;
+  year_id?: number;
 }
 
 export interface IClassSearchParam extends ICommonSearchOption, ICommonSortOption {

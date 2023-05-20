@@ -5,10 +5,14 @@ import BaseRepository from './_base';
 
 export default class ClassRepository extends BaseRepository {
   private readonly model: DB['Classes'];
+  private readonly modelUser: DB['User'];
+  private readonly modelYear: DB['Year'];
   constructor(db: DB) {
     super(db);
 
     this.model = db.Classes;
+    this.modelUser = db.User;
+    this.modelYear = db.Year;
   }
 
   public findOneById = async (id: string | number) => {
@@ -103,6 +107,7 @@ export default class ClassRepository extends BaseRepository {
           level_teach: params.level_teach,
           time_teach: params.time_teach,
           semester: params.semester,
+          year_id: params.year_id,
         },
         { transaction }
       );
@@ -141,6 +146,7 @@ export default class ClassRepository extends BaseRepository {
             level_teach: params.level_teach,
             time_teach: params.time_teach,
             semester: params.semester,
+            year_id: params.year_id,
           },
           { transaction }
         );
@@ -172,7 +178,17 @@ export default class ClassRepository extends BaseRepository {
   public findById = async (subjectId: string | number) => {
     return await this.model.findOne({
       where: { id: subjectId },
-      attributes: ['id', 'subject_id', 'user_id', 'form_teach', 'form_exam', 'name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam', 'startDate', 'endDate', 'semester'],
+      include: [
+        {
+          model: this.modelUser,
+          attributes: ['name']
+        },
+        {
+          model: this.modelYear,
+          attributes: ['name']
+        },
+      ],
+      attributes: ['id', 'subject_id', 'user_id', 'year_id', 'form_teach', 'form_exam', 'name', 'code', 'num_student', 'classroom', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam', 'startDate', 'endDate', 'semester'],
     });
   };
 }

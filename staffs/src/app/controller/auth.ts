@@ -10,7 +10,7 @@ export default class AuthController extends Controller {
   private readonly refreshTokenSecret: string =
     process.env.REFRESH_TOKEN_SECRET || 'staff_services';
   private readonly timeAccessTokenExpired: string =
-    process.env.ACCESS_TOKEN_EXPIRED || '3600s';
+    process.env.ACCESS_TOKEN_EXPIRED || '60s';
   private readonly timeRefreshTokenExpired: string =
     process.env.REFRESH_TOKEN_EXPIRED || '36000s';
   constructor(db: SQLize) {
@@ -24,7 +24,7 @@ export default class AuthController extends Controller {
       username: req.body.username,
       password: req.body.password,
     };
-    let dataLogin = await this.authRepo.login(data);
+    let dataLogin: any = await this.authRepo.login(data);
     if (dataLogin === false) {
       res.status(401).json({ message: "Unauthorized", success: false });
       // throw new Error();
@@ -56,9 +56,11 @@ export default class AuthController extends Controller {
     res.cookie('jwt', refreshToken, {
       httpOnly: true,
       sameSite: 'none',
-      secure: false,
+      secure: true,
+      // maxAge: 7 * 24 * 60 * 60 * 1000,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+    req.user = <any>dataLogin;
 
     res.json({ accessToken: accessToken, refreshToken, success: true, user: dataLogin });
   };
@@ -69,7 +71,6 @@ export default class AuthController extends Controller {
     next: NextFunction
   ) => {
     const cookie = req.cookies;
-
     if (!cookie.jwt) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -100,12 +101,13 @@ export default class AuthController extends Controller {
 
   public logout = async (req: Request, res: Response, next: NextFunction) => {
     const cookie = req.cookies;
-    // console.log(cookie, 111);
-    // if (!cookie.jwt) {
-    //   return res.status(204).json({ message: 'No content' });
-    // }
-
-    // res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: false });
+    if (!cookie.jwt) {
+      return res.status(204).json({ message: 'No content' });
+    }
+    // req.logout(function (err) {
+    //   if (err) { return next(err); }
+    // });
+    res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: false });
     res.json({
       success: true,
     });

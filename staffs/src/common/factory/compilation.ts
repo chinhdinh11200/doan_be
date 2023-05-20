@@ -9,6 +9,7 @@ export interface ICompilationMainAttr {
     date_decision: Date;
     num_decision: string;
     number_credit: number;
+    year_id: number;
 }
 
 export interface ICompilationAttr extends ICompilationMainAttr, ICommonAttr { }
@@ -24,6 +25,7 @@ export interface ICompilationCreateParam {
     num_decision: string;
     number_credit: number;
     type: number;
+    year_id?: number;
 }
 
 export interface ICompilationUpdateParam {
@@ -37,6 +39,7 @@ export interface ICompilationUpdateParam {
     num_decision?: string;
     number_credit: number;
     type: number;
+    year_id?: number;
 }
 
 export interface ICompilationSearchParam extends ICommonSearchOption, ICommonSortOption{

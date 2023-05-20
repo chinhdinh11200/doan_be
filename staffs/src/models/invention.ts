@@ -21,6 +21,7 @@ export class Invention
   declare total_time: number;
   declare number_recognition: string;
   declare date_recognition: Date;
+  declare year_id: CreationOptional<number>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -59,6 +60,9 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.INTEGER,
       },
       total_time: {
+        type: dt.INTEGER,
+      },
+      year_id: {
         type: dt.INTEGER,
       },
       ...commonFields(),

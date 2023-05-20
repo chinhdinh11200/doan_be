@@ -42,6 +42,7 @@ export default class ScientificController extends Controller {
             result_level: req.body.result_level,
             result_academy: req.body.result_academy !== null ? req.body.result_academy : undefined,
             date_decision: req.body.date_decision,
+            year_id: req.body.year_id,
         }
         const data = await this.scientificRepo.create(params);
 
@@ -59,6 +60,7 @@ export default class ScientificController extends Controller {
             result_level: req.body.result_level,
             result_academy: req.body.result_academy !== null ? req.body.result_academy : undefined,
             date_decision: req.body.date_decision,
+            year_id: req.body.year_id,
         }
 
         const data = await this.scientificRepo.update(params, req.params.id);

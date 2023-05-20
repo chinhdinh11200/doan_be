@@ -133,8 +133,6 @@ export default class Scientific extends BaseRepository {
           break;
       }
 
-      console.log(params);
-
       const thesis = await this.model.create({
         name_student: params.name_student,
         course: params.course,
@@ -143,6 +141,7 @@ export default class Scientific extends BaseRepository {
         num_person: roleUserArray.length,
         total_time: totalTime,
         type: params.type,
+        year_id: params.year_id,
       }, { transaction });
 
       if (params.role) {
@@ -238,6 +237,7 @@ export default class Scientific extends BaseRepository {
           num_person: roleUserArray.length,
           total_time: totalTime,
           type: params.type,
+          year_id: params.year_id,
         }, { transaction });
         const object = await this.modelThesisUser.destroy({
           where: {
@@ -318,7 +318,6 @@ export default class Scientific extends BaseRepository {
     })
 
     const thesisFormats = thesis.map((ths: any) => {
-      // console.log(topic['users.role_user.type'] + "CC");
       let type = "Thành viên"
       switch (ths['users.thesis_user.type']) {
         case 0:

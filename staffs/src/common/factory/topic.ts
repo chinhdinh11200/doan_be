@@ -10,6 +10,7 @@ export interface ITopicMainAttr {
     result: number;
     num_person: number;
     total_time: number;
+    year_id: number;
 }
 
 export interface ITopicAttr extends ITopicMainAttr, ICommonAttr { }
@@ -26,6 +27,7 @@ export interface ITopicCreateParam {
     num_person: number;
     total_time: number;
     type: number,
+    year_id?: number;
 }
 
 export interface ITopicUpdateParam {
@@ -40,6 +42,7 @@ export interface ITopicUpdateParam {
     num_person: number;
     total_time: number;
     type: number;
+    year_id?: number;
 }
 
 export interface ITopicSearchParam extends ICommonSearchOption, ICommonSortOption {

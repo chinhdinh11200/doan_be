@@ -121,6 +121,7 @@ export default class Education extends BaseRepository {
           form_construction: params.form_construction,
           num_decision: params.num_decision,
           date_decision: params.date_decision,
+          year_id: params.year_id,
         },
         { transaction }
       );
@@ -197,6 +198,7 @@ export default class Education extends BaseRepository {
             form_construction: params.form_construction,
             num_decision: params.num_decision,
             date_decision: params.date_decision,
+            year_id: params.year_id,
           },
           { transaction }
         );
@@ -292,7 +294,6 @@ export default class Education extends BaseRepository {
     })
 
     const educationFormats = educations.map((education: any) => {
-      // console.log(education['users.role_user.type'] + "CC");
       let type = "Thành viên"
       switch (education['users.role_user.type']) {
         case 0:

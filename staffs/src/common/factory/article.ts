@@ -9,6 +9,7 @@ export interface IArticleMainAttr {
     open_access_scopus: number;
     total_time: number;
     num_person: number;
+    year_id: number;
 }
 
 export interface IArticleAttr extends IArticleMainAttr, ICommonAttr { }
@@ -24,6 +25,7 @@ export interface IArticleCreateParam {
     index_article: number;
     total_time: number;
     num_person: number;
+    year_id?: number;
 }
 
 export interface IArticleUpdateParam {
@@ -37,6 +39,7 @@ export interface IArticleUpdateParam {
     index_article: number;
     total_time: number;
     num_person: number;
+    year_id?: number;
 }
 
 export interface IArticleSearchParam extends ICommonSearchOption, ICommonSortOption {

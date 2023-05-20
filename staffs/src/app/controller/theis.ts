@@ -25,7 +25,7 @@ export default class ArticleController extends Controller {
       ...pickForSearch(<types.thesis.ThesisSearchParam>req.query, ['course', 'name_student', 'search', 'sort', 'sortColumn']),
       ...this.getOffsetLimit(req),
     }
-    console.log(params);
+    
     const data = await this.thesisRepo.search(params);
 
     this.ok(res, data);
@@ -41,6 +41,7 @@ export default class ArticleController extends Controller {
       type_thesis: req.body.type_thesis,
       role: req.body.role,
       type: req.body.type,
+      year_id: req.body.year_id,
     }
     const data = await this.thesisRepo.create(params);
 
@@ -57,6 +58,7 @@ export default class ArticleController extends Controller {
       type_thesis: req.body.type_thesis,
       role: req.body.role,
       type: req.body.type,
+      year_id: req.body.year_id,
     }
 
     const data = await this.thesisRepo.update(params, req.params.id);

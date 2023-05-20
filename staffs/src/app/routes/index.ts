@@ -20,11 +20,12 @@ import importRouter from './import';
 import theisRouter from './theis';
 import yearRouter from './year';
 import { DB } from '../../models';
+import { apiList, routeGuard } from '../middlewares/routerGuard';
 
 export default function (db: DB) {
   const router = express.Router();
 
-  router.use('/user', userRouter(db));
+  router.use('/user', routeGuard(apiList.users), userRouter(db));
   router.use('/department', departmentRouter(db));
   router.use('/subject', subjectRouter(db));
   router.use('/class', classRouter(db));

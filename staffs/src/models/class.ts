@@ -12,6 +12,7 @@ import { commonFields } from './_common';
 import { Subject } from './subject';
 import { Exam } from './exam';
 import { ClassExam } from './classexam';
+import { Year } from './year';
 
 export class Classes
   extends Model<InferAttributes<Classes>, InferCreationAttributes<Classes>>
@@ -36,6 +37,7 @@ export class Classes
   declare level_teach: string;
   declare time_teach: string;
   declare semester: string;
+  declare year_id: CreationOptional<number>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -44,7 +46,7 @@ export class Classes
   public static ASSOCIATE() {
     Classes.belongsTo(User, { foreignKey: 'user_id' });
     Classes.belongsTo(Subject, { foreignKey: 'subject_id' });
-    // Classes.belongsToMany(Exam, {through: ClassExam});
+    Classes.belongsTo(Year, {foreignKey: 'semester'});
   }
 }
 
@@ -98,6 +100,9 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.INTEGER,
       },
       exam_supervision: {
+        type: dt.INTEGER,
+      },
+      year_id: {
         type: dt.INTEGER,
       },
       classroom: {

@@ -167,6 +167,7 @@ export default class Article extends BaseRepository {
           open_access: params.open_access,
           open_access_scopus: params.open_access_scopus,
           index_article: params.index_article,
+          year_id: params.year_id,
           total_time: totalTime,
           num_person: roleUserArray.length,
         },
@@ -291,6 +292,7 @@ export default class Article extends BaseRepository {
             total_time: totalTime,
             num_person: roleUserArray.length,
             open_access: params.open_access,
+            year_id: params.year_id,
             open_access_scopus: params.open_access_scopus,
           },
           { transaction }

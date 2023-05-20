@@ -127,6 +127,7 @@ export default class Book extends BaseRepository {
           total_time: totalTime,
           type: params.type_book,
           num_page: params.num_page,
+          year_id: params.year_id,
         },
         { transaction }
       );
@@ -216,6 +217,7 @@ export default class Book extends BaseRepository {
             total_time: totalTime,
             num_page: params.num_page,
             type: params.type_book,
+            year_id: params.year_id,
           },
           { transaction }
         );

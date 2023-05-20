@@ -33,6 +33,7 @@ export class User extends Model<
   declare salt: string;
   declare code: string;
   declare birthday: CreationOptional<Date>;
+  declare avatar: CreationOptional<string>;
   declare position: string;
   declare degree: string;
   declare number_salary: number;
@@ -45,7 +46,7 @@ export class User extends Model<
   declare deletedAt: CreationOptional<Date>;
 
   public static ASSOCIATE() {
-    User.belongsTo(Department, { foreignKey: 'department_id' });
+    User.belongsTo(Department, { foreignKey: 'department_id', as: 'department'});
     User.belongsToMany(Topic, { through: RoleUser, foreignKey: 'user_id' });
     User.belongsToMany(Article, { through: RoleUser, foreignKey: 'user_id' });
     User.belongsToMany(Book, { through: RoleUser, foreignKey: 'user_id' });
@@ -84,6 +85,9 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.STRING,
       },
       code: {
+        type: dt.STRING,
+      },
+      avatar: {
         type: dt.STRING,
       },
       birthday: {

@@ -52,9 +52,10 @@ export default class ExportController extends Controller {
   }
 
   public user = async (req: Request, res: Response, next: NextFunction) => {
-    // const filepath = await this.exportRepo.userTemplate(); 
-    // return res.download(filepath)
-    // return
+    const userId = req.params.id;
+    const filepath = await this.exportRepo.userTemplate(userId, Number(req.query.year));
+    return res.download(filepath)
+    return
 
     const subjects = await this.subjectRepo.export(36);
     // res.json(subjects);

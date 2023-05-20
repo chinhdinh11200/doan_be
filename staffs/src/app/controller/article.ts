@@ -42,6 +42,7 @@ export default class ArticleController extends Controller {
             index_article: req.body.index_article,
             total_time: req.body.total_time,
             num_person: req.body.num_person,
+            year_id: req.body.year_id,
         }
         const data = await this.articleRepo.create(params);
 
@@ -60,6 +61,7 @@ export default class ArticleController extends Controller {
             index_article: req.body.index_article,
             total_time: req.body.total_time,
             num_person: req.body.num_person,
+            year_id: req.body.year_id,
         }
 
         const data = await this.articleRepo.update(params, req.params.id);

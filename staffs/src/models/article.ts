@@ -20,6 +20,7 @@ export class Article
   declare index_article: number;
   declare num_person: number;
   declare total_time: number;
+  declare year_id: CreationOptional<number>;
   declare open_access: CreationOptional<number>;
   declare open_access_scopus: CreationOptional<number>;
 
@@ -60,6 +61,9 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.INTEGER,
       },
       num_person: {
+        type: dt.INTEGER,
+      },
+      year_id: {
         type: dt.INTEGER,
       },
       total_time: {

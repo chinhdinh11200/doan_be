@@ -41,6 +41,7 @@ export default class TopicController extends Controller {
             num_person: req.body.num_person,
             total_time: req.body.total_time,
             type: req.body.type,
+            year_id: req.body.year_id,
         }
         const data = await this.topicRepo.create(params);
 
@@ -60,6 +61,7 @@ export default class TopicController extends Controller {
             num_person: req.body.num_person,
             total_time: req.body.total_time,
             type: req.body.type,
+            year_id: req.body.year_id,
         }
 
         const data = await this.topicRepo.update(params, req.params.id);

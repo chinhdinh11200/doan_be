@@ -22,6 +22,7 @@ export class Education
   declare form_construction: number;
   declare num_decision: string;
   declare date_decision: Date;
+  declare year_id: CreationOptional<number>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -63,6 +64,9 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.STRING,
       },
       total_time: {
+        type: dt.INTEGER,
+      },
+      year_id: {
         type: dt.INTEGER,
       },
       ...commonFields(),

@@ -10,6 +10,7 @@ import passport from 'passport';
 import helmet from 'helmet';
 import cors, { CorsOptions } from 'cors';
 import { jwtAuthenticate, strategy } from './app/passport';
+import path = require('path');
 const morgan = require('morgan');
 const fs = require('fs');
 
@@ -59,45 +60,60 @@ export const createApp = async function () {
 
   // cors
   const corsOption: CorsOptions = {
-    origin: '*',
+    origin: [
+      'http://localhost:5173'
+    ],
     allowedHeaders: [
       'Origin',
       'X-Requested-With',
       'Content-Type',
       'Accept',
       'X-Access-Token',
-      'Authorization'
+      'Authorization',
+      'Cookies'
     ],
-    credentials: false,
+    credentials: true,
     methods: ['GET', 'HEAD', 'OPTIONS', 'PUT', 'PATCH', 'POST', 'DELETE'],
     preflightContinue: false,
     optionsSuccessStatus: 204
   };
-  app.set('view engine', 'pug');
   // app.set('views', `${__dirname}/views`);
   app.use(cors(corsOption));
   app.use(helmet({
-    // referrerPolicy: {
-    //   // policy: 'strict-origin-when-cross-origin',
-    // }
-    contentSecurityPolicy: false,
+    referrerPolicy: {
+      policy: 'strict-origin-when-cross-origin',
+    },
+    contentSecurityPolicy: true,
   }));
-  app.use(passport.initialize());
   app.use(cookieParser());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+  app.set('view engine', 'pug');
   // app.use(upload.array());
   app.use(express.static('public'));
+
+  console.log(path.join(__dirname, '..', 'public'));
+  app.use(
+    '/public',
+    express.static(path.join(__dirname, '..', 'public'))
+  );
 
   // morgan
   const accessLogStream = fs.createWriteStream('access.log', { flags: 'a' });
   app.use(morgan('combined', { stream: accessLogStream }));
-
+  const setTokenFromCookie = (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.cookies);
+    if (req.cookies && req.cookies.jwt) {
+      req.headers.authorization = `Bearer ${req.cookies.jwt}`;
+    }
+    next();
+  };
   // routers
-  app.use('/auth', authRouter(sequelize));
+  app.use('/auth', setTokenFromCookie, authRouter(sequelize));
 
   passport.use(strategy());
 
+  app.use(passport.initialize());
   app.use('/', jwtAuthenticate, router(sequelize));
 
   app.use(errorHandler);

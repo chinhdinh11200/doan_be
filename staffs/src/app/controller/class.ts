@@ -51,6 +51,7 @@ export default class classesController extends Controller {
       level_teach: req.body.level_teach,
       time_teach: req.body.time_teach,
       semester: req.body.semester,
+      year_id: req.body.year_id,
     }
 
     const data = await this.classRepo.create(params);
@@ -75,10 +76,11 @@ export default class classesController extends Controller {
       num_credit: req.body.num_credit,
       classroom: req.body.classroom,
       startDate: req.body.startDate,
-      endDate: req.body.endDate, 
+      endDate: req.body.endDate,
       level_teach: req.body.level_teach,
       time_teach: req.body.time_teach,
       semester: req.body.semester,
+      year_id: req.body.year_id,
     }
     const data = await this.classRepo.update(params, req.params.id);
 

@@ -10,6 +10,7 @@ export interface IThesisMainAttr {
   num_person: number;
   type: number;
   total_time: number;
+  year_id: number;
 }
 
 export interface IThesisAttr extends IThesisMainAttr, ICommonAttr { }
@@ -23,6 +24,7 @@ export interface IThesisCreateParam {
   type: number;
   type_thesis: number;
   role: string;
+  year_id?: number;
 }
 
 export interface IThesisUpdateParam {
@@ -34,6 +36,7 @@ export interface IThesisUpdateParam {
   type: number;
   type_thesis: number;
   role: string;
+  year_id?: number;
 }
 
 export interface IThesisSearchParam extends ICommonSearchOption, ICommonSortOption {

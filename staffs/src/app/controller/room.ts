@@ -43,6 +43,7 @@ export default class RoomController extends Controller {
             semester: req.body.semester,
             num_exam_session: req.body.num_exam_session,
             startDate: req.body.startDate,
+            year_id: req.body.year_id,
         }
         const data = await this.roomRepo.create(params);
 
@@ -60,6 +61,7 @@ export default class RoomController extends Controller {
             semester: req.body.semester,
             num_exam_session: req.body.num_exam_session,
             startDate: req.body.startDate,
+            year_id: req.body.year_id,
         }
 
         const data = await this.roomRepo.update(params, req.params.id);

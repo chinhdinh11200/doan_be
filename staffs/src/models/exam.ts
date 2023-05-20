@@ -27,6 +27,7 @@ export class Exam
   declare type: CreationOptional<number>;
   declare num_exam: CreationOptional<number>;
   declare semester: CreationOptional<number>;
+  declare year_id: CreationOptional<number>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -77,6 +78,10 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         allowNull: true,
       },
       type: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      year_id: {
         type: dt.INTEGER,
         allowNull: true,
       },

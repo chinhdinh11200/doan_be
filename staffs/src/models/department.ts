@@ -26,7 +26,7 @@ export class Department
   declare deletedAt: CreationOptional<Date>;
 
   public static ASSOCIATE() {
-    Department.hasMany(User, { foreignKey: 'department_id' });
+    Department.hasMany(User, { foreignKey: 'department_id', as: 'users' });
   }
 }
 

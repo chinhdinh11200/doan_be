@@ -24,6 +24,7 @@ export class Scientific
   declare result_level: CreationOptional<number>;
   declare result_academy: CreationOptional<number>;
   declare date_decision: Date;
+  declare year_id: CreationOptional<number>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -65,6 +66,9 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         type: dt.INTEGER,
       },
       result_academy: {
+        type: dt.INTEGER,
+      },
+      year_id: {
         type: dt.INTEGER,
       },
       total_time: {

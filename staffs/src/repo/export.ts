@@ -9,13 +9,15 @@ import * as XLSX from 'xlsx';
 import { Classes } from '.';
 import { includes } from 'lodash';
 import * as repository from './index';
-import { codeFee, codeHVMM } from '../common/constant';
+import { POSITION_STAFF, codeFee, codeHVMM } from '../common/constant';
+import moment from 'moment';
 
 export default class ExportRepository extends BaseRepository {
   private readonly model: DB['Exam'];
   private readonly modelUser: DB['User'];
   private readonly modelClasses: DB['Classes'];
   private readonly topicRepo: repository.Topic
+  private readonly userRepo: repository.User
   private readonly articleRepo: repository.Article
   private readonly bookRepo: repository.Book
   private readonly compilationRepo: repository.Compilation
@@ -33,12 +35,15 @@ export default class ExportRepository extends BaseRepository {
   private readonly modelInvention: DB['Invention'];
   private readonly modelThesis: DB['Thesis'];
   private readonly modelThesisUser: DB['ThesisUser'];
+  private readonly modelYear: DB['Year'];
   constructor(db: DB) {
     super(db);
 
     this.model = db.Exam;
+    this.modelYear = db.Year;
     this.modelUser = db.User;
     this.modelClasses = db.Classes;
+    this.userRepo = new repository.User(db);
     this.topicRepo = new repository.Topic(db);
     this.articleRepo = new repository.Article(db);
     this.bookRepo = new repository.Book(db);
@@ -96,8 +101,6 @@ export default class ExportRepository extends BaseRepository {
       return classs;
     })
 
-    console.log(classesCCC);
-
     const headings: string[][] = [
       ['Id', 'Movie', 'Category', 'Director', 'Rating']
     ];
@@ -122,7 +125,16 @@ export default class ExportRepository extends BaseRepository {
 
   };
 
-  public userTemplate = async () => {
+  public userTemplate = async (userId: string | number, yearId: number | string) => {
+    let user: any = await this.userRepo.detail(userId);
+    user = {
+      ...user,
+      position: POSITION_STAFF.find(position => position.value == user?.position)?.label,
+      birthday: moment(user.birthday).format("DD/MM/YYYY"),
+    }
+    const year = await this.modelYear.findByPk(yearId);
+    const dateExport = `ngày ${moment(new Date()).format("DD")} tháng ${moment(new Date()).format("MM")} năm ${moment(new Date()).format("YYYY")}`
+    console.log(dateExport);
     const dataTeach = await this.modelClasses.findAll({
       attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson'],
       where: {
@@ -132,7 +144,7 @@ export default class ExportRepository extends BaseRepository {
     const dataTeachSemesterOne = await this.modelClasses.findAll({
       attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking'],
       where: {
-        user_id: 40,
+        user_id: userId,
         semester: 0
       },
       // group: ['semester'],
@@ -197,7 +209,7 @@ export default class ExportRepository extends BaseRepository {
     const dataTeachSemesterTwo = await this.modelClasses.findAll({
       attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking'],
       where: {
-        user_id: 40,
+        user_id: userId,
         semester: 1
       },
       raw: true,
@@ -258,19 +270,22 @@ export default class ExportRepository extends BaseRepository {
       }
     })
 
-    const subjects = await this.subjectRepo.export(36);
-    const thesis = await this.thesisRepo.export(41);
-    const topics = await this.topicRepo.export(41);
-    const articles = await this.articleRepo.export(41);
-    const books = await this.bookRepo.export(41);
-    const inventions = await this.inventionRepo.export(41);
-    const compilations = await this.compilationRepo.export(41);
-    const educations = await this.educationRepo.export(41);
-    const scientifics = await this.scientificRepo.export(41);
+    const subjects = await this.subjectRepo.export(userId);
+    const thesis = await this.thesisRepo.export(userId);
+    const topics = await this.topicRepo.export(userId);
+    const articles = await this.articleRepo.export(userId);
+    const books = await this.bookRepo.export(userId);
+    const inventions = await this.inventionRepo.export(userId);
+    const compilations = await this.compilationRepo.export(userId);
+    const educations = await this.educationRepo.export(userId);
+    const scientifics = await this.scientificRepo.export(userId);
 
 
 
     const data = {
+      user,
+      year,
+      dateExport,
       dataTeachSemesterOneHVMM,
       dataTeachSemesterOneFee,
       dataTeachSemesterTwoHVMM,

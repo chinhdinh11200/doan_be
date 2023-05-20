@@ -6,6 +6,7 @@ import * as repository from '../../repo';
 import { types } from '../../common';
 import { CREATED, OK } from 'http-status';
 import * as mapper from '../mapper/user';
+import { addBaseUrlToData } from '../../utils';
 
 export default class UserController extends Controller {
   private userRepo: repository.User;
@@ -18,8 +19,7 @@ export default class UserController extends Controller {
   }
 
   public detail = async (req: Request, res: Response, next: NextFunction) => {
-    const user = await this.userRepo.findOneById(req.params.id);
-
+    let user = await this.userRepo.findOneById(req.params.id);
     res.json(user)
   }
 
@@ -43,12 +43,15 @@ export default class UserController extends Controller {
   };
 
   public create = async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.file);
+    const file = req.file && req.file.path
     const params: types.user.UserCreateParam = {
       department_id: req.body.department_id,
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
       code: req.body.code,
+      avatar: file,
       birthday: req.body.birthday,
       degree: req.body.degree,
       position: req.body.position,
@@ -62,11 +65,14 @@ export default class UserController extends Controller {
   };
 
   public update = async (req: Request, res: Response, next: NextFunction) => {
+    const file = req.file && req.file.path
+
     const params: types.user.UserUpdateParam = {
       department_id: req.body.department_id,
       name: req.body.name,
       email: req.body.email,
       code: req.body.code,
+      avatar: file,
       birthday: req.body.birthday,
       degree: req.body.degree,
       position: req.body.position,

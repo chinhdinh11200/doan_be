@@ -24,6 +24,7 @@ export class Mark
   declare factor: CreationOptional<number>;
   declare date_exam: CreationOptional<Date>;
   declare semester: CreationOptional<number>;
+  declare year_id: CreationOptional<number>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -69,6 +70,10 @@ export default (sequelize: Sequelize, dt: typeof DataTypes) => {
         allowNull: true,
       },
       form_mark: {
+        type: dt.INTEGER,
+        allowNull: true,
+      },
+      year_id: {
         type: dt.INTEGER,
         allowNull: true,
       },
