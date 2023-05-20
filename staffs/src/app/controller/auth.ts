@@ -114,7 +114,6 @@ export default class AuthController extends Controller {
   };
 
 
-
   public sendMailResetPassword = async (req: Request, res: Response, next: NextFunction) => {
     const email = req.body.email;
     const data = await this.authRepo.sendMail(email);

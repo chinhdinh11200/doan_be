@@ -15,7 +15,7 @@ export class AuthRepository extends BaseRepository {
     this.modelToken = db.Token;
   }
 
-  public register = async () => {};
+  public register = async () => { };
 
   public login = async (data: types.user.UserLoginParam) => {
     const user = await this.model.findOne({
@@ -78,7 +78,8 @@ export class AuthRepository extends BaseRepository {
       to: 'chinhdinhtho@gmail.com', // list of receivers
       subject: 'Hello ✔', // Subject line
       text: 'Hello world?', // plain text body
-      html: token.token, // html body
+      html: `<a href="http:://localhost:5173/reset-password?token=${token.token}" target="_blank">tại đây</a>`, // html body
+      // http://localhost:5173/add-class
     });
 
     console.log('Message sent: %s', info.messageId);
