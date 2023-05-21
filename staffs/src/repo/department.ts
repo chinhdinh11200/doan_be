@@ -24,11 +24,17 @@ export default class DepartmentRepository extends BaseRepository {
 
     return data?.dataValues;
   };
-  
+
   public search = async (params: types.department.DepartmentSearchParam) => {
     // this.makeAmbiguousCondition(data, 'name');
     const findOption: FindAndCountOptions = {
-      include: [this.modelUser],
+      include: [
+        {
+          model: this.modelUser,
+          as: 'users',
+          attributes: ['id', 'name'],
+        }
+      ],
     };
 
     if (params !== undefined) {

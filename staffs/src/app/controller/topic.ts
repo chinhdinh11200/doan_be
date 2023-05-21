@@ -21,7 +21,7 @@ export default class TopicController extends Controller {
     }
     public search = async (req: Request, res: Response, next: NextFunction) => {
         const params: types.topic.TopicSearchParam = {
-            ...pickForSearch(<types.topic.TopicSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn']),
+            ...pickForSearch(<types.topic.TopicSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn', 'limit', 'offset', 'user_id']),
             ...this.getOffsetLimit(req),
         }
         const data = await this.topicRepo.search(params);

@@ -44,9 +44,11 @@ export class Classes
   declare deletedAt: CreationOptional<Date>;
 
   public static ASSOCIATE() {
-    Classes.belongsTo(User, { foreignKey: 'user_id' });
+    Classes.belongsTo(User, {
+      foreignKey: 'user_id', as: 'user'
+    });
     Classes.belongsTo(Subject, { foreignKey: 'subject_id' });
-    Classes.belongsTo(Year, {foreignKey: 'semester'});
+    Classes.belongsTo(Year, { foreignKey: 'year_id', as: 'year' });
   }
 }
 

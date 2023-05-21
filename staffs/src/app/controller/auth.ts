@@ -108,7 +108,7 @@ export default class AuthController extends Controller {
     //   if (err) { return next(err); }
     // });
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: false });
-    res.json({
+    res.json({ 
       success: true,
     });
   };

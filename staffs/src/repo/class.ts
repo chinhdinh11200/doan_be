@@ -191,4 +191,29 @@ export default class ClassRepository extends BaseRepository {
       attributes: ['id', 'subject_id', 'user_id', 'year_id', 'form_teach', 'form_exam', 'name', 'code', 'num_student', 'classroom', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam', 'startDate', 'endDate', 'semester'],
     });
   };
+
+  public dashboard = async (params: { year_id: number | string, user_id?: number | string }) => {
+    const findOption: FindAndCountOptions = {};
+    const andArray: WhereOptions = [];
+    if (params.year_id !== undefined) {
+      andArray.push(
+        this.makeAmbiguousCondition(params, 'year_id')
+      )
+    }
+    if (params.user_id !== undefined) {
+      andArray.push(
+        this.makeAmbiguousCondition(params, 'user_id')
+      )
+    }
+
+    findOption.where = {
+      [Op.and]: andArray,
+    }
+    findOption.order = [['createdAt', 'DESC']];
+    findOption.limit = 5
+
+    const classes = this.model.findAndCountAll(findOption);
+
+    return classes;
+  }
 }

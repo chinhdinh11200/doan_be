@@ -48,5 +48,6 @@ export interface ITopicUpdateParam {
 export interface ITopicSearchParam extends ICommonSearchOption, ICommonSortOption {
     name?: string;
     code?: string;
+    user_id?: number;
     search?: string;
 }

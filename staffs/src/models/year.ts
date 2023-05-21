@@ -24,7 +24,7 @@ export class Year
   declare deletedAt: CreationOptional<Date>;
 
   public static ASSOCIATE() {
-    Year.hasMany(Classes);
+    Year.hasMany(Classes, {foreignKey: 'year_id', as: 'classes'});
   }
 }
 

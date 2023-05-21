@@ -55,7 +55,7 @@ export class User extends Model<
     User.belongsToMany(Education, { through: RoleUser, foreignKey: 'user_id' });
     User.belongsToMany(Invention, { through: RoleUser, foreignKey: 'user_id' });
     User.belongsToMany(Thesis, { through: ThesisUser, foreignKey: 'user_id' });
-    User.hasMany(Classes);
+    User.hasMany(Classes, {foreignKey: 'user_id', as: 'classes'});
   }
 
 }

@@ -5,6 +5,7 @@ import { NextFunction, Request, Response } from 'express';
 import { types } from '../../common';
 import { OK } from 'http-status';
 import { pickForSearch } from '../../utils';
+import { FindOptions } from 'sequelize';
 
 export default class classesController extends Controller {
   private readonly classRepo: repository.Classes;
@@ -90,5 +91,19 @@ export default class classesController extends Controller {
     const classes = await this.classRepo.delete(req.params.id);
 
     res.status(OK).json(classes)
+  }
+
+  public dashboard = async (req: Request, res: Response, next: NextFunction) => {
+    type queryDashboard = {
+      year_id: string | number,
+      user_id?: string,
+    }
+    const classes = await this.classRepo.dashboard(
+      {
+        ...pickForSearch(<queryDashboard>req.query, ['year_id', 'user_id'])
+      }
+    );
+
+    this.ok(res, classes);
   }
 }

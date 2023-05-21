@@ -6,6 +6,7 @@ export default function(sequelize: SQLize) {
   const classController = new ClassController(sequelize);
 
   classRouter.get('/', classController.search);
+  classRouter.get('/dashboard', classController.dashboard);
   classRouter.get('/:id', classController.detail);
   classRouter.post('/', classController.create);
   classRouter.put('/:id', classController.update);
