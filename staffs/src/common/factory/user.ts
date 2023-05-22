@@ -20,7 +20,7 @@ export interface IUserMainAttr {
 export interface IUserAttr extends IUserMainAttr, ICommonAttr { }
 
 export interface IUserCreateParam {
-  department_id: number;
+  department_id?: number;
   name: string;
   email: string;
   avatar?: string;
@@ -35,7 +35,7 @@ export interface IUserCreateParam {
 }
 
 export interface IUserUpdateParam {
-  department_id: number;
+  department_id?: number;
   name: string;
   email: string;
   avatar?: string;

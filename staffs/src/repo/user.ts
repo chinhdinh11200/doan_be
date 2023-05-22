@@ -2,7 +2,7 @@ import * as crypto from 'crypto';
 import { types } from '../common';
 import BaseRepository from './_base';
 import { DB } from '../models';
-import { FindAndCountOptions, Op, WhereOptions } from 'sequelize';
+import { FindAndCountOptions, Op, WhereOptions, col } from 'sequelize';
 import { log } from 'console';
 import { addBaseUrlToData } from '../utils';
 
@@ -31,7 +31,7 @@ export default class UserRepository extends BaseRepository {
       include: [
         {
           model: this.modelDepartment,
-          attributes: ['name'],
+          attributes: [[col('name'), 'departmentName']],
           as: 'department'
         }
       ]
@@ -45,7 +45,16 @@ export default class UserRepository extends BaseRepository {
 
   public create = async (data: types.user.UserCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
+    const userExists = await this.model.findOne({
+      where: {
+        email: data.email,
+      },
+    });
 
+    if (userExists) {
+      await transaction.rollback();
+      throw new Error('User already exists');
+    }
     try {
       const user = await this.model.create(
         {
@@ -128,7 +137,13 @@ export default class UserRepository extends BaseRepository {
 
     this.setOffsetLimit(findOption, params);
     if (params !== undefined) {
-      const andArray: WhereOptions[] = [];
+      const andArray: WhereOptions[] = [
+        {
+          id: {
+            [Op.not]: 1,
+          }
+        }
+      ];
       if (params.search !== undefined) {
         andArray.push(
           this.makeMultipleAmbiguousCondition(params, 'search', [

@@ -23,7 +23,7 @@ module.exports = {
       name: 'Admin',
       email: 'admin@gmail.com',
       password: password,
-      salt: 'salt',
+      salt: salt,
       code: 'ADMIN',
       createdAt: new Date(),
       updatedAt: new Date()

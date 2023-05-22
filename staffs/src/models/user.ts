@@ -26,7 +26,7 @@ export class User extends Model<
   InferCreationAttributes<User>
 > implements types.user.Attr {
   declare readonly id: CreationOptional<number>;
-  declare readonly department_id: number;
+  declare readonly department_id: CreationOptional<number>;
   declare name: string;
   declare email: string;
   declare password: string;

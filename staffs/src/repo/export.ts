@@ -129,12 +129,13 @@ export default class ExportRepository extends BaseRepository {
     let user: any = await this.userRepo.detail(userId);
     user = {
       ...user,
+      departmentName: user.department.dataValues.departmentName,
       position: POSITION_STAFF.find(position => position.value == user?.position)?.label,
       birthday: moment(user.birthday).format("DD/MM/YYYY"),
     }
+    // return; 
     const year = await this.modelYear.findByPk(yearId);
     const dateExport = `ngày ${moment(new Date()).format("DD")} tháng ${moment(new Date()).format("MM")} năm ${moment(new Date()).format("YYYY")}`
-    console.log(dateExport);
     const dataTeach = await this.modelClasses.findAll({
       attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson'],
       where: {
@@ -317,10 +318,35 @@ export default class ExportRepository extends BaseRepository {
         centerCells.push(cellAddress);
       }
     }
+    workbook.Sheets[sheetName]['!cols'] 
+    // console.log(sheet['!ref']);
+    if (sheet['!ref']) {
+      const range1 = XLSX.utils.decode_range(sheet['!ref']);
+      const rangeStyle = { border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } } };
+
+      for (let rowNum = range1.s.r; rowNum <= range1.e.r; rowNum++) {
+        for (let colNum = range1.s.c; colNum <= range1.e.c; colNum++) {
+          const cellAddress = XLSX.utils.encode_cell({ r: rowNum, c: colNum });
+          const cell = sheet[cellAddress];
+
+          // Tạo một đối tượng style nếu ô không có style được định nghĩa trước đó
+          // if (!cell || !cell.s) {
+          //   cell.s = {};
+          // }
+
+          // Áp dụng kiểu cho ô
+          console.log(rangeStyle);
+          cell.s.border = rangeStyle.border;
+        }
+      }
+    }
+
 
     // Center align the cells
     for (const cellAddress of centerCells) {
+
       const cell = sheet[cellAddress];
+      console.log(cell);
       if (cell) {
         cell.s = { alignment: { horizontal: 'center' } };
       }

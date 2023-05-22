@@ -88,7 +88,7 @@ export default {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.removeConstraint('users', 'users_ibfk_1');
+    // await queryInterface.removeConstraint('users', 'users_ibfk_1');
     return await queryInterface.dropTable('users');
   }
 };

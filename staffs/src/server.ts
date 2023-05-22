@@ -92,7 +92,6 @@ export const createApp = async function () {
   // app.use(upload.array());
   app.use(express.static('public'));
 
-  console.log(path.join(__dirname, '..', 'public'));
   app.use(
     '/public',
     express.static(path.join(__dirname, '..', 'public'))
@@ -102,7 +101,6 @@ export const createApp = async function () {
   const accessLogStream = fs.createWriteStream('access.log', { flags: 'a' });
   app.use(morgan('combined', { stream: accessLogStream }));
   const setTokenFromCookie = (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.cookies);
     if (req.cookies && req.cookies.jwt) {
       req.headers.authorization = `Bearer ${req.cookies.jwt}`;
     }

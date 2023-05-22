@@ -9,6 +9,7 @@ export default function (sequelize: SQLize) {
   const upload = createUpload('./public');
 
   importRouter.post('/user', /*upload.single('dcm'), */ importController.user);
+  importRouter.post('/import', upload.single('import'), importController.user);
 
   return importRouter;
 }

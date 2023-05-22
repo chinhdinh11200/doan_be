@@ -108,7 +108,7 @@ export default class AuthController extends Controller {
     //   if (err) { return next(err); }
     // });
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: false });
-    res.json({ 
+    res.json({
       success: true,
     });
   };
@@ -117,16 +117,51 @@ export default class AuthController extends Controller {
   public sendMailResetPassword = async (req: Request, res: Response, next: NextFunction) => {
     const email = req.body.email;
     const data = await this.authRepo.sendMail(email);
-    res.send(email);
+    res.json({
+      success: true,
+    });
   }
 
   public resetPassword = async (req: Request, res: Response, next: NextFunction) => {
     const token = req.body.token;
     const email = req.body.email;
     const password = req.body.password;
-    const user = await this.authRepo.resetPassword({ email, token, password })
+    const user: any = await this.authRepo.resetPassword({ email, token, password })
+    if (user.success == false) {
+      return res.json(user);
+    }
+    const { token: accessToken } = await this.userRepo.signToken(
+      {
+        id: user.id.toString(),
+        username: user.name,
+        email: user.email,
+        code: user.code,
+        role: user.department_id,
+        position: user.position
+      },
+      this.timeAccessTokenExpired
+    );
+    const { token: refreshToken } = await this.userRepo.signToken(
+      {
+        id: user.id.toString(),
+        username: user.name,
+        email: user.email,
+        code: user.code,
+        role: user.department_id,
+        position: user.position
+      },
+      this.timeRefreshTokenExpired
+    );
 
-    res.status(200).json(user);
+    res.cookie('jwt', refreshToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+      // maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    req.user = <any>user;
+    res.status(200).json({ user, success: true, refreshToken, accessToken });
   }
 
   public changePassword = async (req: Request, res: Response, next: NextFunction) => {

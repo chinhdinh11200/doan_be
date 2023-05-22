@@ -8,10 +8,13 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.addColumn('departments', 'parent_id', {
-      type: dt.BIGINT.UNSIGNED,
-      allowNull: true,
-    });
+    const tableInfo = await queryInterface.describeTable('departments');
+    if (!tableInfo.parent_id) {
+      await queryInterface.addColumn('departments', 'parent_id', {
+        type: dt.BIGINT.UNSIGNED,
+        allowNull: true,
+      });
+    }
   },
 
   down: async (queryInterface: QueryInterface) => {

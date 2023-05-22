@@ -5,7 +5,11 @@ import * as XLSX from 'xlsx';
 import { DB } from '../../models';
 import Controller from './base';
 import * as repository from '../../repo';
+const fs = require('fs');
 import { NextFunction, Request, Response } from 'express';
+const mammoth = require('mammoth');
+const Docxtemplater = require('docxtemplater');
+
 import { types } from '../../common';
 import { now } from 'lodash';
 import { ROLE_USER } from '../../common/factory/_common';
@@ -53,9 +57,46 @@ export default class ImportController extends Controller {
     this.userRepo = new repository.User(db);
   }
 
+  public import = (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.file);
+
+    // const a: any = this.convertToXLSX(String(req.file?.path));
+    // res.send(a)
+    mammoth.extractRawText({ path: req.file?.path })
+      .then((result: any) => {
+        const text = result.value; // Nội dung văn bản trong tệp Word
+        const tables = result.table; // Mảng các bảng trong tệp Word
+        console.log(result);
+        res.send(tables);
+      })
+      .catch((error: any) => {
+        console.error(error);
+        res.status(500).send('Đã xảy ra lỗi khi đọc tệp Word.');
+      });
+  }
+
+  public convertToXLSX = (filePath: string) => {
+    const templateContent = fs.readFileSync(filePath, 'binary');
+    const doc = new Docxtemplater();
+    doc.load(templateContent);
+    doc.render();
+    const buffer = doc.getZip().generate({ type: 'nodebuffer' });
+    return buffer;
+    console.log(buffer);
+    const workbook = XLSX.utils.book_new();
+
+    // Tạo một worksheet mới và gán dữ liệu từ quá trình chuyển đổi
+    // const worksheet = XLSX.utils.aoa_to_sheet(data);
+    // XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+    // // Lưu workbook thành tệp Excel
+    // const excelFilePath = 'path/to/save/excel/file.xlsx';
+    // XLSX.writeFile(workbook, excelFilePath);
+  }
+
   public user = async (req: Request, res: Response, next: NextFunction) => {
     // users-20230413T075130167Z405903 TKB-20230413T080451179Z535466
-    const wb = XLSX.readFile('./public/TKB-20230413T080451179Z535466.xlsx');
+    const wb = XLSX.readFile(String(req.file?.path));
     const sheets = wb.SheetNames;
     const sheetName = wb.Sheets[sheets[6]];
     const range = sheetName + '!A3:H3';
@@ -94,7 +135,7 @@ export default class ImportController extends Controller {
                   const { dataValues: dataValueUser } = await this.userRepo.create({
                     name: users[indexUser],
                     code: "",
-                    department_id: 1,
+                    // department_id: null,
                     email: "",
                     degree: "",
                     income: 0,

@@ -8,10 +8,13 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.addColumn('topics', 'startDate', {
-      type: dt.DATE,
-      allowNull: true,
-    });
+    const tableInfo = await queryInterface.describeTable('topics');
+    if (!tableInfo.startDate) {
+      await queryInterface.addColumn('topics', 'startDate', {
+        type: dt.DATE,
+        allowNull: true,
+      });
+    }
     await queryInterface.addColumn('topics', 'acceptDate', {
       type: dt.DATE,
       allowNull: true,
@@ -29,7 +32,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    
+
     const tableInfo = await queryInterface.describeTable('topics');
     if (tableInfo.startDate) {
       await queryInterface.removeColumn('topics', 'startDate');

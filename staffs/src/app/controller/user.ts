@@ -43,7 +43,6 @@ export default class UserController extends Controller {
   };
 
   public create = async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.file);
     const file = req.file && req.file.path
     const params: types.user.UserCreateParam = {
       department_id: req.body.department_id,

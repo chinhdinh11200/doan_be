@@ -8,7 +8,6 @@ import * as Sequelize from 'sequelize';
 
 export default (err: any, req: Request, res: Response, next: NextFunction) => {
   console.log("handle error", err);
-  // debug(err);
   if (res.headersSent) {
     next(err);
 

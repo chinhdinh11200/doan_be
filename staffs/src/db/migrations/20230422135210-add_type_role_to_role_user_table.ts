@@ -8,10 +8,13 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.addColumn('role_user', 'type_role', {
-      type: dt.INTEGER,
-      allowNull: true,
-    });
+    const tableInfo = await queryInterface.describeTable('role_user');
+    if (!tableInfo.type_role) {
+      await queryInterface.addColumn('role_user', 'type_role', {
+        type: dt.INTEGER,
+        allowNull: true,
+      });
+    }
   },
 
   down: async (queryInterface: QueryInterface) => {
