@@ -22,7 +22,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
             });
           }
 
-          return { str, statusCode, fieldName };
+          return { message: str, statusCode, fieldName };
         }
       }
     );

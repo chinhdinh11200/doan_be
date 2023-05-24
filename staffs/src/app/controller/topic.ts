@@ -29,6 +29,7 @@ export default class TopicController extends Controller {
         this.ok(res, data);
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {
+        console.log(req.body);
         const params: types.topic.TopicCreateParam = {
             name: req.body.name,
             code: req.body.code,

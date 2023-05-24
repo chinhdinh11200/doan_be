@@ -36,7 +36,7 @@ export default class DepartmentRepository extends BaseRepository {
         }
       ],
     };
-
+    
     if (params !== undefined) {
       const andArray: WhereOptions[] = [];
       if (params.search !== undefined) {
