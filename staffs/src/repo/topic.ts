@@ -47,7 +47,7 @@ export default class Topic extends BaseRepository {
           as: 'users',
         },
         {
-          model : this.modelYear,
+          model: this.modelYear,
           as: 'year',
           attributes: ['id', 'name'],
         }
@@ -318,8 +318,18 @@ export default class Topic extends BaseRepository {
                   supportRole.set({
                     user_id: user_id,
                     type_role: params.type,
+                    time: timeSupport,
                   })
                   supportRole.save();
+                } else {
+                  user_id = Number(roleUser);
+                  await this.modelRoleUser.create({
+                    role_able_id: topic.dataValues.id,
+                    user_id: Number(roleUser),
+                    type: type,
+                    type_role: params.type,
+                    time: timeSupport,
+                  })
                 }
               } else {
                 user_id = Number(roleUser);
