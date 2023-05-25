@@ -13,6 +13,7 @@ import { Mark } from './mark';
 import { Room } from './room';
 import { Classes } from './class';
 import { ClassExam } from './classexam';
+import { Year } from './year';
 
 export class Exam
   extends Model<InferAttributes<Exam>, InferCreationAttributes<Exam>>
@@ -35,6 +36,7 @@ export class Exam
 
   public static ASSOCIATE() {
     Exam.belongsTo(User, { foreignKey: 'user_id' });
+    Exam.belongsTo(Year, { foreignKey: 'year_id', as: 'year' })
   }
 }
 

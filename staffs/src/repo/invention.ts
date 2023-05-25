@@ -8,6 +8,7 @@ export default class Invention extends BaseRepository {
   private readonly model: DB['Invention'];
   private readonly modelRole: DB['Role'];
   private readonly modelUser: DB['User'];
+  private readonly modelYear: DB['Year'];
   private readonly modelRoleAble: DB['RoleAble'];
   private readonly modelRoleUser: DB['RoleUser'];
   constructor(db: DB) {
@@ -17,6 +18,7 @@ export default class Invention extends BaseRepository {
     this.modelRole = db.Role;
     this.modelUser = db.User;
     this.modelRoleAble = db.RoleAble;
+    this.modelYear = db.Year;
     this.modelRoleUser = db.RoleUser;
   }
 
@@ -40,6 +42,11 @@ export default class Invention extends BaseRepository {
               type_role: 3
             }
           },
+          attributes: ['id', 'name'],
+        },
+        {
+          model: this.modelYear,
+          as: 'year',
           attributes: ['id', 'name'],
         }
       ],

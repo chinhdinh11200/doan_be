@@ -6,11 +6,13 @@ import BaseRepository from './_base';
 export default class ExamRepository extends BaseRepository {
   private readonly model: DB['Exam'];
   private readonly modelUser: DB['User'];
+  private readonly modelYear: DB['Year'];
   constructor(db: DB) {
     super(db);
 
     this.model = db.Exam;
     this.modelUser = db.User;
+    this.modelYear = db.Year;
   }
 
   public findOneById = async (id: string | number) => {
@@ -163,6 +165,17 @@ export default class ExamRepository extends BaseRepository {
   };
 
   public findById = async (examId: string | number) => {
-    return await this.model.findByPk(examId);
+    return await this.model.findOne({
+      where: {
+        id: examId,
+      },
+      include: [
+        {
+          model: this.modelYear,
+          as: 'year',
+          attributes: ['id', 'name'],
+        }
+      ],
+    });
   };
 }

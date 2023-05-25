@@ -11,6 +11,7 @@ import { User } from './user';
 import { commonFields } from './_common';
 import { Subject } from './subject';
 import { Exam } from './exam';
+import { Year } from './year';
 
 export class Room
   extends Model<InferAttributes<Room>, InferCreationAttributes<Room>>
@@ -36,6 +37,7 @@ export class Room
 
   public static ASSOCIATE() { 
     // Room.belongsTo(Exam); 
+    Room.belongsTo(Year, { foreignKey: 'year_id', as: 'year' })
   }
 }
 

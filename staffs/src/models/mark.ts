@@ -11,6 +11,7 @@ import { types } from '../common';
 import { User } from './user';
 import { commonFields } from './_common';
 import { Subject } from './subject';
+import { Year } from './year';
 
 export class Mark
   extends Model<InferAttributes<Mark>, InferCreationAttributes<Mark>>
@@ -33,6 +34,7 @@ export class Mark
   public static ASSOCIATE() {
     Mark.belongsTo(Subject, { foreignKey: 'subject_id', as: 'subject' })
     Mark.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+    Mark.belongsTo(Year, { foreignKey: 'year_id', as: 'year' })
   }
 }
 

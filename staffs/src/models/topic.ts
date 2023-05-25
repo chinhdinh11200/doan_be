@@ -12,6 +12,7 @@
   import { RoleUser } from './role_user';
   import { Role } from './role';
   import { RoleAble } from './roleable';
+import { Year } from './year';
 
   export class Topic
     extends Model<InferAttributes<Topic>, InferCreationAttributes<Topic>> implements types.topic.Attr {
@@ -33,6 +34,7 @@
 
     public static ASSOCIATE() {
       Topic.belongsToMany(User, { through: { model: RoleUser, unique: false }, foreignKey: 'role_able_id' })
+      Topic.belongsTo(Year, { foreignKey: 'year_id', as: 'year' })
     }
   }
 

@@ -6,6 +6,7 @@ import BaseRepository from './_base';
 export default class MarkRepository extends BaseRepository {
   private readonly model: DB['Mark'];
   private readonly modelSubject: DB['Subject'];
+  private readonly modelYear: DB['Year'];
   private readonly modelUser: DB['User'];
   constructor(db: DB) {
     super(db);
@@ -13,6 +14,7 @@ export default class MarkRepository extends BaseRepository {
     this.model = db.Mark;
     this.modelSubject = db.Subject;
     this.modelUser = db.User;
+    this.modelYear = db.Year;
   }
 
   public findOneById = async (id: string | number) => {
@@ -32,6 +34,11 @@ export default class MarkRepository extends BaseRepository {
         },
         {
           model: this.modelUser,
+        },
+        {
+          model: this.modelYear,
+          as: 'year',
+          attributes: ['id', 'name'],
         }
       ]
     })

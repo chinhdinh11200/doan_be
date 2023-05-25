@@ -10,6 +10,7 @@ import { types } from '../common';
 import { commonFields } from './_common';
 import { User } from './user';
 import { RoleUser } from './role_user';
+import { Year } from './year';
 
 export class Compilation
   extends Model<InferAttributes<Compilation>, InferCreationAttributes<Compilation>> implements types.compilation.Attr {
@@ -30,6 +31,7 @@ export class Compilation
 
   public static ASSOCIATE() {
     Compilation.belongsToMany(User, {through: RoleUser, foreignKey: 'role_able_id'});
+    Compilation.belongsTo(Year, { foreignKey: 'year_id', as: 'year' })
   }
 }
 

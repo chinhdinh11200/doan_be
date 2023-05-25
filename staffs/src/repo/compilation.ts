@@ -8,6 +8,7 @@ export default class Compilation extends BaseRepository {
   private readonly model: DB['Compilation'];
   private readonly modelRole: DB['Role'];
   private readonly modelUser: DB['User'];
+  private readonly modelYear: DB['Year'];
   private readonly modelRoleAble: DB['RoleAble'];
   private readonly modelRoleUser: DB['RoleUser'];
   constructor(db: DB) {
@@ -15,6 +16,7 @@ export default class Compilation extends BaseRepository {
 
     this.model = db.Compilation;
     this.modelRole = db.Role;
+    this.modelYear = db.Year;
     this.modelUser = db.User;
     this.modelRoleAble = db.RoleAble;
     this.modelRoleUser = db.RoleUser;
@@ -38,6 +40,11 @@ export default class Compilation extends BaseRepository {
           where: {
             type_role: 7
           } },
+          attributes: ['id', 'name'],
+        },
+        {
+          model : this.modelYear,
+          as: 'year',
           attributes: ['id', 'name'],
         }
       ],

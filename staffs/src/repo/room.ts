@@ -5,9 +5,11 @@ import BaseRepository from './_base';
 
 export default class RoomRepository extends BaseRepository {
   private readonly model: DB['Room'];
+  private readonly modelYear: DB['Year'];
   constructor(db: DB) {
     super(db);
     this.model = db.Room;
+    this.modelYear = db.Year;
   }
 
   public search = async (params: types.room.RoomSearchParam) => {
@@ -139,6 +141,17 @@ export default class RoomRepository extends BaseRepository {
   };
 
   public findById = async (roomId: string | number) => {
-    return await this.model.findByPk(roomId);
+    return await this.model.findOne({
+      where: {
+        id: roomId,
+      },
+      include: [
+        {
+          model: this.modelYear,
+          as: 'year',
+          attributes: ['id', 'name'],
+        }
+      ]
+    });
   };
 }

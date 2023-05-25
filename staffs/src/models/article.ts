@@ -10,6 +10,7 @@ import { types } from '../common';
 import { commonFields } from './_common';
 import { User } from './user';
 import { RoleUser } from './role_user';
+import { Year } from './year';
 
 export class Article
   extends Model<InferAttributes<Article>, InferCreationAttributes<Article>> implements types.article.Attr {
@@ -30,6 +31,7 @@ export class Article
 
   public static ASSOCIATE() {
     Article.belongsToMany(User, {through: RoleUser, foreignKey: 'role_able_id'})
+    Article.belongsTo(Year, { foreignKey: 'year_id', as: 'year' })
   }
 }
 

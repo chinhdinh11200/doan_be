@@ -61,7 +61,7 @@ export const createApp = async function () {
   // cors
   const corsOption: CorsOptions = {
     origin: [
-      '*'
+      'http://localhost:5173'
     ],
     allowedHeaders: [
       'Origin',

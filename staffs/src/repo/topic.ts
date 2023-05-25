@@ -9,6 +9,7 @@ export default class Topic extends BaseRepository {
   private readonly model: DB['Topic'];
   private readonly modelRole: DB['Role'];
   private readonly modelUser: DB['User'];
+  private readonly modelYear: DB['Year'];
   private readonly modelRoleAble: DB['RoleAble'];
   private readonly modelRoleUser: DB['RoleUser'];
   constructor(db: DB) {
@@ -17,6 +18,7 @@ export default class Topic extends BaseRepository {
     this.model = db.Topic;
     this.modelRole = db.Role;
     this.modelUser = db.User;
+    this.modelYear = db.Year;
     this.modelRoleAble = db.RoleAble;
     this.modelRoleUser = db.RoleUser;
   }
@@ -43,6 +45,11 @@ export default class Topic extends BaseRepository {
           },
           attributes: ['id', 'name'],
           as: 'users',
+        },
+        {
+          model : this.modelYear,
+          as: 'year',
+          attributes: ['id', 'name'],
         }
       ],
       order: [
