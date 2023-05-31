@@ -14,7 +14,7 @@ export const validationMessage = {
   min: "Trường %1 nhỏ hơn %2 kí tự.",
   number: "Trường %1 chỉ là các chữ số.",
 }
- 
+
 export const FORM_EXAM = {
   'TL' : 0,
   'TN' : 1,
@@ -78,3 +78,22 @@ export const POSITION_STAFF = [
     label: 'Giảng viên'
   },
 ]
+
+export const FORM_CONSTRUCTION = [
+  {
+    label: "Xây mới chương trình khung",
+    value: 0
+  },
+  {
+    label: "Xây mới chương trình chi tiết",
+    value: 1
+  },
+  {
+    label: "Tu sửa chương trình khung",
+    value: 2
+  },
+  {
+    label: "Tu sửa chương trình chi tiết",
+    value: 3
+  },
+];

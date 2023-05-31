@@ -74,6 +74,7 @@ export default class UserController extends Controller {
       avatar: file,
       birthday: req.body.birthday,
       degree: req.body.degree,
+      password: req.body.password,
       position: req.body.position,
       income: req.body.income,
       number_salary: req.body.number_salary,

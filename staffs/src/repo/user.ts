@@ -101,6 +101,7 @@ export default class UserRepository extends BaseRepository {
           code: data.code,
           avatar: data.avatar,
           email: data.email,
+          ...this.hashPassword(data.password),
           birthday: data.birthday,
           position: data.position,
           degree: data.degree,

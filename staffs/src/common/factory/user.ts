@@ -41,6 +41,7 @@ export interface IUserUpdateParam {
   avatar?: string;
   code: string;
   birthday?: Date;
+  password: string;
   position: string;
   degree: string;
   number_salary: number;

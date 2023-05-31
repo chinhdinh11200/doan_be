@@ -3,6 +3,7 @@ import { types } from '../common';
 import { DB } from './../models';
 import BaseRepository from './_base';
 import { codeFee, codeHVMM } from '../common/constant';
+import subject from '../app/routes/subject';
 
 export default class Subject extends BaseRepository {
   private readonly model: DB['Subject'];
@@ -135,14 +136,13 @@ export default class Subject extends BaseRepository {
             user_id: userId
           }
         },
+      ],
+      // raw: true
+    })
+    const subjects1: any = await this.model.findAll({
+      include: [
         {
           model: this.modelMark,
-          where: {
-            user_id: userId
-          }
-        },
-        {
-          model: this.modelRoom,
           where: {
             user_id: userId
           }
@@ -150,6 +150,20 @@ export default class Subject extends BaseRepository {
       ],
       // raw: true
     })
+    const subjects2: any = await this.model.findAll({
+      include: [
+        {
+          model: this.modelRoom,
+          where: {
+            user_id: userId
+          },
+          as: 'rooms',
+        },
+      ],
+      // raw: true
+    })
+
+    console.log(subjects);
 
     const subjectHVMMFormats = subjects.filter((subject: any) => {
       return codeHVMM.some(t => subject.code.includes(t))
@@ -177,8 +191,8 @@ export default class Subject extends BaseRepository {
 
       return {
         ...subject.dataValues,
-        time,
         endSemester,
+        time : Math.ceil(time),
       }
     });
 
@@ -208,14 +222,14 @@ export default class Subject extends BaseRepository {
 
       return {
         ...subject.dataValues,
-        time,
+        time : Math.ceil(time),
         endSemester,
       }
     });
 
     return {
       subjectHVMMFormats,
-      subjectFeeFormats ,
+      subjectFeeFormats,
     }
   }
 }

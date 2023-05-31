@@ -5,7 +5,7 @@ import { createUpload } from "../../utils";
 export default function (sequelize: SQLize) {
     const bookRouter = Router();
     const bookController = new BookController(sequelize);
-    const upload = createUpload('./public')
+    const upload = createUpload('./public/book')
     bookRouter.get('/', bookController.search);
     bookRouter.get('/:id', bookController.detail);
     bookRouter.post('/', upload.none(), bookController.create);

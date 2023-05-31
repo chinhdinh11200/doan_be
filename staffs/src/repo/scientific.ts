@@ -344,20 +344,25 @@ export default class Scientific extends BaseRepository {
       include: [
         {
           model: this.modelUser,
+          required: true,
           through: {
             attributes: ['time', 'user_id', 'type', 'type_role'],
             as: 'role_user',
             where: {
-              type_role: 5,
-              user_id: userId,
-            }
-          }
+              [Op.and]: [
+                { user_id: userId },
+                { type_role: 5 },
+              ]
+            },
+
+          },
+          
         }
       ],
-      attributes: [[Sequelize.fn('DATE_FORMAT', Sequelize.col('date_decision'), '%d/%m/%Y'), 'date_decision']],
+      attributes: ["*", [Sequelize.fn('DATE_FORMAT', Sequelize.col('date_decision'), '%d/%m/%Y'), 'date_decision']],
       raw: true,
     })
-
+    
     const scientificFormats = scientifics.map((scientific: any) => {
       let type = "Thành viên"
       switch (scientific['users.role_user.type']) {

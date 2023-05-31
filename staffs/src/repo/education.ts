@@ -3,6 +3,7 @@ import { types } from '../common';
 import { DB } from './../models';
 import BaseRepository from './_base';
 import { TypeRoleUser } from '../common/factory/_common';
+import { FORM_CONSTRUCTION } from '../common/constant';
 
 export default class Education extends BaseRepository {
   private readonly model: DB['Education'];
@@ -301,18 +302,8 @@ export default class Education extends BaseRepository {
     })
 
     const educationFormats = educations.map((education: any) => {
-      let type = "Thành viên"
-      switch (education['users.role_user.type']) {
-        case 0:
-          type = "Chủ trì"
-          break;
-        case 1:
-          type = "Thư ký"
-          break;
-        default:
-          type = "Thành viên"
-          break;
-      }
+      let type = FORM_CONSTRUCTION.find(form => form.value == education.form_construction)?.label;
+      
       return {
         ...education,
         type: type,

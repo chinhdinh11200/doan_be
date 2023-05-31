@@ -1,16 +1,15 @@
-import { FindAndCountOptions, Op, WhereOptions, literal } from 'sequelize';
+import { literal } from 'sequelize';
 import * as pug from 'pug';
 import * as path from 'path';
 import * as fs from 'fs';
-import { types } from '../common';
 import { DB } from './../models';
 import BaseRepository from './_base';
 import * as XLSX from 'xlsx';
-import { Classes } from '.';
-import { includes } from 'lodash';
 import * as repository from './index';
 import { POSITION_STAFF, codeFee, codeHVMM } from '../common/constant';
 import moment from 'moment';
+import { Response } from 'express';
+const puppeteer = require('puppeteer');
 
 export default class ExportRepository extends BaseRepository {
   private readonly model: DB['Exam'];
@@ -125,13 +124,13 @@ export default class ExportRepository extends BaseRepository {
 
   };
 
-  public userTemplate = async (userId: string | number, yearId: number | string) => {
+  public userTemplate = async (res: Response, userId: string | number, yearId: number | string) => {
     let user: any = await this.userRepo.detail(userId);
     user = {
       ...user,
       departmentName: user.department.dataValues.departmentName,
       position: POSITION_STAFF.find(position => position.value == user?.position)?.label,
-      birthday: moment(user.birthday).format("DD/MM/YYYY"),
+      birthday: user.birthday ? moment(user.birthday).format("DD/MM/YYYY") : '',
     }
     // return; 
     const year = await this.modelYear.findByPk(yearId);
@@ -143,10 +142,10 @@ export default class ExportRepository extends BaseRepository {
       }
     })
     const dataTeachSemesterOne = await this.modelClasses.findAll({
-      attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking'],
+      attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam'],
       where: {
         user_id: userId,
-        semester: 0
+        semester: 1
       },
       // group: ['semester'],
       raw: true,
@@ -157,6 +156,7 @@ export default class ExportRepository extends BaseRepository {
     }).map(classs => {
       let time = classs.num_lesson
       let middleSemester = ''
+      let timeMiddle = 0;
       if (classs.num_student > 40 && classs.num_student <= 50) {
         time = time * 1.1
       } else if (classs.num_student > 50 && classs.num_student <= 65) {
@@ -168,14 +168,51 @@ export default class ExportRepository extends BaseRepository {
       } else if (classs.num_student > 100) {
         time *= 1.5
       }
-      classs.exam_create ? middleSemester = middleSemester + 'Ra đề,' : ''
-      classs.exam_supervision ? middleSemester = middleSemester + 'coi thi,' : ''
-      classs.marking ? middleSemester = middleSemester + 'chấm thi' : ''
+
+      if (classs.exam_create) {
+        middleSemester += 'Ra đề, '
+        timeMiddle += 1;
+      }
+
+      if (classs.exam_supervision) {
+        middleSemester += 'coi thi, '
+        timeMiddle += 1;
+      }
+
+      if (classs.marking) {
+        middleSemester += 'chấm thi, '
+        switch (classs.form_exam) {
+          case 0:
+            timeMiddle += classs.num_student * 0.05;
+            break;
+          case 1:
+            timeMiddle += classs.num_student * 0.05;
+            break;
+          case 2:
+            timeMiddle += classs.num_student * 0.125;
+            break;
+        }
+      }
+
+      // if (classs.form_exam !== null) {
+      switch (classs.form_exam) {
+        case 0:
+          middleSemester += 'TL'
+          break;
+        case 1:
+          middleSemester += 'TN'
+          break;
+        case 2:
+          middleSemester += 'VĐ'
+          break;
+        // }
+      }
 
       return {
         ...classs,
-        time,
+        time : Math.ceil(time),
         middleSemester,
+        timeMiddle : Math.ceil(timeMiddle),
       }
     })
 
@@ -184,6 +221,7 @@ export default class ExportRepository extends BaseRepository {
     }).map(classs => {
       let time = classs.num_lesson
       let middleSemester = ''
+      let timeMiddle = 0;
       if (classs.num_student > 40 && classs.num_student <= 50) {
         time = time * 1.1
       } else if (classs.num_student > 50 && classs.num_student <= 65) {
@@ -196,22 +234,58 @@ export default class ExportRepository extends BaseRepository {
         time *= 1.5
       }
 
-      classs.exam_create ? middleSemester = middleSemester + 'Ra đề,' : ''
-      classs.exam_supervision ? middleSemester = middleSemester + 'coi thi,' : ''
-      classs.marking ? middleSemester = middleSemester + 'chấm thi' : ''
+      if (classs.exam_create) {
+        middleSemester += 'Ra đề, '
+        timeMiddle += 1;
+      }
+
+      if (classs.exam_supervision) {
+        middleSemester += 'coi thi, '
+        timeMiddle += 1;
+      }
+
+      if (classs.marking) {
+        middleSemester += 'chấm thi, '
+        switch (classs.form_exam) {
+          case 0:
+            timeMiddle += classs.num_student * 0.05;
+            break;
+          case 1:
+            timeMiddle += classs.num_student * 0.05;
+            break;
+          case 2:
+            timeMiddle += classs.num_student * 0.125;
+            break;
+        }
+      }
+
+      // if (classs.form_exam !== null) {
+      switch (classs.form_exam) {
+        case 0:
+          middleSemester += 'TL'
+          break;
+        case 1:
+          middleSemester += 'TN'
+          break;
+        case 2:
+          middleSemester += 'VĐ'
+          break;
+        // }
+      }
 
       return {
         ...classs,
-        time,
+        time : Math.ceil(time),
         middleSemester,
+        timeMiddle : Math.ceil(timeMiddle),
       }
     })
 
     const dataTeachSemesterTwo = await this.modelClasses.findAll({
-      attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking'],
+      attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam'],
       where: {
         user_id: userId,
-        semester: 1
+        semester: 2
       },
       raw: true,
     })
@@ -221,6 +295,7 @@ export default class ExportRepository extends BaseRepository {
     }).map(classs => {
       let time = classs.num_lesson
       let middleSemester = '';
+      let timeMiddle = 0;
       if (classs.num_student > 40 && classs.num_student <= 50) {
         time = time * 1.1
       } else if (classs.num_student > 50 && classs.num_student <= 65) {
@@ -232,14 +307,51 @@ export default class ExportRepository extends BaseRepository {
       } else if (classs.num_student > 100) {
         time *= 1.5
       }
-      classs.exam_create ? middleSemester + 'Ra đề,' : ''
-      classs.exam_supervision ? middleSemester + 'coi thi,' : ''
-      classs.marking ? middleSemester + 'chấm thi' : ''
+
+      if (classs.exam_create) {
+        middleSemester += 'Ra đề, '
+        timeMiddle += 1;
+      }
+
+      if (classs.exam_supervision) {
+        middleSemester += 'coi thi, '
+        timeMiddle += 1;
+      }
+
+      if (classs.marking) {
+        middleSemester += 'chấm thi, '
+        switch (classs.form_exam) {
+          case 0:
+            timeMiddle += classs.num_student * 0.05;
+            break;
+          case 1:
+            timeMiddle += classs.num_student * 0.05;
+            break;
+          case 2:
+            timeMiddle += classs.num_student * 0.125;
+            break;
+        }
+      }
+
+      // if (classs.form_exam !== null) {
+      switch (classs.form_exam) {
+        case 0:
+          middleSemester += 'TL'
+          break;
+        case 1:
+          middleSemester += 'TN'
+          break;
+        case 2:
+          middleSemester += 'VĐ'
+          break;
+        // }
+      }
 
       return {
         ...classs,
-        time,
+        time : Math.ceil(time),
         middleSemester,
+        timeMiddle : Math.ceil(timeMiddle),
       }
     })
 
@@ -248,6 +360,7 @@ export default class ExportRepository extends BaseRepository {
     }).map(classs => {
       let time = classs.num_lesson
       let middleSemester = ''
+      let timeMiddle = 0;
       if (classs.num_student > 40 && classs.num_student <= 50) {
         time = time * 1.1
       } else if (classs.num_student > 50 && classs.num_student <= 65) {
@@ -260,14 +373,50 @@ export default class ExportRepository extends BaseRepository {
         time *= 1.5
       }
 
-      classs.exam_create ? middleSemester = middleSemester + 'Ra đề,' : ''
-      classs.exam_supervision ? middleSemester = middleSemester + 'coi thi,' : ''
-      classs.marking ? middleSemester = middleSemester + 'chấm thi' : ''
+      if (classs.exam_create) {
+        middleSemester += 'Ra đề, '
+        timeMiddle += 1;
+      }
+
+      if (classs.exam_supervision) {
+        middleSemester += 'coi thi, '
+        timeMiddle += 1;
+      }
+
+      if (classs.marking) {
+        middleSemester += 'chấm thi, '
+        switch (classs.form_exam) {
+          case 0:
+            timeMiddle += classs.num_student * 0.05;
+            break;
+          case 1:
+            timeMiddle += classs.num_student * 0.05;
+            break;
+          case 2:
+            timeMiddle += classs.num_student * 0.125;
+            break;
+        }
+      }
+
+      // if (classs.form_exam !== null) {
+      switch (classs.form_exam) {
+        case 0:
+          middleSemester += 'TL'
+          break;
+        case 1:
+          middleSemester += 'TN'
+          break;
+        case 2:
+          middleSemester += 'VĐ'
+          break;
+        // }
+      }
 
       return {
         ...classs,
-        time,
+        time : Math.ceil(time),
         middleSemester,
+        timeMiddle : Math.ceil(timeMiddle),
       }
     })
 
@@ -281,8 +430,8 @@ export default class ExportRepository extends BaseRepository {
     const educations = await this.educationRepo.export(userId);
     const scientifics = await this.scientificRepo.export(userId);
 
-
-
+    // res.json(user);
+    // return
     const data = {
       user,
       year,
@@ -301,9 +450,24 @@ export default class ExportRepository extends BaseRepository {
       educations,
       scientifics,
     };
-
-    // return path.basename('/views');
+    // res.render('exportTemplate', data);
+    // return;
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+  
     const html = pug.renderFile(path.basename('/views') + "/exportTemplate.pug", data);
+    await page.setContent(html);
+    console.log(path.resolve('public') + '/download/output.pdf');
+    await page.pdf({ path: path.resolve('public') + '/download/output.pdf', format: 'A4', margin: {
+      top: '75px',
+      right: '75px',
+      bottom: '75px',
+      left: '75px',
+    }, });
+    await browser.close();
+    return path.resolve('public') + '/download/output.pdf'
+    // return path.basename('/views');
+    // const html = pug.renderFile(path.basename('/views') + "/exportTemplate.pug", data);
     const workbook = XLSX.read(html, { type: 'string' });
 
     // Get first sheet
@@ -318,41 +482,9 @@ export default class ExportRepository extends BaseRepository {
         centerCells.push(cellAddress);
       }
     }
-    workbook.Sheets[sheetName]['!cols'] 
+    workbook.Sheets[sheetName]['!cols']
     // console.log(sheet['!ref']);
-    if (sheet['!ref']) {
-      const range1 = XLSX.utils.decode_range(sheet['!ref']);
-      const rangeStyle = { border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } } };
-
-      for (let rowNum = range1.s.r; rowNum <= range1.e.r; rowNum++) {
-        for (let colNum = range1.s.c; colNum <= range1.e.c; colNum++) {
-          const cellAddress = XLSX.utils.encode_cell({ r: rowNum, c: colNum });
-          const cell = sheet[cellAddress];
-
-          // Tạo một đối tượng style nếu ô không có style được định nghĩa trước đó
-          // if (!cell || !cell.s) {
-          //   cell.s = {};
-          // }
-
-          // Áp dụng kiểu cho ô
-          console.log(rangeStyle);
-          cell.s.border = rangeStyle.border;
-        }
-      }
-    }
-
-
-    // Center align the cells
-    for (const cellAddress of centerCells) {
-
-      const cell = sheet[cellAddress];
-      console.log(cell);
-      if (cell) {
-        cell.s = { alignment: { horizontal: 'center' } };
-      }
-    }
-
-
+    
     const buffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer' });
 
     const filepath = `/users.xlsx`;

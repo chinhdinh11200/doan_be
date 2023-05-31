@@ -74,6 +74,7 @@ export interface IClassUpdateParam {
 export interface IClassSearchParam extends ICommonSearchOption, ICommonSortOption {
   name?: string;
   code?: string;
+  user_id?: string | number;
   form_teach?: string;
   search?: string;
   parent_id?: boolean;

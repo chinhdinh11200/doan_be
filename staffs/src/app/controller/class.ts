@@ -23,7 +23,7 @@ export default class classesController extends Controller {
 
   public search = async (req: Request, res: Response, next: NextFunction) => {
     const params: types.classes.ClassSearchParam = {
-      ...pickForSearch(<types.classes.ClassSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn', 'parent_id']),
+      ...pickForSearch(<types.classes.ClassSearchParam>req.query, ['name', 'code', 'search', 'sort', 'sortColumn', 'parent_id', 'user_id']),
       ...this.getOffsetLimit(req),
     }
 

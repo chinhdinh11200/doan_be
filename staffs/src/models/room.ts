@@ -36,7 +36,8 @@ export class Room
   declare deletedAt: CreationOptional<Date>;
 
   public static ASSOCIATE() { 
-    // Room.belongsTo(Exam); 
+    Room.belongsTo(User, {foreignKey: 'user_id', as: 'user'}); 
+    Room.belongsTo(Subject, {foreignKey: 'subject_id', as: 'subject'}); 
     Room.belongsTo(Year, { foreignKey: 'year_id', as: 'year' })
   }
 }

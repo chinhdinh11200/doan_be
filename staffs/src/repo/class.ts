@@ -1,4 +1,4 @@
-import { FindAndCountOptions, Op, WhereOptions } from 'sequelize';
+import { FindAndCountOptions, IncludeOptions, Op, Sequelize, WhereOptions } from 'sequelize';
 import { types } from '../common';
 import { DB } from './../models';
 import BaseRepository from './_base';
@@ -62,7 +62,18 @@ export default class ClassRepository extends BaseRepository {
       findOption.where = {
         [Op.and]: andArray,
       };
-
+      let include: IncludeOptions[] = []
+      if (params.user_id) {
+        include.push({
+          model: this.modelUser,
+          as: 'user',
+          attributes: ['id', 'name', 'email'],
+          where: {
+            id: params.user_id,
+          }
+        })
+      }
+      findOption.include = include;
       if (params.sort !== undefined) {
         if (`${params.sort}`.toLowerCase() === 'desc') {
           findOption.order = [
@@ -121,11 +132,11 @@ export default class ClassRepository extends BaseRepository {
   };
   public update = async (
     params: types.classes.ClassUpdateParam,
-    subjectId: number | string
+    classId: number | string
   ) => {
     const transaction = await this.db.sequelize.transaction();
     try {
-      const subjectUpdate = await this.findById(subjectId);
+      const subjectUpdate = await this.findById(classId);
       if (subjectUpdate) {
         const subject = await subjectUpdate.update(
           {
@@ -159,13 +170,13 @@ export default class ClassRepository extends BaseRepository {
       throw error;
     }
   };
-  public delete = async (subjectId: number | string) => {
+  public delete = async (classId: number | string) => {
     const transaction = await this.db.sequelize.transaction();
 
     try {
       const subject = this.model.destroy({
         where: {
-          id: subjectId,
+          id: classId,
         },
       });
 
@@ -175,17 +186,19 @@ export default class ClassRepository extends BaseRepository {
     }
   };
 
-  public findById = async (subjectId: string | number) => {
+  public findById = async (classId: string | number) => {
     return await this.model.findOne({
-      where: { id: subjectId },
+      where: { id: classId },
       include: [
         {
           model: this.modelUser,
-          attributes: ['name']
+          attributes: ['name'],
+          as: 'user',
         },
         {
           model: this.modelYear,
-          attributes: ['name']
+          attributes: ['name'],
+          as: 'year',
         },
       ],
       attributes: ['id', 'subject_id', 'user_id', 'year_id', 'form_teach', 'form_exam', 'name', 'code', 'num_student', 'classroom', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam', 'startDate', 'endDate', 'semester'],

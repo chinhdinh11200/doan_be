@@ -13,7 +13,7 @@ export interface IEducationMainAttr {
 }
 
 export interface IEducationAttr extends IEducationMainAttr, ICommonAttr { }
-
+ 
 export interface IEducationCreateParam {
     name: string;
     code: string;

@@ -6,15 +6,30 @@ import BaseRepository from './_base';
 export default class RoomRepository extends BaseRepository {
   private readonly model: DB['Room'];
   private readonly modelYear: DB['Year'];
+  private readonly modelUser: DB['User'];
+  private readonly modelSubject: DB['Subject'];
   constructor(db: DB) {
     super(db);
     this.model = db.Room;
     this.modelYear = db.Year;
+    this.modelUser = db.User;
+    this.modelSubject = db.Subject;
   }
 
   public search = async (params: types.room.RoomSearchParam) => {
     const findOption: FindAndCountOptions = {
-      include: [],
+      include: [
+        {
+          model: this.modelUser,
+          as: 'user',
+          attributes: ['id', 'name'],
+        },
+        {
+          model: this.modelSubject,
+          as: 'subject',
+          attributes: ['id', 'name'],
+        }
+      ],
     };
 
     if (params !== undefined) {

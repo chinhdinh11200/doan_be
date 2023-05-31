@@ -22,7 +22,7 @@ export default class yearController extends Controller {
 
   public search = async (req: Request, res: Response, next: NextFunction) => {
     const params: types.year.YearSearchParam = {
-      ...pickForSearch(<types.year.YearSearchParam>req.query, ['name', 'search']),
+      ...pickForSearch(<types.year.YearSearchParam>req.query, ['name', 'search', 'sort', 'sortColumn']),
       ...this.getOffsetLimit(req),
     }
 

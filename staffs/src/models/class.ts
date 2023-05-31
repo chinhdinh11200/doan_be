@@ -47,7 +47,7 @@ export class Classes
     Classes.belongsTo(User, {
       foreignKey: 'user_id', as: 'user'
     });
-    Classes.belongsTo(Subject, { foreignKey: 'subject_id' });
+    Classes.belongsTo(Subject, { foreignKey: 'subject_id', as: 'subject' });
     Classes.belongsTo(Year, { foreignKey: 'year_id', as: 'year' });
   }
 }

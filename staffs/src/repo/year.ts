@@ -26,7 +26,7 @@ export default class YearRepository extends BaseRepository {
       const andArray: WhereOptions[] = [];
       if (params.search !== undefined) {
         andArray.push(
-          this.makeMultipleAmbiguousCondition(params, 'search', ['code'])
+          this.makeMultipleAmbiguousCondition(params, 'search', ['name'])
         );
       }
       if (params.name) {
@@ -44,6 +44,7 @@ export default class YearRepository extends BaseRepository {
             [params.sortColumn ? params.sortColumn : 'createdAt', 'DESC']
           ];
         } else {
+          console.log(params);
           findOption.order = [
             [params.sortColumn ? params.sortColumn : 'createdAt', 'ASC']
           ];
@@ -61,20 +62,9 @@ export default class YearRepository extends BaseRepository {
   public create = async (params: types.year.YearCreateParam) => {
     const transaction = await this.db.sequelize.transaction();
     try {
-      let name = ''
-      switch (params.semester) {
-        case '0':
-          name += 'Học kỳ 1 - ' + params.name
-          break;
-        case '1':
-          name += 'Học kỳ 2 - ' + params.name
-          break;
-        default:
-          break;
-      }
       const year = await this.model.create(
         {
-          name: name,
+          name: params.name,
           startDate: params.startDate,
           endDate: params.endDate,
           semester: params.semester,
@@ -97,20 +87,9 @@ export default class YearRepository extends BaseRepository {
     try {
       const yearUpdate = await this.findById(yearId);
       if (yearUpdate) {
-        let name = ''
-        switch (params.semester) {
-          case '0':
-            name += 'Học kỳ 1 - ' + params.name
-            break;
-          case '1':
-            name += 'Học kỳ 2 - ' + params.name
-            break;
-          default:
-            break;
-        }
         const year = await yearUpdate.update(
           {
-            name: name,
+            name: params.name,
             startDate: params.startDate,
             endDate: params.endDate,
             semester: params.semester,

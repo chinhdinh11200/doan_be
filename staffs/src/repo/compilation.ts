@@ -336,7 +336,7 @@ export default class Compilation extends BaseRepository {
       let type = "Thành viên"
       switch (compilation['users.role_user.type']) {
         case 0:
-          type = "Chủ trì"
+          type = "Chính"
           break;
         case 1:
           type = "Thư ký"
