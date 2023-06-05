@@ -28,7 +28,12 @@ export default class RoomRepository extends BaseRepository {
           model: this.modelSubject,
           as: 'subject',
           attributes: ['id', 'name'],
-        }
+        },
+        {
+          model: this.modelYear,
+          as: 'year',
+          attributes: ['id', 'name'],
+        },
       ],
     };
 
@@ -165,7 +170,17 @@ export default class RoomRepository extends BaseRepository {
           model: this.modelYear,
           as: 'year',
           attributes: ['id', 'name'],
-        }
+        },
+        {
+          model: this.modelUser,
+          as: 'user',
+          attributes: ['id', 'name'],
+        },
+        {
+          model: this.modelSubject,
+          as: 'subject',
+          attributes: ['id', 'name'],
+        },
       ]
     });
   };

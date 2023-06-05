@@ -19,7 +19,7 @@ export default class UserController extends Controller {
   }
 
   public detail = async (req: Request, res: Response, next: NextFunction) => {
-    let user = await this.userRepo.findOneById(req.params.id);
+    let user = await this.userRepo.detail(req.params.id);
     res.json(user)
   }
 

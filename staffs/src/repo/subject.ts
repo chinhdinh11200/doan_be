@@ -134,37 +134,35 @@ export default class Subject extends BaseRepository {
           model: this.modelExam,
           where: {
             user_id: userId
-          }
+          },
+          required: false,
         },
-      ],
-      // raw: true
-    })
-    const subjects1: any = await this.model.findAll({
-      include: [
         {
           model: this.modelMark,
           where: {
             user_id: userId
-          }
+          },
+          required: false,
         },
-      ],
-      // raw: true
-    })
-    const subjects2: any = await this.model.findAll({
-      include: [
         {
           model: this.modelRoom,
           where: {
             user_id: userId
           },
           as: 'rooms',
+          required: false,
         },
       ],
       // raw: true
     })
-
     console.log(subjects);
+    subjects.map((subject: any) => {
+      console.log("ROOMMMMMMMMMM: ", subject?.rooms);
+      console.log("MẢKKKKKKKKKK: ", subject?.marks);
+      console.log("EXAMMMMMMMMMM: ", subject?.exams);
 
+    })
+    
     const subjectHVMMFormats = subjects.filter((subject: any) => {
       return codeHVMM.some(t => subject.code.includes(t))
     }).map((subject: any) => {

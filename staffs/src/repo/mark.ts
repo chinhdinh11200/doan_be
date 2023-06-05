@@ -31,9 +31,13 @@ export default class MarkRepository extends BaseRepository {
       include: [
         {
           model: this.modelSubject,
+          as:'subject',
+          attributes: ['id', 'name'],
         },
         {
           model: this.modelUser,
+          as:'user',
+          attributes: ['id', 'name'],
         },
         {
           model: this.modelYear,
@@ -42,6 +46,8 @@ export default class MarkRepository extends BaseRepository {
         }
       ]
     })
+
+    return data;
   }
 
   public search = async (params: types.mark.MarkSearchParam) => {
@@ -54,7 +60,12 @@ export default class MarkRepository extends BaseRepository {
         {
           model: this.modelUser,
           as: 'user',
-        }
+        },
+        {
+          model: this.modelYear,
+          as: 'year',
+          // attributes: ['id', 'name'],
+        },
       ],
     };
 

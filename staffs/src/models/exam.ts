@@ -14,6 +14,7 @@ import { Room } from './room';
 import { Classes } from './class';
 import { ClassExam } from './classexam';
 import { Year } from './year';
+import { Subject } from './subject';
 
 export class Exam
   extends Model<InferAttributes<Exam>, InferCreationAttributes<Exam>>
@@ -35,8 +36,9 @@ export class Exam
   declare deletedAt: CreationOptional<Date>;
 
   public static ASSOCIATE() {
-    Exam.belongsTo(User, { foreignKey: 'user_id' });
+    Exam.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
     Exam.belongsTo(Year, { foreignKey: 'year_id', as: 'year' })
+    Exam.belongsTo(Subject, { foreignKey: 'subject_id', as: 'subject' })
   }
 }
 

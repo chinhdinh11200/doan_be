@@ -7,12 +7,14 @@ export default class ExamRepository extends BaseRepository {
   private readonly model: DB['Exam'];
   private readonly modelUser: DB['User'];
   private readonly modelYear: DB['Year'];
+  private readonly modelSubject: DB['Subject'];
   constructor(db: DB) {
     super(db);
 
     this.model = db.Exam;
     this.modelUser = db.User;
     this.modelYear = db.Year;
+    this.modelSubject = db.Subject;
   }
 
   public findOneById = async (id: string | number) => {
@@ -22,7 +24,22 @@ export default class ExamRepository extends BaseRepository {
   };
   public search = async (params: types.exam.ExamSearchParam) => {
     const findOption: FindAndCountOptions = {
-      include: [this.modelUser],
+      include: [
+        {
+          model: this.modelUser,
+          as: 'user'
+        },
+        {
+          model: this.modelSubject,
+          as: 'subject',
+          attributes: ['id', 'name'],
+        },
+        {
+          model: this.modelYear,
+          as: 'year',
+          attributes: ['id', 'name'],
+        },
+      ],
     };
 
     if (params !== undefined) {
@@ -174,7 +191,17 @@ export default class ExamRepository extends BaseRepository {
           model: this.modelYear,
           as: 'year',
           attributes: ['id', 'name'],
-        }
+        },
+        {
+          model: this.modelUser,
+          as: 'user',
+          attributes: ['id', 'name'],
+        },
+        {
+          model: this.modelSubject,
+          as: 'subject',
+          attributes: ['id', 'name'], 
+        },
       ],
     });
   };

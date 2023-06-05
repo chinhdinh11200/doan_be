@@ -7,12 +7,14 @@ export default class ClassRepository extends BaseRepository {
   private readonly model: DB['Classes'];
   private readonly modelUser: DB['User'];
   private readonly modelYear: DB['Year'];
+  private readonly modelSubject: DB['Subject'];
   constructor(db: DB) {
     super(db);
 
     this.model = db.Classes;
     this.modelUser = db.User;
     this.modelYear = db.Year;
+    this.modelSubject = db.Subject;
   }
 
   public findOneById = async (id: string | number) => {
@@ -200,6 +202,11 @@ export default class ClassRepository extends BaseRepository {
           attributes: ['name'],
           as: 'year',
         },
+        {
+          model: this.modelSubject,
+          attributes: ['name', 'id'],
+          as: 'subject',
+        },
       ],
       attributes: ['id', 'subject_id', 'user_id', 'year_id', 'form_teach', 'form_exam', 'name', 'code', 'num_student', 'classroom', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam', 'startDate', 'endDate', 'semester'],
     });
@@ -209,9 +216,9 @@ export default class ClassRepository extends BaseRepository {
     const findOption: FindAndCountOptions = {};
     const andArray: WhereOptions = [];
     if (params.year_id !== undefined) {
-      andArray.push(
-        this.makeAmbiguousCondition(params, 'year_id')
-      )
+      // andArray.push(
+      //   this.makeAmbiguousCondition(params, 'year_id')
+      // )
     }
     if (params.user_id !== undefined) {
       andArray.push(

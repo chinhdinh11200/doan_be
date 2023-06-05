@@ -46,11 +46,11 @@ export default class YearRepository extends BaseRepository {
         } else {
           console.log(params);
           findOption.order = [
-            [params.sortColumn ? params.sortColumn : 'createdAt', 'ASC']
+            [params.sortColumn ? params.sortColumn : 'name', 'DESC']
           ];
         }
       } else {
-        findOption.order = [['createdAt', 'DESC']];
+        findOption.order = [['name', 'DESC']];
       }
     }
 

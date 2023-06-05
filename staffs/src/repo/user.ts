@@ -133,7 +133,13 @@ export default class UserRepository extends BaseRepository {
   public search = async (params?: types.user.UserSearchParam) => {
     // this.makeAmbiguousCondition(params, 'name');
     const findOption: FindAndCountOptions = {
-      include: [],
+      include: [
+        {
+          model: this.modelDepartment,
+          attributes: [[col('name'), 'departmentName']],
+          as: 'department'
+        }
+      ],
     };
 
     this.setOffsetLimit(findOption, params);

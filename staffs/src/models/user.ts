@@ -21,6 +21,8 @@ import { Thesis } from './thesis';
 import { ThesisUser } from './thesisUser';
 import { Classes } from './class';
 import { Room } from './room';
+import { Mark } from './mark';
+import { Exam } from './exam';
 
 export class User extends Model<
   InferAttributes<User>,
@@ -58,6 +60,8 @@ export class User extends Model<
     User.belongsToMany(Thesis, { through: ThesisUser, foreignKey: 'user_id' });
     User.hasMany(Classes, {foreignKey: 'user_id', as: 'classes'});
     User.hasMany(Room, {foreignKey: 'user_id', as: 'rooms'});
+    User.hasMany(Mark, {foreignKey: 'user_id', as: 'marks'});
+    User.hasMany(Exam, {foreignKey: 'user_id', as: 'exams'});
   }
 
 }
