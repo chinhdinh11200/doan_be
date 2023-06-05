@@ -395,7 +395,7 @@ export default class Topic extends BaseRepository {
         }
       ],
       raw: true,
-      attributes: [[Sequelize.fn('DATE_FORMAT', Sequelize.col('acceptDate'), '%d/%m/%Y'), 'acceptDate']]
+      attributes: ['*',[Sequelize.fn('DATE_FORMAT', Sequelize.col('acceptDate'), '%d/%m/%Y'), 'acceptDate']]
     })
 
     const topicFormats = topics.map((topic: any) => {

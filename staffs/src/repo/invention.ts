@@ -301,7 +301,7 @@ export default class Invention extends BaseRepository {
           }
         }
       ],
-      attributes: [[Sequelize.fn('DATE_FORMAT', Sequelize.col('date_recognition'), '%d/%m/%Y'), 'date_recognition']],
+      attributes: ['*',[Sequelize.fn('DATE_FORMAT', Sequelize.col('date_recognition'), '%d/%m/%Y'), 'date_recognition']],
       raw: true,
     })
 
