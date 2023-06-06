@@ -11,6 +11,7 @@ import { commonFields } from './_common';
 import { RoleUser } from './role_user';
 import { User } from './user';
 import { ThesisUser } from './thesisUser';
+import { Year } from './year';
 
 export class Thesis
   extends Model<InferAttributes<Thesis>, InferCreationAttributes<Thesis>> implements types.thesis.Attr {
@@ -30,6 +31,7 @@ export class Thesis
 
   public static ASSOCIATE() {
     Thesis.belongsToMany(User, { through: ThesisUser, foreignKey: 'thesis_id' })
+    Thesis.belongsTo(Year, { foreignKey: 'year_id', as: 'year' })
   }
 }
 

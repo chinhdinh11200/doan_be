@@ -19,6 +19,7 @@ import { Scientific } from './scientific';
 import { Exam } from './exam';
 import { Room } from './room';
 import { Mark } from './mark';
+import { Thesis } from './thesis';
 
 export class Year
   extends Model<InferAttributes<Year>, InferCreationAttributes<Year>>
@@ -39,6 +40,7 @@ export class Year
     Year.hasMany(Room, {foreignKey: 'year_id', as: 'rooms'});
     Year.hasMany(Mark, {foreignKey: 'year_id', as: 'marks'});
     Year.hasMany(Book, {foreignKey: 'year_id', as: 'books'});
+    Year.hasMany(Thesis, {foreignKey: 'year_id', as: 'thesis'});
     Year.hasMany(Invention, {foreignKey: 'year_id', as: 'inventions'});
     Year.hasMany(Article, {foreignKey: 'year_id', as: 'articles'});
     Year.hasMany(Topic, {foreignKey: 'year_id', as: 'topics'});

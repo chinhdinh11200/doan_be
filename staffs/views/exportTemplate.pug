@@ -218,8 +218,8 @@ html
         td(colspan="1" style="text-align:center")= "Số tiết ra đề/ Coi thi/ Chấm thi" 
       tr 
         td(colspan="7" style="text-align:left")= "Học kỳ I - Đào tạo chuyên ngành Kỹ thuật mật mã"
-      - let totalA31 = subjects.subjectHVMMFormats?.reduce((acc, curr) => acc + curr.time, 0);
-      each subject, index in subjects.subjectHVMMFormats
+      - let totalA31 = subjects.subjectOneHVMMFormats?.reduce((acc, curr) => acc + curr.time, 0);
+      each subject, index in subjects.subjectOneHVMMFormats
         tr 
           td(colspan="1" style="text-align:center")= index + 1
           td(colspan="1" style="text-align:center")= subject.endSemester
@@ -234,8 +234,8 @@ html
         td(colspan="1" style="text-align:center; font-weight: bold")= totalA31
       tr 
         td(colspan="7" style="text-align:left")= "Học kỳ I - Đào tạo hệ đóng học phí"
-      - let totalA32 = subjects.subjectFeeFormats?.reduce((acc, curr) => acc + curr.time, 0);
-      each subject, index in subjects.subjectFeeFormats
+      - let totalA32 = subjects.subjectOneFeeFormats?.reduce((acc, curr) => acc + curr.time, 0);
+      each subject, index in subjects.subjectOneFeeFormats
         tr 
           td(colspan="1" style="text-align:center")= index + 1
           td(colspan="1" style="text-align:center")= subject.endSemester
@@ -250,8 +250,8 @@ html
         td(colspan="1" style="text-align:center; font-weight: bold")= totalA32
       tr 
         td(colspan="7" style="text-align:left")= "Học kỳ II - Đào tạo chuyên ngành Kỹ thuật mật mã"
-      - let totalA33 = subjects.subjectHVMMFormats?.reduce((acc, curr) => acc + curr.time, 0);
-      each subject, index in subjects.subjectHVMMFormats
+      - let totalA33 = subjects.subjectOneHVMMFormats?.reduce((acc, curr) => acc + curr.time, 0);
+      each subject, index in subjects.subjectOneHVMMFormats
         tr 
           td(colspan="1" style="text-align:center")= index + 1
           td(colspan="1" style="text-align:center")= subject.endSemester
@@ -266,8 +266,8 @@ html
         td(colspan="1" style="text-align:center; font-weight: bold")= totalA33
       tr 
         td(colspan="7" style="text-align:left")= "Học kỳ II - Đào tạo hệ đóng học phí"
-      - let totalA34 = subjects.subjectFeeFormats?.reduce((acc, curr) => acc + curr.time, 0);
-      each subject, index in subjects.subjectFeeFormats
+      - let totalA34 = subjects.subjectOneFeeFormats?.reduce((acc, curr) => acc + curr.time, 0);
+      each subject, index in subjects.subjectOneFeeFormats
         tr 
           td(colspan="1" style="text-align:center")= index + 1
           td(colspan="1" style="text-align:center")= subject.endSemester

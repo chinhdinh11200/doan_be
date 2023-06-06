@@ -8,12 +8,14 @@ export default class Scientific extends BaseRepository {
   private readonly model: DB['Thesis'];
   private readonly modelThesisUser: DB['ThesisUser'];
   private readonly modelUser: DB['User'];
+  private readonly modelYear: DB['Year'];
   constructor(db: DB) {
     super(db);
 
     this.model = db.Thesis;
     this.modelThesisUser = db.ThesisUser;
     this.modelUser = db.User;
+    this.modelYear = db.Year;
   }
 
   public findOneById = async (id: string | number) => {
@@ -34,6 +36,11 @@ export default class Scientific extends BaseRepository {
             attributes: ['time', 'type'], as: 'thesis_user',
           },
           attributes: ['id', 'name'],
+        },
+        {
+          model: this.modelYear,
+          as: 'year',
+          attributes: ['id', 'name'],
         }
       ],
       order: [
@@ -50,7 +57,10 @@ export default class Scientific extends BaseRepository {
   public search = async (params: types.thesis.ThesisSearchParam) => {
     // const a: = this.makeMultipleAmbiguousCondition(params, 'search', ['name', 'code']);
     const findOption: FindAndCountOptions = {
-      include: [],
+      include: [{
+        model: this.modelYear,
+        as: 'year'
+      }],
     };
 
     if (params !== undefined) {

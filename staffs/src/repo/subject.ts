@@ -128,42 +128,47 @@ export default class Subject extends BaseRepository {
   };
 
   public export = async (userId: string | number) => {
-    const subjects: any = await this.model.findAll({
+    const subjectSemesterOnes: any = await this.model.findAll({
       include: [
         {
           model: this.modelExam,
           where: {
-            user_id: userId
+            user_id: userId,
+            semester: 1
           },
-          required: false,
+          as: 'exams',
+          // required: false,
         },
         {
           model: this.modelMark,
           where: {
-            user_id: userId
+            user_id: userId,
+            semester: 1
           },
-          required: false,
+          as: 'marks',
+          // required: false,
         },
         {
           model: this.modelRoom,
           where: {
-            user_id: userId
+            user_id: userId,
+            semester: 1
           },
           as: 'rooms',
-          required: false,
+          // required: false,
         },
       ],
       // raw: true
     })
-    console.log(subjects);
-    subjects.map((subject: any) => {
+    console.log(subjectSemesterOnes);
+    subjectSemesterOnes.map((subject: any) => {
       console.log("ROOMMMMMMMMMM: ", subject?.rooms);
       console.log("MẢKKKKKKKKKK: ", subject?.marks);
       console.log("EXAMMMMMMMMMM: ", subject?.exams);
 
     })
     
-    const subjectHVMMFormats = subjects.filter((subject: any) => {
+    const subjectOneHVMMFormats = subjectSemesterOnes.filter((subject: any) => {
       return codeHVMM.some(t => subject.code.includes(t))
     }).map((subject: any) => {
       let endSemester: string = '';
@@ -193,8 +198,8 @@ export default class Subject extends BaseRepository {
         time : Math.ceil(time),
       }
     });
-
-    const subjectFeeFormats = subjects.filter((subject: any) => {
+    
+    const subjectOneFeeFormats = subjectSemesterOnes.filter((subject: any) => {
       return codeFee.some(t => subject.code.includes(t))
     }).map((subject: any) => {
       let endSemester: string = '';
@@ -226,8 +231,8 @@ export default class Subject extends BaseRepository {
     });
 
     return {
-      subjectHVMMFormats,
-      subjectFeeFormats,
+      subjectOneHVMMFormats,
+      subjectOneFeeFormats,
     }
   }
 }

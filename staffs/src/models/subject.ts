@@ -23,7 +23,7 @@ export class Subject extends Model<InferAttributes<Subject>, InferCreationAttrib
   public static ASSOCIATE() {
     Subject.hasMany(Classes, {foreignKey: 'subject_id', as: 'classes'});
     Subject.hasMany(Room, {foreignKey: 'subject_id', as: 'rooms'});
-    Subject.hasMany(Mark, {foreignKey: 'subject_id', as: 'markers'});
+    Subject.hasMany(Mark, {foreignKey: 'subject_id', as: 'marks'});
     Subject.hasMany(Exam, {foreignKey: 'subject_id', as: 'exams'});
   }
 }
