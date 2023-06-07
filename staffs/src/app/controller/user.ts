@@ -19,16 +19,14 @@ export default class UserController extends Controller {
   }
 
   public detail = async (req: Request, res: Response, next: NextFunction) => {
-    const {year_id} = pickForSearch(req.query, ['year_id'])
-    console.log(year_id);
-    let user = await this.userRepo.detail(req.params.id, 1);
+    let user = await this.userRepo.detail(req.params.id, Number(req.query.year_id));
 
     res.json(user)
   }
 
   public search = async (req: Request, res: Response, next: NextFunction) => {
     const data = await this.userRepo.search({
-      ...mapper.searchData(req),
+      ...mapper.searchData(req), 
       ...this.getOffsetLimit(req)
     });
 

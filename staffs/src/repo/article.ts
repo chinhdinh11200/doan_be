@@ -103,8 +103,8 @@ export default class Article extends BaseRepository {
       const roleUserArray: string[] = roleUser.split(',');
       var totalTime: number = 0;
       var timeMain: number = 0;
-      var timeSupport: number = 0;
-      var timeMember: number = 0;
+      var timeSupport: number = 0; 
+      var timeMember: number = 0; 
       switch (params.type) {
         case 0:
           totalTime = 800;
