@@ -298,7 +298,8 @@ export default class Invention extends BaseRepository {
               type_role: 3,
               user_id: userId,
             }
-          }
+          },
+          required: true,
         }
       ],
       attributes: ['*',[Sequelize.fn('DATE_FORMAT', Sequelize.col('date_recognition'), '%d/%m/%Y'), 'date_recognition']],

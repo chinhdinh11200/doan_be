@@ -326,7 +326,8 @@ export default class Compilation extends BaseRepository {
               type_role: 7,
               user_id: userId,
             }
-          }
+          },
+          required: true,
         }
       ],
       where: {

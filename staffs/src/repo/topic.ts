@@ -391,7 +391,8 @@ export default class Topic extends BaseRepository {
               type_role: 1,
               user_id: userId,
             },
-          }
+          },
+          required: true,
         }
       ],
       where: {

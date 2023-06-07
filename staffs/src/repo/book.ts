@@ -336,7 +336,8 @@ export default class Book extends BaseRepository {
               type_role: 4,
               user_id: userId,
             }
-          }
+          },
+          required: true,
         } 
       ],
       where: {

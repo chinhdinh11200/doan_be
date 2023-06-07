@@ -415,7 +415,8 @@ export default class Article extends BaseRepository {
               type_role: 2,
               user_id: userId,
             }
-          }
+          },
+          required: true,
         }
       ],
       where: {

@@ -295,7 +295,8 @@ export default class Education extends BaseRepository {
               type_role: 6,
               user_id: userId,
             }
-          }
+          },
+          required: true,
         }
       ],
       where: {
