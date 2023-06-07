@@ -21,7 +21,7 @@ export const FORM_EXAM = {
   'VD' : 2,
 }
 
-export const codeHVMM = ['H', 'TC']
+export const codeHVMM = ['H', 'T']
 
 export const codeFee = ['A', 'C', 'D']
 

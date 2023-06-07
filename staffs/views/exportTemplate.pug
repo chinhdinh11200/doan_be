@@ -216,22 +216,22 @@ html
         td(colspan="1" style="text-align:center")= "Số sinh viên của lớp" 
         td(colspan="1" style="text-align:center")= "Khoá đào tạo" 
         td(colspan="1" style="text-align:center")= "Số tiết ra đề/ Coi thi/ Chấm thi" 
-      tr 
-        td(colspan="7" style="text-align:left")= "Học kỳ I - Đào tạo chuyên ngành Kỹ thuật mật mã"
-      - let totalA31 = subjects.subjectOneHVMMFormats?.reduce((acc, curr) => acc + curr.time, 0);
-      each subject, index in subjects.subjectOneHVMMFormats
-        tr 
-          td(colspan="1" style="text-align:center")= index + 1
-          td(colspan="1" style="text-align:center")= subject.endSemester
-          td(colspan="1" style="text-align:center")= subject.name
-          td(colspan="1" style="text-align:center")= subject.code
-          td(colspan="1" style="text-align:center")= ""
-          td(colspan="1" style="text-align:center")= subject.code 
-          td(colspan="1" style="text-align:center")= subject.time 
-      tr 
-        td(colspan="5" style="text-align:center; font-weight: bold")= "Tổng cộng (9)"
-        td(colspan="1" style="text-align:left; font-weight: bold")= ""
-        td(colspan="1" style="text-align:center; font-weight: bold")= totalA31
+      //- tr 
+      //-   td(colspan="7" style="text-align:left")= "Học kỳ I - Đào tạo chuyên ngành Kỹ thuật mật mã"
+      //- - let totalA31 = subjects.subjectOneHVMMFormats?.reduce((acc, curr) => acc + curr.time, 0);
+      //- each subject, index in subjects.subjectOneHVMMFormats
+      //-   tr 
+      //-     td(colspan="1" style="text-align:center")= index + 1
+      //-     td(colspan="1" style="text-align:center")= subject.endSemester
+      //-     td(colspan="1" style="text-align:center")= subject.name
+      //-     td(colspan="1" style="text-align:center")= subject.code
+      //-     td(colspan="1" style="text-align:center")= ""
+      //-     td(colspan="1" style="text-align:center")= subject.code 
+      //-     td(colspan="1" style="text-align:center")= subject.time 
+      //- tr 
+      //-   td(colspan="5" style="text-align:center; font-weight: bold")= "Tổng cộng (9)"
+      //-   td(colspan="1" style="text-align:left; font-weight: bold")= ""
+      //-   td(colspan="1" style="text-align:center; font-weight: bold")= totalA31
       tr 
         td(colspan="7" style="text-align:left")= "Học kỳ I - Đào tạo hệ đóng học phí"
       - let totalA32 = subjects.subjectOneFeeFormats?.reduce((acc, curr) => acc + curr.time, 0);
@@ -248,26 +248,26 @@ html
         td(colspan="5" style="text-align:center; font-weight: bold")= "Tổng cộng (10)"
         td(colspan="1" style="text-align:left; font-weight: bold")= ""
         td(colspan="1" style="text-align:center; font-weight: bold")= totalA32
-      tr 
-        td(colspan="7" style="text-align:left")= "Học kỳ II - Đào tạo chuyên ngành Kỹ thuật mật mã"
-      - let totalA33 = subjects.subjectOneHVMMFormats?.reduce((acc, curr) => acc + curr.time, 0);
-      each subject, index in subjects.subjectOneHVMMFormats
-        tr 
-          td(colspan="1" style="text-align:center")= index + 1
-          td(colspan="1" style="text-align:center")= subject.endSemester
-          td(colspan="1" style="text-align:center")= subject.name
-          td(colspan="1" style="text-align:center")= subject.code
-          td(colspan="1" style="text-align:center")= ""
-          td(colspan="1" style="text-align:center")= subject.code 
-          td(colspan="1" style="text-align:center")= subject.time 
-      tr 
-        td(colspan="5" style="text-align:center; font-weight: bold")= "Tổng cộng (11)"
-        td(colspan="1" style="text-align:left; font-weight: bold")= ""
-        td(colspan="1" style="text-align:center; font-weight: bold")= totalA33
+      //- tr 
+      //-   td(colspan="7" style="text-align:left")= "Học kỳ II - Đào tạo chuyên ngành Kỹ thuật mật mã"
+      //- - let totalA33 = subjects.subjectOneHVMMFormats?.reduce((acc, curr) => acc + curr.time, 0);
+      //- each subject, index in subjects.subjectOneHVMMFormats
+      //-   tr 
+      //-     td(colspan="1" style="text-align:center")= index + 1
+      //-     td(colspan="1" style="text-align:center")= subject.endSemester
+      //-     td(colspan="1" style="text-align:center")= subject.name
+      //-     td(colspan="1" style="text-align:center")= subject.code
+      //-     td(colspan="1" style="text-align:center")= ""
+      //-     td(colspan="1" style="text-align:center")= subject.code 
+      //-     td(colspan="1" style="text-align:center")= subject.time 
+      //- tr 
+      //-   td(colspan="5" style="text-align:center; font-weight: bold")= "Tổng cộng (11)"
+      //-   td(colspan="1" style="text-align:left; font-weight: bold")= ""
+      //-   td(colspan="1" style="text-align:center; font-weight: bold")= totalA33
       tr 
         td(colspan="7" style="text-align:left")= "Học kỳ II - Đào tạo hệ đóng học phí"
-      - let totalA34 = subjects.subjectOneFeeFormats?.reduce((acc, curr) => acc + curr.time, 0);
-      each subject, index in subjects.subjectOneFeeFormats
+      - let totalA34 = subjects.subjectTwoFeeFormats?.reduce((acc, curr) => acc + curr.time, 0);
+      each subject, index in subjects.subjectTwoFeeFormats
         tr 
           td(colspan="1" style="text-align:center")= index + 1
           td(colspan="1" style="text-align:center")= subject.endSemester
@@ -280,7 +280,7 @@ html
         td(colspan="5" style="text-align:center; font-weight: bold")= "Tổng cộng (12)"
         td(colspan="1" style="text-align:left; font-weight: bold")= ""
         td(colspan="1" style="text-align:center; font-weight: bold")= totalA34
-      - let totalA3 = totalA31 + totalA32 + totalA33 + totalA34;
+      - let totalA3 = totalA32 + totalA34;
       tr 
         td(colspan="5" style="text-align:center; font-weight: bold")= "Tổng A.3= (9) + (10) + (11) + (12)"
         td(colspan="1" style="text-align:; font-weight: bold")= ""

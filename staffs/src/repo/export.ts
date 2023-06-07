@@ -356,6 +356,7 @@ export default class ExportRepository extends BaseRepository {
     })
 
     const dataTeachSemesterTwoFee = dataTeachSemesterTwo.filter(classs => {
+      console.log(classs.code.includes("C"));
       return codeFee.some(t => classs.code.includes(t))
     }).map(classs => {
       let time = classs.num_lesson
@@ -429,7 +430,7 @@ export default class ExportRepository extends BaseRepository {
     const compilations = await this.compilationRepo.export(userId);
     const educations = await this.educationRepo.export(userId);
     const scientifics = await this.scientificRepo.export(userId);
-
+    console.log(dataTeachSemesterTwoFee);
     // res.json(user);
     // return
     const data = {
@@ -457,7 +458,6 @@ export default class ExportRepository extends BaseRepository {
   
     const html = pug.renderFile(path.basename('/views') + "/exportTemplate.pug", data);
     await page.setContent(html);
-    console.log(path.resolve('public') + '/download/output.pdf');
     await page.pdf({ path: path.resolve('public') + '/download/output.pdf', format: 'A4', margin: {
       top: '75px',
       right: '75px',

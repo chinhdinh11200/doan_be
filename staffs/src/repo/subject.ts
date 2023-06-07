@@ -1,4 +1,4 @@
-import { FindAndCountOptions, Op, WhereOptions } from 'sequelize';
+import { FindAndCountOptions, Op, WhereOptions, literal } from 'sequelize';
 import { types } from '../common';
 import { DB } from './../models';
 import BaseRepository from './_base';
@@ -132,60 +132,191 @@ export default class Subject extends BaseRepository {
       include: [
         {
           model: this.modelExam,
+          as: 'exams',
+          where: {
+            semester: 1,
+            user_id: userId,
+          },
+          required: false,
+        },
+        {
+          model: this.modelMark,
+          as: 'marks',
+          where: {
+            semester: 1,
+            user_id: userId,
+          },
+          required: false,
+        },
+        {
+          model: this.modelRoom,
+          as: 'rooms',
+          where: {
+            semester: 1,
+            user_id: userId,
+          },
+          required: false,
+        },
+      ],
+      where: literal(`
+        EXISTS (
+          SELECT marks.id FROM marks WHERE subject.id = marks.subject_id AND marks.user_id = ${userId} AND marks.semester = 1
+        )
+        OR EXISTS (
+          SELECT rooms.id FROM rooms WHERE subject.id = rooms.subject_id AND rooms.user_id = ${userId} AND rooms.semester = 1
+        )
+        OR EXISTS (
+          SELECT exams.id FROM exams WHERE subject.id = exams.subject_id AND exams.user_id = ${userId} AND exams.semester = 1
+        )
+      `),
+      // raw: true
+    })
+    const subjectSemesterTwos: any = await this.model.findAll({
+      include: [
+        {
+          model: this.modelExam,
           where: {
             user_id: userId,
-            semester: 1
+            semester: 2
           },
           as: 'exams',
-          // required: false,
+          required: false,
         },
         {
           model: this.modelMark,
           where: {
             user_id: userId,
-            semester: 1
+            semester: 2
           },
           as: 'marks',
-          // required: false,
+          required: false,
         },
         {
           model: this.modelRoom,
           where: {
             user_id: userId,
-            semester: 1
+            semester: 2
           },
           as: 'rooms',
-          // required: false,
+          required: false,
         },
       ],
+      where: literal(`
+        EXISTS (
+          SELECT marks.id FROM marks WHERE subject.id = marks.subject_id AND marks.user_id = ${userId} AND marks.semester = 2
+        )
+        OR EXISTS (
+          SELECT rooms.id FROM rooms WHERE subject.id = rooms.subject_id AND rooms.user_id = ${userId} AND rooms.semester = 2
+        )
+        OR EXISTS (
+          SELECT exams.id FROM exams WHERE subject.id = exams.subject_id AND exams.user_id = ${userId} AND exams.semester = 2
+        )
+      `),
       // raw: true
     })
-    console.log(subjectSemesterOnes);
-    subjectSemesterOnes.map((subject: any) => {
-      console.log("ROOMMMMMMMMMM: ", subject?.rooms);
-      console.log("MẢKKKKKKKKKK: ", subject?.marks);
-      console.log("EXAMMMMMMMMMM: ", subject?.exams);
 
-    })
-    
-    const subjectOneHVMMFormats = subjectSemesterOnes.filter((subject: any) => {
-      return codeHVMM.some(t => subject.code.includes(t))
-    }).map((subject: any) => {
+    // const subjectOneHVMMFormats = subjectSemesterOnes.map((subject: any) => {
+    //   let endSemester: string = '';
+    //   let time: number = 0;
+    //   if (subject.exams !== undefined) {
+    //     endSemester += 'Ra đề, ';
+    //     subject.exams.map((exam: any) => {
+    //       time += exam.num_exam * exam.factor;
+    //     })
+    //   }
+    //   if (subject.rooms !== undefined) {
+    //     endSemester += 'coi thi, ';
+    //     subject.rooms.map((room: any) => {
+    //       time += room.num_exam_session * room.factor;
+    //     })
+    //   }
+    //   if (subject.marks !== undefined) {
+    //     endSemester += 'chấm thi';
+    //     subject.exams.map((exam: any) => {
+    //       time += exam.num_exam * exam.factor;
+    //     })
+    //   }
+
+    //   return {
+    //     ...subject.dataValues,
+    //     endSemester,
+    //     time : Math.ceil(time),
+    //   }
+    // });
+    const subjectOneFeeFormats = subjectSemesterOnes.map((subject: any) => {
       let endSemester: string = '';
       let time: number = 0;
-      if (subject.exams !== undefined) {
+      if (subject.exams.length > 0) {
         endSemester += 'Ra đề, ';
         subject.exams.map((exam: any) => {
           time += exam.num_exam * exam.factor;
         })
       }
-      if (subject.rooms !== undefined) {
+      if (subject.rooms.length > 0) {
         endSemester += 'coi thi, ';
         subject.rooms.map((room: any) => {
           time += room.num_exam_session * room.factor;
         })
       }
-      if (subject.marks !== undefined) {
+      if (subject.marks.length > 0) {
+        endSemester += 'chấm thi';
+        subject.marks.map((mark: any) => {
+          time += mark.num_exam * mark.factor;
+        })
+      }
+
+      return {
+        ...subject.dataValues,
+        time: time,
+        endSemester,
+      }
+    });
+
+    // const subjectTwoHVMMFormats = subjectSemesterTwos.map((subject: any) => {
+    //   let endSemester: string = '';
+    //   let time: number = 0;
+    //   if (subject.exams.length > 0) {
+    //     endSemester += 'Ra đề, ';
+    //     subject.exams.map((exam: any) => {
+    //       time += exam.num_exam * exam.factor;
+    //     })
+    //   }
+    //   if (subject.rooms.length > 0) {
+    //     endSemester += 'coi thi, ';
+    //     subject.rooms.map((room: any) => {
+    //       time += room.num_exam_session * room.factor;
+    //     })
+    //   }
+    //   if (subject.marks.length > 0) {
+    //     endSemester += 'chấm thi';
+    //     subject.exams.map((exam: any) => {
+    //       time += exam.num_exam * exam.factor;
+    //     })
+    //   }
+
+    //   return {
+    //     ...subject.dataValues,
+    //     endSemester,
+    //     time : Math.ceil(time),
+    //   }
+    // });
+    
+    let subjectTwoFeeFormats: any[]= subjectSemesterTwos.map((subject: any) => {
+      let endSemester: string = '';
+      let time: number = 0;
+      if (subject.exams.length > 0) {
+        endSemester += 'Ra đề, ';
+        subject.exams.map((exam: any) => {
+          time += exam.num_exam * exam.factor;
+        })
+      }
+      if (subject.rooms.length > 0) {
+        endSemester += 'coi thi, ';
+        subject.rooms.map((room: any) => {
+          time += room.num_exam_session * room.factor;
+        })
+      }
+      if (subject.marks.length > 0) {
         endSemester += 'chấm thi';
         subject.exams.map((exam: any) => {
           time += exam.num_exam * exam.factor;
@@ -194,45 +325,15 @@ export default class Subject extends BaseRepository {
 
       return {
         ...subject.dataValues,
-        endSemester,
-        time : Math.ceil(time),
-      }
-    });
-    
-    const subjectOneFeeFormats = subjectSemesterOnes.filter((subject: any) => {
-      return codeFee.some(t => subject.code.includes(t))
-    }).map((subject: any) => {
-      let endSemester: string = '';
-      let time: number = 0;
-      if (subject.exams !== undefined) {
-        endSemester += 'Ra đề, ';
-        subject.exams.map((exam: any) => {
-          time += exam.num_exam * exam.factor;
-        })
-      }
-      if (subject.rooms !== undefined) {
-        endSemester += 'coi thi, ';
-        subject.rooms.map((room: any) => {
-          time += room.num_exam_session * room.factor;
-        })
-      }
-      if (subject.marks !== undefined) {
-        endSemester += 'chấm thi';
-        subject.exams.map((exam: any) => {
-          time += exam.num_exam * exam.factor;
-        })
-      }
-
-      return {
-        ...subject.dataValues,
         time : Math.ceil(time),
         endSemester,
       }
     });
-
     return {
-      subjectOneHVMMFormats,
+      // subjectOneHVMMFormats,
       subjectOneFeeFormats,
+      // subjectTwoHVMMFormats,
+      subjectTwoFeeFormats,
     }
   }
 }
