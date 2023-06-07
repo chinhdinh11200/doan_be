@@ -25,7 +25,7 @@ export interface IScientificCreateParam {
     result_level?: number;
     result_academy?: number;
     date_decision: Date;
-    year_id?: number;
+    year_id?: number; 
 }
 
 export interface IScientificUpdateParam {

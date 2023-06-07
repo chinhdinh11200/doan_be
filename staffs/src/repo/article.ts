@@ -403,7 +403,7 @@ export default class Article extends BaseRepository {
     return await this.model.findByPk(articleId);
   };
   
-  public export = async (userId: string | number) => {
+  public export = async (userId: string | number, yearId?: number | string) => {
     const articles: any = await this.model.findAll({
       include: [
         {
@@ -418,6 +418,9 @@ export default class Article extends BaseRepository {
           }
         }
       ],
+      where: {
+        year_id: yearId,
+      },
       raw: true,
     })
 

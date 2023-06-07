@@ -324,7 +324,7 @@ export default class Book extends BaseRepository {
     return await this.model.findByPk(bookId);
   };
   
-  public export = async (userId: string | number) => {
+  public export = async (userId: string | number, yearId?: string | number) => {
     const articles: any = await this.model.findAll({
       include: [
         {
@@ -339,6 +339,9 @@ export default class Book extends BaseRepository {
           }
         } 
       ],
+      where: {
+        year_id: yearId,
+      },
       raw: true,
     })
 

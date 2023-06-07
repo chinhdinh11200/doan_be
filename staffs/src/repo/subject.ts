@@ -127,7 +127,7 @@ export default class Subject extends BaseRepository {
     return await this.model.findByPk(subjectId);
   };
 
-  public export = async (userId: string | number) => {
+  public export = async (userId: string | number, yearId?: string | number) => {
     const subjectSemesterOnes: any = await this.model.findAll({
       include: [
         {
@@ -136,6 +136,7 @@ export default class Subject extends BaseRepository {
           where: {
             semester: 1,
             user_id: userId,
+            year_id: yearId,
           },
           required: false,
         },
@@ -145,6 +146,7 @@ export default class Subject extends BaseRepository {
           where: {
             semester: 1,
             user_id: userId,
+            year_id: yearId,
           },
           required: false,
         },
@@ -153,7 +155,8 @@ export default class Subject extends BaseRepository {
           as: 'rooms',
           where: {
             semester: 1,
-            user_id: userId,
+            user_id: userId,            
+            year_id: yearId,
           },
           required: false,
         },
@@ -177,7 +180,8 @@ export default class Subject extends BaseRepository {
           model: this.modelExam,
           where: {
             user_id: userId,
-            semester: 2
+            semester: 2,
+            year_id: yearId,
           },
           as: 'exams',
           required: false,
@@ -186,7 +190,8 @@ export default class Subject extends BaseRepository {
           model: this.modelMark,
           where: {
             user_id: userId,
-            semester: 2
+            semester: 2,
+            year_id: yearId,
           },
           as: 'marks',
           required: false,
@@ -195,7 +200,8 @@ export default class Subject extends BaseRepository {
           model: this.modelRoom,
           where: {
             user_id: userId,
-            semester: 2
+            semester: 2,
+            year_id: yearId,
           },
           as: 'rooms',
           required: false,

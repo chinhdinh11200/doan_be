@@ -287,7 +287,7 @@ html
         td(colspan="1" style="text-align:center; font-weight: bold")= totalA3
       - let totalA = totalA1 + totalA2 + totalA3;
       tr 
-        td(colspan="5" style="text-align:center; font-weight: bold")= "Tổng A= A1 + A2 + A3"
+        td(colspan="5" style="text-align:center; font-weight: bold")= "Tổng A= A.1 + A.2 + A.3"
         td(colspan="1" style="text-align:; font-weight: bold")= ""
         td(colspan="1" style="text-align:center; font-weight: bold")= totalA
       tr 
@@ -300,7 +300,7 @@ html
         td(colspan="1" style="text-align:center")= "Số người HD" 
         td(colspan="1" style="text-align:center")= "HD chính/ HD hai" 
         td(colspan="1" style="text-align:center")= "Số tiết quy đổi" 
-      - let totalB = thesis?.reduce((acc, curr) => acc + curr['users.thesis_user.time'], 0);
+      - let totalB = thesis?.reduce((acc, curr) => acc + curr.time, 0);
       each ths, index in thesis
         tr 
           td(colspan="1" style="text-align:center")= index + 1

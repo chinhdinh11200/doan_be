@@ -310,7 +310,7 @@ export default class Scientific extends BaseRepository {
     return await this.model.findByPk(thesisId);
   };
   
-  public export = async (userId: string | number) => {
+  public export = async (userId: string | number, yearId?: number | string) => {
     const thesis: any = await this.model.findAll({
       include: [
         {
@@ -320,10 +320,14 @@ export default class Scientific extends BaseRepository {
             where: {
               user_id: userId,
             },
-            as: 'thesis_user'
-          }
+            as: 'thesis_user',
+          },
+          required: true,
         }
       ],
+      where: {
+        year_id: yearId,
+      },
       raw: true,
     })
 
@@ -337,10 +341,11 @@ export default class Scientific extends BaseRepository {
           type = "HD phụ"
           break;
       }
-
+      let time = Number(ths['users.thesis_user.time'])
       return {
         ...ths,
         type: type,
+        time,
       }
     })
 

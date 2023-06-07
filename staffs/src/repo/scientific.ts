@@ -3,6 +3,7 @@ import { types } from '../common';
 import { DB } from './../models';
 import BaseRepository from './_base';
 import { TypeRoleUser } from '../common/factory/_common';
+import { RESULT_FACULTY } from '../common/constant';
 
 export default class Scientific extends BaseRepository {
   private readonly model: DB['Scientific'];
@@ -150,20 +151,23 @@ export default class Scientific extends BaseRepository {
         }
       }
       timeMember = totalTime / roleUserArray.length;
-
-      const scientific = await this.model.create(
-        {
-          name: params.name,
+      let data: any = {
+        name: params.name,
           code: params.code,
           num_decision: params.num_decision,
           total_time: totalTime,
           type: params.typeScientific,
           num_person: roleUserArray.length,
-          result_level: params.result_level,
-          result_academy: params.result_academy,
           date_decision: params.date_decision,
           year_id: params.year_id,
-        },
+      }
+      if (params.result_academy != undefined) {
+        data.result_academy = level
+      } else {
+        data.result_level = level
+      }
+      const scientific = await this.model.create(
+        data,
         { transaction }
       );
       const role = await this.modelRole.findOne({
@@ -257,19 +261,25 @@ export default class Scientific extends BaseRepository {
         }
       }
       timeMember = totalTime / roleUserArray.length;
+      let data: any = {
+        name: params.name,
+          code: params.code,
+          num_decision: params.num_decision,
+          total_time: totalTime,
+          type: params.typeScientific,
+          num_person: roleUserArray.length,
+          date_decision: params.date_decision,
+          year_id: params.year_id,
+      }
+      if (params.result_academy != undefined) {
+        data.result_academy = level
+      } else {
+        data.result_level = level
+      }
       const scientificUpdate = await this.findById(scientificId);
       if (scientificUpdate) {
         const scientific = await scientificUpdate.update(
-          {
-            name: params.name,
-            code: params.code,
-            num_decision: params.num_decision,
-            total_time: totalTime,
-            result_level: params.result_level,
-            result_academy: params.result_academy,
-            date_decision: params.date_decision,
-            year_id: params.year_id,
-          },
+          data,
           { transaction }
         );
         if (roleUser !== '') {
@@ -339,7 +349,7 @@ export default class Scientific extends BaseRepository {
     return await this.model.findByPk(scientificId);
   };
 
-  public export = async (userId: string | number) => {
+  public export = async (userId: string | number, yearId?: number | string) => {
     const scientifics: any = await this.model.findAll({
       include: [
         {
@@ -360,11 +370,19 @@ export default class Scientific extends BaseRepository {
         }
       ],
       attributes: ["*", [Sequelize.fn('DATE_FORMAT', Sequelize.col('date_decision'), '%d/%m/%Y'), 'date_decision']],
+      where: {
+        year_id: yearId,
+        [Op.not]: [
+          {result_level: 0},
+        ]
+      },
       raw: true,
     })
     
     const scientificFormats = scientifics.map((scientific: any) => {
-      let type = "Thành viên"
+      let type = "Thành viên";
+      let result = RESULT_FACULTY.find(rs => rs.value == scientific.result_level)?.label
+      let resultAcademy = RESULT_FACULTY.find(rs => rs.value == scientific.result_academy)?.label
       switch (scientific['users.role_user.type']) {
         case 0:
           type = "Chủ trì"
@@ -379,6 +397,8 @@ export default class Scientific extends BaseRepository {
       return {
         ...scientific,
         type: type,
+        result,
+        resultAcademy
       }
     })
 

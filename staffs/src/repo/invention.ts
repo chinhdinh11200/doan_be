@@ -286,7 +286,7 @@ export default class Invention extends BaseRepository {
     return await this.model.findByPk(inventionId);
   };
 
-  public export = async (userId: string | number) => {
+  public export = async (userId: string | number, yearId?: number | string) => {
     const inventions: any = await this.model.findAll({
       include: [
         {
@@ -302,6 +302,9 @@ export default class Invention extends BaseRepository {
         }
       ],
       attributes: ['*',[Sequelize.fn('DATE_FORMAT', Sequelize.col('date_recognition'), '%d/%m/%Y'), 'date_recognition']],
+      where: {
+        year_id: yearId,
+      },
       raw: true,
     })
 

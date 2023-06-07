@@ -6,7 +6,7 @@ import * as repository from '../../repo';
 import { types } from '../../common';
 import { CREATED, OK } from 'http-status';
 import * as mapper from '../mapper/user';
-import { addBaseUrlToData } from '../../utils';
+import { addBaseUrlToData, pickForSearch } from '../../utils';
 
 export default class UserController extends Controller {
   private userRepo: repository.User;
@@ -19,7 +19,10 @@ export default class UserController extends Controller {
   }
 
   public detail = async (req: Request, res: Response, next: NextFunction) => {
-    let user = await this.userRepo.detail(req.params.id);
+    const {year_id} = pickForSearch(req.query, ['year_id'])
+    console.log(year_id);
+    let user = await this.userRepo.detail(req.params.id, 1);
+
     res.json(user)
   }
 

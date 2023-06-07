@@ -41,7 +41,6 @@ export default class ExportRepository extends BaseRepository {
     this.model = db.Exam;
     this.modelYear = db.Year;
     this.modelUser = db.User;
-    this.modelClasses = db.Classes;
     this.userRepo = new repository.User(db);
     this.topicRepo = new repository.Topic(db);
     this.articleRepo = new repository.Article(db);
@@ -125,6 +124,7 @@ export default class ExportRepository extends BaseRepository {
   };
 
   public userTemplate = async (res: Response, userId: string | number, yearId: number | string) => {
+    console.log(yearId, userId);
     let user: any = await this.userRepo.detail(userId);
     user = {
       ...user,
@@ -132,24 +132,20 @@ export default class ExportRepository extends BaseRepository {
       position: POSITION_STAFF.find(position => position.value == user?.position)?.label,
       birthday: user.birthday ? moment(user.birthday).format("DD/MM/YYYY") : '',
     }
-    // return; 
+    console.log(yearId, "a"); 
     const year = await this.modelYear.findByPk(yearId);
     const dateExport = `ngày ${moment(new Date()).format("DD")} tháng ${moment(new Date()).format("MM")} năm ${moment(new Date()).format("YYYY")}`
-    const dataTeach = await this.modelClasses.findAll({
-      attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson'],
-      where: {
-        user_id: 40,
-      }
-    })
     const dataTeachSemesterOne = await this.modelClasses.findAll({
       attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam'],
       where: {
         user_id: userId,
-        semester: 1
+        semester: 1,
+        year_id: yearId,
       },
       // group: ['semester'],
       raw: true,
     })
+    console.log(yearId, "b");
 
     const dataTeachSemesterOneHVMM = dataTeachSemesterOne.filter(classs => {
       return codeHVMM.some(t => classs.code.includes(t))
@@ -285,10 +281,12 @@ export default class ExportRepository extends BaseRepository {
       attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam'],
       where: {
         user_id: userId,
-        semester: 2
+        semester: 2,
+        year_id: yearId,
       },
       raw: true,
     })
+    console.log(yearId, "c");
 
     const dataTeachSemesterTwoHVMM = dataTeachSemesterTwo.filter(classs => {
       return codeHVMM.some(t => classs.code.includes(t))
@@ -421,16 +419,15 @@ export default class ExportRepository extends BaseRepository {
       }
     })
 
-    const subjects = await this.subjectRepo.export(userId);
-    const thesis = await this.thesisRepo.export(userId);
-    const topics = await this.topicRepo.export(userId);
-    const articles = await this.articleRepo.export(userId);
-    const books = await this.bookRepo.export(userId);
-    const inventions = await this.inventionRepo.export(userId);
-    const compilations = await this.compilationRepo.export(userId);
-    const educations = await this.educationRepo.export(userId);
-    const scientifics = await this.scientificRepo.export(userId);
-    console.log(dataTeachSemesterTwoFee);
+    const subjects = await this.subjectRepo.export(userId, yearId);
+    const thesis = await this.thesisRepo.export(userId, yearId);
+    const topics = await this.topicRepo.export(userId, yearId);
+    const articles = await this.articleRepo.export(userId, yearId);
+    const books = await this.bookRepo.export(userId, yearId);
+    const inventions = await this.inventionRepo.export(userId, yearId);
+    const compilations = await this.compilationRepo.export(userId, yearId);
+    const educations = await this.educationRepo.export(userId, yearId);
+    const scientifics = await this.scientificRepo.export(userId, yearId);
     // res.json(user);
     // return
     const data = {

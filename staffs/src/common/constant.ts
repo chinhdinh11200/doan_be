@@ -97,3 +97,34 @@ export const FORM_CONSTRUCTION = [
     value: 3
   },
 ];
+
+
+export const RESULT_FACULTY = [
+  {
+    label: "Đạt yêu cầu",
+    value: 0
+  },
+  {
+    label: "Không đạt",
+    value: 1
+  },
+]
+
+export const RESULT_ACADEMY = [
+  {
+    label: "Đạt yêu cầu cấp Học Viện",
+    value: 0
+  },
+  {
+    label: "Giải khuyến khích, giải ba cấp Học Viện",
+    value: 1
+  },
+  {
+    label: "Giải nhì, sản phẩm tiêu biểu cấp Học Viện",
+    value: 2
+  },
+  {
+    label: "Giải nhất cấp Học Viện",
+    value: 3
+  },
+]

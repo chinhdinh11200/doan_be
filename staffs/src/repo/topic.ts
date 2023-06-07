@@ -379,7 +379,7 @@ export default class Topic extends BaseRepository {
     return await this.model.findByPk(topicId);
   };
 
-  public export = async (userId: string | number) => {
+  public export = async (userId: string | number, yearId?: number | string) => {
     const topics: any = await this.model.findAll({
       include: [
         {
@@ -394,6 +394,9 @@ export default class Topic extends BaseRepository {
           }
         }
       ],
+      where: {
+        year_id: yearId,
+      },
       raw: true,
       attributes: ['*',[Sequelize.fn('DATE_FORMAT', Sequelize.col('acceptDate'), '%d/%m/%Y'), 'acceptDate']]
     })

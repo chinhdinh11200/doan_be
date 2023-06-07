@@ -31,6 +31,7 @@ export default class ScientificController extends Controller {
     }
     public create = async (req: Request, res: Response, next: NextFunction) => {
 
+        console.log(typeof req.body.result_academy, typeof req.body.result_academy != "number" ? req.body.result_academy : "undefined", "ttt"); 
         const params: types.scientific.ScientificCreateParam = {
             name: req.body.name,
             code: req.body.code,
@@ -40,7 +41,7 @@ export default class ScientificController extends Controller {
             num_decision: req.body.num_decision,
             total_time: req.body.total_time,
             result_level: req.body.result_level,
-            result_academy: req.body.result_academy !== null ? req.body.result_academy : undefined,
+            result_academy: typeof req.body.result_academy == "number" ? req.body.result_academy : undefined,
             date_decision: req.body.date_decision,
             year_id: req.body.year_id,
         }
@@ -58,7 +59,7 @@ export default class ScientificController extends Controller {
             num_decision: req.body.num_decision,
             total_time: req.body.total_time,
             result_level: req.body.result_level,
-            result_academy: req.body.result_academy !== null ? req.body.result_academy : undefined,
+            result_academy: typeof req.body.result_academy == "number" ? req.body.result_academy : undefined,
             date_decision: req.body.date_decision,
             year_id: req.body.year_id,
         }
