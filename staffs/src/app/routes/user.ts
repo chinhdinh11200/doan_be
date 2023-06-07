@@ -11,7 +11,7 @@ export default function (sequelize: DB) {
   const upload = createUpload('./public/avatar');
   staffRouter.post(
     '/',
-    // upload.single('avatar'),
+    // upload.single('avatar'), 
     upload.none(),
     userValidator.create,
     validators,

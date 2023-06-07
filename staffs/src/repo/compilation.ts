@@ -335,7 +335,7 @@ export default class Compilation extends BaseRepository {
       },
       raw: true,
     })
-
+ 
     const compilationFormats = compilations.map((compilation: any) => {
       let type = "Thành viên"
       switch (compilation['users.role_user.type']) {

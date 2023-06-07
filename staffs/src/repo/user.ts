@@ -61,16 +61,16 @@ export default class UserRepository extends BaseRepository {
 
     let timeTeach = 0;
     let timeScient = 0;
-
     
-    if (yearId != undefined) {
+    if (typeof yearId == "number" && !Number.isNaN(yearId)) {
+      console.log("cccccccccccccccccccccccccccccccccccccc", typeof yearId == "number");
       const dataTeachMiddle = await this.modelClasses.findAll({
         attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam'],
         where: {
           user_id: id,
           year_id: yearId,
         },
-        raw: true,
+        raw: true, 
       })
 
       let dataTeachMiddleWithTime = dataTeachMiddle.map(classs => {
@@ -169,7 +169,7 @@ export default class UserRepository extends BaseRepository {
     
     return {
       ...user?.dataValues,
-      departmentName: user?.department.name,
+      departmentName: user?.department?.dataValues?.departmentName,
       timeTeach,
       timeScient
     };
@@ -233,7 +233,7 @@ export default class UserRepository extends BaseRepository {
           code: data.code,
           avatar: data.avatar,
           email: data.email,
-          ...this.hashPassword(data.password),
+          ...this.hashPassword(data.password ? data.password : ""),
           birthday: data.birthday,
           position: data.position,
           degree: data.degree,

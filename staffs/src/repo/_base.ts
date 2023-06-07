@@ -29,15 +29,23 @@ export default abstract class BaseRepository {
     if (salt == null) {
       salt = crypto.randomBytes(16).toString('hex');
     }
-    const hashPassword = crypto
+    if (password != '') {
+      const hashPassword = crypto
       .createHmac('sha256', salt)
       .update(password)
       .digest('hex');
 
+      return {
+        salt,
+        password: hashPassword,
+      };
+    }
+
     return {
-      salt,
-      password: hashPassword,
-    };
+      salt: salt,
+      password: password,
+    }
+    
   };
 
   public convertStringToArray = (input: string) => {
