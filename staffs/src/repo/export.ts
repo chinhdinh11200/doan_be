@@ -124,7 +124,6 @@ export default class ExportRepository extends BaseRepository {
   };
 
   public userTemplate = async (res: Response, userId: string | number, yearId: number | string) => {
-    console.log(yearId, userId);
     let user: any = await this.userRepo.detail(userId);
     user = {
       ...user,
@@ -132,7 +131,6 @@ export default class ExportRepository extends BaseRepository {
       position: POSITION_STAFF.find(position => position.value == user?.position)?.label,
       birthday: user.birthday ? moment(user.birthday).format("DD/MM/YYYY") : '',
     }
-    console.log(yearId, "a"); 
     const year = await this.modelYear.findByPk(yearId);
     const dateExport = `ngày ${moment(new Date()).format("DD")} tháng ${moment(new Date()).format("MM")} năm ${moment(new Date()).format("YYYY")}`
     const dataTeachSemesterOne = await this.modelClasses.findAll({
@@ -145,7 +143,6 @@ export default class ExportRepository extends BaseRepository {
       // group: ['semester'],
       raw: true,
     })
-    console.log(yearId, "b");
 
     const dataTeachSemesterOneHVMM = dataTeachSemesterOne.filter(classs => {
       return codeHVMM.some(t => classs.code.includes(t))
@@ -286,7 +283,6 @@ export default class ExportRepository extends BaseRepository {
       },
       raw: true,
     })
-    console.log(yearId, "c");
 
     const dataTeachSemesterTwoHVMM = dataTeachSemesterTwo.filter(classs => {
       return codeHVMM.some(t => classs.code.includes(t))
@@ -354,7 +350,6 @@ export default class ExportRepository extends BaseRepository {
     })
 
     const dataTeachSemesterTwoFee = dataTeachSemesterTwo.filter(classs => {
-      console.log(classs.code.includes("C"));
       return codeFee.some(t => classs.code.includes(t))
     }).map(classs => {
       let time = classs.num_lesson
@@ -480,7 +475,6 @@ export default class ExportRepository extends BaseRepository {
       }
     }
     workbook.Sheets[sheetName]['!cols']
-    // console.log(sheet['!ref']);
     
     const buffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer' });
 

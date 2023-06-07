@@ -134,7 +134,7 @@ export default class UserRepository extends BaseRepository {
           middleSemester,
           timeMiddle : Math.ceil(timeMiddle),
         }
-      })
+      }) 
   
       timeTeach = timeTeach + dataTeachMiddleWithTime.reduce((acc, curr) => acc + curr.timeMiddle, 0);
       timeTeach = timeTeach + dataTeachMiddleWithTime.reduce((acc, curr) => acc + curr.time, 0);

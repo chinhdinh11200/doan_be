@@ -495,7 +495,7 @@ html
       tr 
         td(colspan="1" style="text-align:left")= "II"
         td(colspan="3" style="text-align:left")= "Số tiết phải giảng"
-        td(colspan="1" style="text-align:center")= 0
+        td(colspan="1" style="text-align:center")= 270
       tr 
         td(colspan="1" style="text-align:left")= "III"
         td(colspan="3" style="text-align:left")= "Số tiết chưa hoàn thành NCKH"
@@ -526,10 +526,21 @@ html
       tr 
         td(colspan="7" style="text-align:left; font-weight: bold")= "F. TỔNG SỐ TIẾT NGHIÊN CỨU KHOA HỌC ĐƯỢC BẢO LƯU (không thanh toán)"
       tr 
-        td(colspan="1" rowSpan="2" style="text-align:left;")= "TT"
-        td(colspan="2" rowSpan="2" style="text-align:left;")= "Nội dung bảo lưu"
+        td(colspan="1" rowSpan="1" style="text-align:left;")= "TT"
+        td(colspan="2" rowSpan="1" style="text-align:left;")= "Nội dung bảo lưu"
         td(colspan="2" rowSpan="1" style="text-align:left;")= "Tổng số tiết NCKH vượt định mức"
         td(colspan="2" rowSpan="1" style="text-align:left;")= "Tổng số tiết NCKH được bảo lưu"
+      - let timeSave = 0;
+      - if (totalC - 270 > 0)
+          - if (totalC - 270 > 100)
+            - timeSave = 100
+          - else 
+            - timeSave = totalC - 270 
+      tr 
+        td(colspan="1" rowSpan="1" style="text-align:left;")= ""
+        td(colspan="2" rowSpan="1" style="text-align:left;")= "Nghiên cứu khoa học"
+        td(colspan="2" rowSpan="1" style="text-align:left;")= (totalC - 270 > 0 ? totalC - 270 : 0)
+        td(colspan="2" rowSpan="1" style="text-align:left;")= timeSave
       tr 
       tr 
       tr 
