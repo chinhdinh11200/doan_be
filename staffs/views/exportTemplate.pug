@@ -177,7 +177,7 @@ html
             td(colspan="1" style="text-align:center")= user.name
             td(colspan="1" style="text-align:center")= user.middleSemester
             td(colspan="1" style="text-align:center")= user.code 
-            td(colspan="2" style="text-align:center")= user.num_student
+            td(colspan="1" style="text-align:center")= user.num_student
             td(colspan="1" style="text-align:center")= '' 
             td(colspan="1" style="text-align:center")= user.timeMiddle
       tr 
@@ -531,15 +531,15 @@ html
         td(colspan="2" rowSpan="1" style="text-align:left;")= "Tổng số tiết NCKH vượt định mức"
         td(colspan="2" rowSpan="1" style="text-align:left;")= "Tổng số tiết NCKH được bảo lưu"
       - let timeSave = 0;
-      - if (totalC - 270 > 0)
-          - if (totalC - 270 > 100)
+      - if (totalC - 200 > 0)
+          - if (totalC - 200 > 100)
             - timeSave = 100
           - else 
-            - timeSave = totalC - 270 
+            - timeSave = totalC - 200 
       tr 
         td(colspan="1" rowSpan="1" style="text-align:left;")= ""
         td(colspan="2" rowSpan="1" style="text-align:left;")= "Nghiên cứu khoa học"
-        td(colspan="2" rowSpan="1" style="text-align:left;")= (totalC - 270 > 0 ? totalC - 270 : 0)
+        td(colspan="2" rowSpan="1" style="text-align:left;")= (totalC - 200 > 0 ? totalC - 200 : 0)
         td(colspan="2" rowSpan="1" style="text-align:left;")= timeSave
       tr 
       tr 

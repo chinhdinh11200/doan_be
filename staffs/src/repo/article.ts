@@ -105,7 +105,7 @@ export default class Article extends BaseRepository {
       var timeMain: number = 0;
       var timeSupport: number = 0;
       var timeMember: number = 0;
-      switch (params.type_article) {
+      switch (params.type) {
         case 0:
           totalTime = 800;
           timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
@@ -133,7 +133,7 @@ export default class Article extends BaseRepository {
             timeMember = 0.6 * totalTime / roleUserArray.length
             break;
           case 4:
-            totalTime = 400;
+            totalTime = 400; 
             totalTime = params.open_access ? totalTime - 50 : totalTime;
             totalTime = params.open_access_scopus ? totalTime - 100 : totalTime;
             timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
