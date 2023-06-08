@@ -54,7 +54,7 @@ export default class InventionController extends Controller {
             code: req.body.code,
             role: req.body.role,
             type: req.body.type,
-            level: req.body.type_inventions,
+            level: req.body.level,
             num_person: req.body.num_person,
             total_time: req.body.total_time,
             date_recognition: req.body.date_recognition,

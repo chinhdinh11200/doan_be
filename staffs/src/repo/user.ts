@@ -63,7 +63,6 @@ export default class UserRepository extends BaseRepository {
     let timeScient = 0;
     
     if (typeof yearId == "number" && !Number.isNaN(yearId)) {
-      console.log("cccccccccccccccccccccccccccccccccccccc", typeof yearId == "number");
       const dataTeachMiddle = await this.modelClasses.findAll({
         attributes: ['name', 'code', 'num_student', 'semester', 'num_credit', 'num_lesson', 'exam_supervision', 'exam_create', 'marking', 'form_exam'],
         where: {
@@ -226,14 +225,13 @@ export default class UserRepository extends BaseRepository {
       if (user === null) {
         throw new Error();
       }
-      const userUpdate = await user.update(
-        {
+      let dataUpdate: any = {
           department_id: data.department_id,
           name: data.name,
           code: data.code,
           avatar: data.avatar,
           email: data.email,
-          ...this.hashPassword(data.password ? data.password : ""),
+          // ...this.hashPassword(data.password ? data.password : ""),
           birthday: data.birthday,
           position: data.position,
           degree: data.degree,
@@ -241,7 +239,16 @@ export default class UserRepository extends BaseRepository {
           income: data.income,
           time_per_year: data.time_per_year,
           time_reserve: data.time_reserve,
-        },
+      }
+
+      if (data.password) {
+        dataUpdate = {
+          ...dataUpdate,
+          ...this.hashPassword(data.password),
+        }
+      }
+      const userUpdate = await user.update(
+        dataUpdate,
         { transaction }
       );
       await transaction.commit();

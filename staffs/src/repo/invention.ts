@@ -177,6 +177,7 @@ export default class Invention extends BaseRepository {
       const roleUserArray: string[] = roleUser.split(',');
       const inventionUpdate = await this.findById(inventionId);
       var totalTime: number;
+      console.log(params.level);
       switch (params.level) {
         case 0:
           totalTime = 400;

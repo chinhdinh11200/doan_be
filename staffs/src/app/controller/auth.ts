@@ -171,7 +171,7 @@ export default class AuthController extends Controller {
       newPassword: req.body.newPassword,
       confirmPassword: req.body.confirmPassword,
     });
-
+ 
     res.status(200).json(test);
   }
 }

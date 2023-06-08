@@ -12,20 +12,20 @@ html
     table(style="border-collapse:collapse;")
       tbody
       tr
-        td(colspan="3" style="text-align:center")= "HỌC VIỆN KỸ THUẬT MẬT MÃ"
-        td(colspan="4" style="text-align:center")= "Cộng hoà xã hội chủ nghĩa Việt Nam"
+        td(colspan="3" style="text-align:center; font-weight: bold")= "HỌC VIỆN KỸ THUẬT MẬT MÃ"
+        td(colspan="4" style="text-align:center; font-weight: bold")= "Cộng hoà xã hội chủ nghĩa Việt Nam"
       tr
-        td(colspan="3" style="text-align:center")= "KHOA: " + user.departmentName
-        td(colspan="4" style="text-align:center")= "Độc lập - Tự do - Hạnh phúc"
+        td(colspan="3" style="text-align:center; font-weight: bold")= "KHOA: " + user.departmentName
+        td(colspan="4" style="text-align:center; font-weight: bold")= "Độc lập - Tự do - Hạnh phúc"
       tr
         td(colspan="3" style="text-align:center")= "BỘ MÔN: "
         td(colspan="4" style="text-align:center")= "Hà nội, " + dateExport
       tr 
-        td(colspan="7" style="text-align:center")= "KÊ KHAI"
+        td(colspan="7" style="text-align:center; font-weight: bold")= "KÊ KHAI"
       tr 
         td(colspan="7" style="text-align:center")= "Khối lượng thực hiện nhiệm vụ đào tạo, khoa học và công nghệ năm học " + year.name
       tr 
-        td(colspan="7" style="text-align:center")= "(Căn cứ theo Quyết định số 709/QĐ-HVM ngày /12/2021 về việc quy định chế độ làm việc của giảng viên Học viện Kỹ thuật mật mã)"
+        td(colspan="7" style="text-align:center; font-weight: lighter; font-style: italic")= "(Căn cứ theo Quyết định số 709/QĐ-HVM ngày /12/2021 về việc quy định chế độ làm việc của giảng viên Học viện Kỹ thuật mật mã)"
       tr 
         td(colspan="3" style="text-align:left")= "Họ và tên: " + user.name
         td(colspan="4" style="text-align:left")= "Ngày sinh: " + user.birthday
@@ -491,7 +491,7 @@ html
         td(colspan="1" style="text-align:left")= "I"
         td(colspan="3" style="text-align:left")= "Tổng số tiết thực hiện (A + B)"
         td(colspan="1" style="text-align:center")= totalA + totalB
-        td(colspan="2" rowSpan="5" style="text-align:left")= "Chủ nhiệm bộ môn"
+        td(colspan="2" rowSpan="5" style="text-align:left")= ""
       tr 
         td(colspan="1" style="text-align:left")= "II"
         td(colspan="3" style="text-align:left")= "Số tiết phải giảng"
@@ -507,7 +507,7 @@ html
       tr 
         td(colspan="1" style="text-align:left")= "V"
         td(colspan="3" style="text-align:left")= "Tổng số tiết vượt giờ đề nghị thanh toán (I - II - III + IV)"
-        td(colspan="1" style="text-align:center")= (totalA + totalB)
+        td(colspan="1" style="text-align:center")= (totalA + totalB -270) > 0 ? (totalA + totalB -270) : 0
       tr 
         td(colspan="7" style="text-align:left; font-weight: bold")= "E. TỔNG SỐ TIẾT ĐỀ NGHỊ THANH TOÁN VƯỢT GIỜ"
       tr 
@@ -522,7 +522,12 @@ html
         td(colspan="1" rowSpan="1" style="text-align:left;")= "Campuchia"
         td(colspan="1" rowSpan="1" style="text-align:left;")= ""
         td(colspan="1" rowSpan="1" style="text-align:left;")= ""
-
+      tr 
+        td(colspan="1" rowSpan="2" style="text-align:left;")= totalA1Lesson
+        td(colspan="1" rowSpan="2" style="text-align:left;")= "Tổng số tiết theo thời khóa biểu"
+        td(colspan="3" rowSpan="1" style="text-align:left;")= "Chuyên ngành KTMM"
+        td(colspan="1" rowSpan="1" style="text-align:left;")= "Hệ đóng học phí"
+        td(colspan="1" rowSpan="1" style="text-align:left;")= "Tổng quy chuẩn"
       tr 
         td(colspan="7" style="text-align:left; font-weight: bold")= "F. TỔNG SỐ TIẾT NGHIÊN CỨU KHOA HỌC ĐƯỢC BẢO LƯU (không thanh toán)"
       tr 

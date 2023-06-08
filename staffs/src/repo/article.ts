@@ -105,7 +105,7 @@ export default class Article extends BaseRepository {
       var timeMain: number = 0;
       var timeSupport: number = 0; 
       var timeMember: number = 0; 
-      switch (params.type) {
+      switch (params.type_article) {
         case 0:
           totalTime = 800;
           timeMain = roleUserArray.length === 1 ? totalTime : 0.4 * totalTime + 0.6 * totalTime / roleUserArray.length
