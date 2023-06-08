@@ -42,8 +42,6 @@ html
       tr 
         td(colspan="7" style="text-align:left; font-weight: bold")= "A.1.Giảng dạy (Căn cứ vào mục 1 và 2 Phụ lục I. QĐ số 709/QĐ-HVM)"
       tr 
-        td(colspan="7" style="text-align:left")= "Học kỳ I - Đào tạo chuyên ngành Kỹ thuật mật mã"
-      tr 
         td(colspan="1" style="text-align:center")= "TT" 
         td(colspan="1" style="text-align:center")= "Tên học phần" 
         td(colspan="1" style="text-align:center")= "Số TC(HT)" 
@@ -51,6 +49,8 @@ html
         td(colspan="1" style="text-align:center")= "Loại hình đào tạo" 
         td(colspan="1" style="text-align:center")= "Số tiết theo TKB" 
         td(colspan="1" style="text-align:center")= "Số tiết QC" 
+      tr 
+        td(colspan="7" style="text-align:left")= "Học kỳ I - Đào tạo chuyên ngành Kỹ thuật mật mã"
       - let oneHVMM = dataTeachSemesterOneHVMM?.reduce((acc, curr) => acc + curr.time, 0);
       - let oneHVMMlesson = dataTeachSemesterOneHVMM?.reduce((acc, curr) => acc + curr.num_lesson, 0);
       each user, index in dataTeachSemesterOneHVMM
@@ -424,8 +424,8 @@ html
           td(colspan="1" style="text-align:center")= scientific.name
           td(colspan="1" style="text-align:center")= scientific.num_decision 
           td(colspan="1" style="text-align:center")= scientific.date_decision
-          td(colspan="1" style="text-align:center")= scientific.result_level
-          td(colspan="1" style="text-align:center")= scientific.result_academy
+          td(colspan="1" style="text-align:center")= scientific.result
+          td(colspan="1" style="text-align:center")= scientific.resultAcademy
           td(colspan="1" style="text-align:center")= scientific['users.role_user.time']
       tr
         td(colspan="6" style="text-align:center; font-weight: bold")= "Tổng C.5" 
@@ -507,7 +507,7 @@ html
       tr 
         td(colspan="1" style="text-align:left")= "V"
         td(colspan="3" style="text-align:left")= "Tổng số tiết vượt giờ đề nghị thanh toán (I - II - III + IV)"
-        td(colspan="1" style="text-align:center")= (totalA + totalB -270) > 0 ? (totalA + totalB -270) : 0
+        td(colspan="1" style="text-align:center")= (totalA + totalB -270) > 0 ? (totalA + totalB -270).toFixed(2) : 0
       tr 
         td(colspan="7" style="text-align:left; font-weight: bold")= "E. TỔNG SỐ TIẾT ĐỀ NGHỊ THANH TOÁN VƯỢT GIỜ"
       tr 
@@ -523,11 +523,11 @@ html
         td(colspan="1" rowSpan="1" style="text-align:left;")= ""
         td(colspan="1" rowSpan="1" style="text-align:left;")= ""
       tr 
-        td(colspan="1" rowSpan="2" style="text-align:left;")= totalA1Lesson
-        td(colspan="1" rowSpan="2" style="text-align:left;")= "Tổng số tiết theo thời khóa biểu"
-        td(colspan="3" rowSpan="1" style="text-align:left;")= "Chuyên ngành KTMM"
-        td(colspan="1" rowSpan="1" style="text-align:left;")= "Hệ đóng học phí"
-        td(colspan="1" rowSpan="1" style="text-align:left;")= "Tổng quy chuẩn"
+        td(colspan="1" rowSpan="1" style="text-align:left;")= ""
+        td(colspan="1" rowSpan="1" style="text-align:left;")= totalA1Lesson
+        td(colspan="3" rowSpan="1" style="text-align:left;")= ""
+        td(colspan="1" rowSpan="1" style="text-align:left;")= (oneFeelesson + twoFeelesson)
+        td(colspan="1" rowSpan="1" style="text-align:left;")= (oneFee + twoFee)
       tr 
         td(colspan="7" style="text-align:left; font-weight: bold")= "F. TỔNG SỐ TIẾT NGHIÊN CỨU KHOA HỌC ĐƯỢC BẢO LƯU (không thanh toán)"
       tr 

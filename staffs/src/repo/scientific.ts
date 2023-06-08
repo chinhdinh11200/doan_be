@@ -3,7 +3,7 @@ import { types } from '../common';
 import { DB } from './../models';
 import BaseRepository from './_base';
 import { TypeRoleUser } from '../common/factory/_common';
-import { RESULT_FACULTY } from '../common/constant';
+import { RESULT_ACADEMY, RESULT_FACULTY } from '../common/constant';
 
 export default class Scientific extends BaseRepository {
   private readonly model: DB['Scientific'];
@@ -230,7 +230,6 @@ export default class Scientific extends BaseRepository {
         switch (level) {
           case 0:
             totalTime = 25;
-
             break;
           case 1:
             totalTime = 0;
@@ -354,26 +353,22 @@ export default class Scientific extends BaseRepository {
       include: [
         {
           model: this.modelUser,
-          required: true,
           through: {
             attributes: ['time', 'user_id', 'type', 'type_role'],
             as: 'role_user',
-            where: {
-              [Op.and]: [
-                { user_id: userId },
-                { type_role: 5 },
-              ]
+            where: { 
+              user_id: userId, 
+              type_role: 5
             },
-
           },
-          
+          required: true,
         }
       ],
       attributes: ["*", [Sequelize.fn('DATE_FORMAT', Sequelize.col('date_decision'), '%d/%m/%Y'), 'date_decision']],
       where: {
         year_id: yearId,
         [Op.not]: [
-          {result_level: 0},
+          {result_level: 1},
         ]
       },
       raw: true,
@@ -382,7 +377,21 @@ export default class Scientific extends BaseRepository {
     const scientificFormats = scientifics.map((scientific: any) => {
       let type = "Thành viên";
       let result = RESULT_FACULTY.find(rs => rs.value == scientific.result_level)?.label
-      let resultAcademy = RESULT_FACULTY.find(rs => rs.value == scientific.result_academy)?.label
+      let resultAcademy = RESULT_ACADEMY.find(rs => rs.value == scientific.result_academy)?.label
+      if (scientific.result_academy != null) {
+        result = ""
+      }
+      switch (scientific['users.role_user.type']) {
+        case 0:
+          type = "Chủ trì"
+          break;
+        case 1:
+          type = "Thư ký"
+          break;
+        default:
+          type = "Thành viên"
+          break;
+      }
       switch (scientific['users.role_user.type']) {
         case 0:
           type = "Chủ trì"

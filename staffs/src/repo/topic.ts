@@ -378,7 +378,7 @@ export default class Topic extends BaseRepository {
   public findById = async (topicId: string | number) => {
     return await this.model.findByPk(topicId);
   };
-
+ 
   public export = async (userId: string | number, yearId?: number | string) => {
     const topics: any = await this.model.findAll({
       include: [
