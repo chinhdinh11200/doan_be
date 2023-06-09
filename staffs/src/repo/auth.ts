@@ -85,7 +85,7 @@ export class AuthRepository extends BaseRepository {
 
     let info = await transporter.sendMail({
       from: 'chinhdinhtho@gmail.com', // sender address
-      to: 'chinhdt@cs-soft.jp', // list of receivers
+      to: email, // list of receivers
       subject: '', // Subject line
       text: '', // plain text body
       html: `

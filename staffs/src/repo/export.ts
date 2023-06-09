@@ -443,8 +443,7 @@ export default class ExportRepository extends BaseRepository {
       educations,
       scientifics,
     };
-    // res.render('exportTemplate', data);
-    // return;
+    
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
   
