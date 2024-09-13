@@ -19,7 +19,7 @@ module.exports = {
       .digest('hex');
 
     return await queryInterface.bulkInsert('users', [{
-      department_id: 1,
+      department_id: null,
       name: 'Admin',
       email: 'admin@gmail.com',
       password: password,
